@@ -86,44 +86,67 @@
 \Author[1]{Paul A.}{Ullrich}
 \Author[2]{Christiane}{Jablonowski}
 \Author[3]{James}{Kent}
-\Author[4]{Peter}{Lauritzen}
+\Author[4]{Peter H.}{Lauritzen}
 \Author[4]{Ramachandran}{Nair}
 \Author[5]{Kevin A.}{Reed}
-\Author[4]{Colin}{Zarzycki}
+\Author[4]{Colin M.}{Zarzycki}
 
-\Author[6]{Thomas}{Dubos}
-\Author[7]{Marco}{Giorgetta}
-\Author[8]{Elijah}{Goodfriend}
-\Author[9]{David A.}{Hall}
-\Author[10]{Lucas}{Harris}
-\Author[8]{Hans}{Johansen}
-\Author[11]{Christian}{Kuehnlein}
-\Author[12]{Vivian}{Lee}
-\Author[13]{Thomas}{Melvin}
-\Author[14]{Hiroaki}{Miura}
-\Author[15]{David}{Randall}
-\Author[16]{Alex}{Reinecke}
+\Author[6]{David A.}{Hall}
+
+\Author[7]{Alex}{Reinecke}
+\Author[7]{Kevin}{Viner}
+
+\Author[8]{Don}{Dazlich}
+\Author[8]{Ross}{Heikes}
+\Author[8]{Celal}{Konor}
+\Author[8]{David}{Randall}
+
+\Author[9]{Xi}{Chen}
+\Author[9]{Lucas}{Harris}
+
+\Author[10]{Marco}{Giorgetta}
+\Author[11]{Daniel}{Reinert}
+
+\Author[12]{Christian}{Kuehnlein}
+
+\Author[13]{Robert}{Walko}
+
+\Author[14]{Vivian}{Lee}
+\Author[14]{Abdessamad}{Qaddouri}
+\Author[14]{Claude}{Girard}
+
+\Author[15]{Hiroaki}{Miura}
+\Author[15]{Tomoki}{Ohno}
+\Author[16]{Ryuji}{Yoshida}
+
+\Author[4]{Joseph}{Klemp}
+\Author[4]{Sang-Hun}{Park}
 \Author[4]{William}{Skamarock}
-\Author[16]{Kevin}{Viner}
-\Author[17]{Robert}{Walko}
+
+\Author[17]{Thomas}{Dubos}
+\Author[17]{Yann}{Meurdesoif}
+
+\Author[18]{Elijah}{Goodfriend}
+\Author[18]{Hans}{Johansen}
 
 \affil[1]{University of California, Davis}
 \affil[2]{University of Michigan}
 \affil[3]{University of South Wales}
 \affil[4]{National Center for Atmospheric Research}
 \affil[5]{Stony Brook University}
-\affil[6]{Institut Pierre-Simon Laplace (IPSL)}
-\affil[7]{Max Planck Institute for Meteorology}
-\affil[8]{Lawrence Berkeley National Laboratory}
-\affil[9]{University of Colorado, Boulder}
-\affil[10]{Geophysical Fluid Dynamics Laboratory}
-\affil[11]{European Center for Medium-Range Weather Forecasting}
-\affil[12]{Environment Canada}
-\affil[13]{U.K. Met Office}
-\affil[14]{University of Tokyo}
-\affil[15]{Colorado State University}
-\affil[16]{Naval Research Laboratory}
-\affil[17]{University of Miami}
+\affil[6]{University of Colorado, Boulder}
+\affil[7]{Naval Research Laboratory}
+\affil[8]{Colorado State University}
+\affil[9]{Geophysical Fluid Dynamics Laboratory}
+\affil[10]{Max Planck Institute for Meteorology}
+\affil[11]{Deutscher Wetterdienst (DWD)}
+\affil[12]{European Center for Medium-Range Weather Forecasting}
+\affil[13]{University of Miami}
+\affil[14]{Environment Canada}
+\affil[15]{University of Tokyo}
+\affil[16]{RIKEN}
+\affil[17]{Institut Pierre-Simon Laplace (IPSL)}
+\affil[18]{Lawrence Berkeley National Laboratory}
 
 %% The [] brackets identify the author with the corresponding affiliation. 1, 2, 3, etc. should be inserted.
 
@@ -160,9 +183,15 @@ This paper provides a comprehensive review of the design of modern non-hydrostat
 
 \introduction  %% \introduction[modified heading if necessary]
 
-{\color{red}INSTRUCTIONS FOR AUTHORS}
+{\color{red}INSTRUCTIONS FOR AUTHORS: Fill in text in section 3, 4, 5, 6, 7 and 8 below.}
 
-{\color{red} Fill in text in section 3, 4, 5, 6, 7 and 8 below.}
+The Dynamical Core Model Intercomparison Project (DCMIP) is an ongoing effort targeting the intercomparison of a fundamental component of global atmospheric modeling systems: the dynamical core.  Although this component's role is simply to solve the equations of fluid motion (the Navi\'er-Stokes equations) throughout the atmosphere, there are numerous confounding factors that arise as a consequence of compromises that are required to make simulation computationally feasible.  These factors include the choice of model grid, vertical coordinates, representation of topography, numerical method, physics/dynamics coupler, and the manner in which artificial diffusion, filters and/or energy/mass fixers are applied.
+
+To advance the intercomparison project and provide a unique educational opportunity for students, DCMIP has hosted a multidisciplinary two-week summer school and model intercomparison project, held at the National Center for Atmospheric Research (NCAR) in June 2016, that invited graduate students, postdocs, atmospheric modelers, expert lecturers and computer specialists to create a stimulating, unique and hands-on driven learning environment. It was built on previous intercomparison efforts by addressing key outstanding issues in global atmospheric models, incorporate international participation, and provide a unique training experience for the future generation of climate scientists. Special attention is paid to the role of simplified physical parameterizations, physics-dynamics coupling, non-hydrostatic atmospheric modeling and variable-resolution global modeling. The summer school and model intercomparison project promoted active learning, innovation, discovery, mentorship and the integration of science and education.
+
+The summer school directly benefited its participants by providing a unique educational experience and an opportunity to interact with modeling teams from around the world.  The workshop is expected to have further repercussions on the development of operational atmospheric modeling systems, by giving modeling groups an opportunity to assess and intercompare their models with other advanced modeling systems.  Modeling groups have already begun to leverage this information to improve their own models, which will in turn positively impact the quality of weather and climate simulations going forward.
+
+The proposed workshop has advanced our knowledge of (a) the relative behaviors exhibited by atmospheric dynamical cores, (b) differences that arise among mechanisms for coupling the physical parameterizations and dynamical core, and (c) the impacts of variable-resolution refinement regions and transition zones in global atmospheric simulations.  Notably, the use of idealized test cases isolating specific phenomena gave us a unique opportunity to assess specific differences that arise due to the choice of dynamical core.  A key outcome of the workshop was the development of a standard test case suite and benchmark set of simulations that can be used for assessment of any future dynamical core.
 
 \section{Notation}
 
@@ -489,6 +518,66 @@ V_r = 36349(\rho q_r)^{0.1346}\left(\frac{\rho}{\rho_0}\right)^{-\frac{1}{2}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\section{Surface Fluxes on an Aqua-Planet with Prescribed Sea Surface Temperatures} \label{sec:OceanSurfaceFluxes}
+
+The forcing by surface fluxes from an idealized ocean is described in \cite{reed2012idealized} and is partly reproduced here. We use a model configuration which corresponds to an aqua-planet setup with prescribed sea surface temperatures (SSTs). This forcing by the surface fluxes is applied to the state variables in the lowermost model level using a partially implicit formulation to avoid numerical instabilities.  Throughout this section we use the subscript $a$ to denote variables defined on the lowermost model level.
+
+The surface fluxes depend on the \textit{drag coefficient} $C_d$, defined as
+\begin{equation} \label{eq:DragCoefficient}
+\begin{array}{ll}
+C_d = C_{d0} + C_{d1} \vert \vec{v}_a \vert & \mbox{for $\vert \vec{v}_a \vert < 20$ m s$^{-1}$} \\ 
+C_d = 0.002 & \mbox{for $\vert \vec{v}_a \vert \geq 20$ m s$^{-1}$}, 
+\end{array}
+\end{equation}
+where $C_{d0}$ and $C_{d1}$ are $7.0 \times 10^{-4}$ (unitless) and $6.5 \times 10^{-5}$ s m$^{-1}$, respectively, and $\vert \vec{v}_a \vert$ is the magnitude of the horizontal wind at the lowermost model level.  In terms of the zonal wind $u_a$ and meridional wind $v_a$, it is defined as
+\begin{equation}
+\vert \vec{v}_a \vert = \sqrt{u_a^2 + v_a^2}.
+\end{equation}  For both evaporation and sensible heat the bulk coefficient is set to
+\begin{equation} \label{eq:BulkTransferCoefficient}
+C_E = C_H = 0.0011.
+\end{equation}
+
+The formulation of the surface fluxes makes use of the height of the lowermost full model level $z_a$ (in m).  For pressure-based models, $z_a$ can be expressed with the help of the hydrostatic equation in terms of pressure
+\begin{eqnarray} \label{eqn:za}
+z_a = \frac{R_d T_{\nu,a}}{g} \frac{(\ln p_s- \ln p_-)}{2},
+\end{eqnarray}
+where $T_{\nu,a} = T_a (1+0.608 q_a)$ is the virtual temperature at the lowermost full model level and $p_-$ is the edge pressure at the model level interface between the lowest and second lowest full model levels. This notation and all following equations assume that the temperature, horizontal wind components and the specific humidity in the physical parameterization package are co-located in both the vertical and horizontal directions, as is the case for the Lorenz grid. The height of the lowest full model level should ideally lie between 60-70m above the ground to make the results comparable to those in the literature.
+
+As described in \cite{reed2012idealized}, the surface fluxes can be written as
+\begin{eqnarray}
+\frac{\partial \vec{v}_a}{\partial t} &=& - \frac{C_d \vert \vec{v}_a \vert \vec{v}_a}{z_a} \label{sfu} \\
+\frac{\partial T_a}{\partial t} &=& \frac{C_H \vert \vec{v}_a \vert (T_s-T_a)}{z_a} \label{sft} \\
+\frac{\partial q_a}{\partial t} &=& \frac{C_E \vert \vec{v}_a \vert(q_{sat,s}-q_a)}{z_a}. \label{sfq}
+\end{eqnarray}
+We note that the wind at the surface is taken to be zero and therefore does not appear explicitly in (\ref{sfu}).  In these equations $T_s$  denotes the prescribed sea surface temperature (SST) and $q_{sat,s}$ is the saturation specific humidity defined by the Clausius-Clapeyron equation
+\begin{eqnarray} \label{qsatcalc}
+q_{sat}(p) \approx \varepsilon\frac{e_s(T_s)}{p} \approx \frac{\varepsilon}{p}e^{*}_{0}e^{-(L/R_\nu)[(1/T_s)-(1/T_0)]},
+\end{eqnarray}
+where $e^{*}_{0}$ ($=610.78$ Pa) is the saturation vapor pressure at $T_0=273.16$ K. 
+
+The final form of the surface fluxes will vary for models with other choices of prognostic variables. For example, if potential temperature $\Theta_a$ is used (\ref{sft}) takes the form
+\begin{eqnarray}
+\frac{\partial \Theta_a}{\partial t} &=& \frac{C_H \vert \vec{v}_a \vert (T_s-T_a)}{z_a} \left (\frac{p_0}{p_a} \right )^{R_d/c_p} \label{sftheta}
+\end{eqnarray}
+where $p_0 = 1000$ hPa is a reference pressure. This conversion uses the assumption that the pressure is time-invariant when individual physics parameterizations are applied. For other choices of prognostic variables like $(\rho u)_a$, $(\rho v)_a$, $(\rho \Theta)_a$ and $(\rho q)_a$ the right-hand-side of (\ref{sfu}), (\ref{sftheta}) and (\ref{sfq}) would need to be multiplied by the density of the air $\rho$.
+
+In order to ensure numerical stability, each of the aforementioned surface fluxes are applied via a semi-implicit operator.  We demonstrate this procedure on the temperature evolution equation (\ref{sft}).  First, the time derivative is expanded using a backward Euler operator,
+\begin{eqnarray}
+\frac{T_a^{n+1}-T_a^n}{\Delta t} &=& \frac{C_H \vert \vec{v}_a^n \vert (T_s-T_a^{n+1})}{z_a}.
+\end{eqnarray}
+The superscripts $n$ and $n+1$ represent the current time step (after the update from the large-scale condensation scheme) and the future time step, respectively. Note, that on the right-hand-side of the equation the only variable taken implicitly is $T_a$. $\vert \vec{v}_a^n \vert$ is evaluated at the current time step and $C_H$ is constant. The equation can now be solved for $T_a^{n+1}$
+\begin{eqnarray} \label{Tsurfflux}
+T_a^{n+1} &=& \frac{T_a^n + C_H \vert \vec{v}_a^n \vert T_s \frac{\Delta t}{z_a}}{1 + C_H \vert \vec{v}_a^n \vert\frac{\Delta t}{z_a}}.
+\end{eqnarray}
+Similar equations for $\vec{v}_a$ and $q_a$ can be calculated
+\begin{eqnarray}
+\vec{v}_a^{n+1} &=& \frac{\vec{v}_a^n}{1 + C_d^n \vert \vec{v}_a^n \vert\frac{\Delta t}{z_a}} \label{qusurfflux}\\
+q_a^{n+1} &=& \frac{q_a^n + C_E \vert \vec{v}_a^n \vert q_{sat,s}^n \frac{\Delta t}{z_a}}{1 + C_E \vert \vec{v}_a^n \vert\frac{\Delta t}{z_a}}, \label{qsurfflux}
+\end{eqnarray} 
+with the time-level dependent coefficient $C_d^n$. Notice that the second term in the numerator of (\ref{qusurfflux}) is absent in the case of the zonal and merdional wind. This is because the wind is set to zero at the surface.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Simplified Mixing in the Planetary Boundary Layer} \label{sec:PlanetaryBoundaryLayer}
 
 The forcing by the planetary boundary layer is described in \cite{reed2012idealized} and is partly reproduced here.  To parameterize the surface fluxes that impact the zonal velocity $u$, the meridional velocity $v$ and moisture $q$ we start with the time rate of change equations
@@ -543,8 +632,9 @@ TEXT
 \authorcontribution{TEXT}
 
 \begin{acknowledgements}
-{\color{blue}[Include a complete list of DCMIP2016 student participants here along with sponsors]}
+DCMIP2016 is sponsored by the National Center for Atmospheric Research Computational Information Systems Laboratory, the Department of Energy Office of Science (award no. DE-SC0016015), the National Science Foundation (award no. 1629819), the National Aeronautics and Space Administration (award no. {\color{red}??}), the National Oceanic and Atmospheric Administration (award no. {\color{red}??}), the Office of Naval Research and CU Boulder Research Computing.  This work was made possible with support from our student and postdoctoral participants: Sabina Abba Omar, Scott Bachman, Amanda Back, Tobias Bauer, Vinicius Capistrano, Spencer Clark, Ross Dixon, Christopher Eldred, Robert Fajber, Jared Ferguson, Emily Foshee, Ariane Frassoni, Alexander Goldstein, Jorge Guerra, Chasity Henson, Adam Herrington, Tsung-Lin Hsieh, Dave Lee, Theodore Letcher, Weiwei Li, Laura Mazzaro, Maximo Menchaca, Jonathan Meyer, Farshid Nazari, John O'Brien, Bjarke Tobias Olsen, Hossein Parishani, Charles Pelletier, Thomas Rackow, Kabir Rasouli, Cameron Rencurrel, Koichi Sakaguchi, G\"okhan Sever, James Shaw, Konrad Simon, Abhishekh Srivastava, Nicholas Szapiro, Kazushi Takemura, Pushp Raj Tiwari, Chii-Yun Tsai, Richard Urata, Karin van der Wiel, Lei Wang, Eric Wolf, Zheng Wu, Haiyang Yu, Sungduk Yu and Jiawei Zhuang.  We would also like to thank Rich Loft, Cecilia Banner, Kathryn Peczkowicz and Rory Kelly (NCAR), Carmen Ho, Perla Dinger, and Gina Skyberg (UC Davis) and Kristi Hansen (University of Michigan) for administrative support during the workshop and summer school.  
 \end{acknowledgements}
+
 
 
 %% REFERENCES
@@ -553,7 +643,7 @@ TEXT
 %% authors experienced with BibTeX only have to include the following two lines:
 %%
 \bibliographystyle{copernicus}
-\bibliography{DCMIP2016.bib}
+\bibliography{DCMIP2016-Part1.bib}
 %%
 %% URLs and DOIs can be entered in your BibTeX file as:
 %%
