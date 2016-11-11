@@ -261,12 +261,14 @@ $\Omega_{\tiny \mbox{ref}}$ & Rotational speed of the Earth & $7.292\ \times 10^
 %$\Omega$ & Scaled rotational speed of the Earth & $\Omega_{\tiny \mbox{ref}} \cdot X$ \\
 $g_c$ & Gravitational acceleration & $9.80616\ \mbox{m}\ \mbox{s}^{-2}$ \\
 $p_0$ & Reference pressure & $1000\ \mbox{hPa}$ \\
-$c_p$ & Specific heat capacity of dry air at constant pressure & $1004.5\ \mbox{J}\ \mbox{kg}^{-1}\ \mbox{K}^{-1}$ \\
-$c_v$ & Specific heat capacity of dry air at constant volume & $717.5\ \mbox{J}\ \mbox{kg}^{-1}\ \mbox{K}^{-1}$ \\
+$c_{pd}$ & Specific heat capacity of dry air at constant pressure & $1004.5\ \mbox{J}\ \mbox{kg}^{-1}\ \mbox{K}^{-1}$ \\
+$c_{pw}$ & Specific heat capacity of water vapor at constant pressure & $1930.0\ \mbox{J}\ \mbox{kg}^{-1}\ \mbox{K}^{-1}$ \\
+$c_{vd}$ & Specific heat capacity of dry air at constant volume & $717.5\ \mbox{J}\ \mbox{kg}^{-1}\ \mbox{K}^{-1}$ \\
+$c_{vw}$ & Specific heat capacity of water vapor at constant volume & $1460.0\ \mbox{J}\ \mbox{kg}^{-1}\ \mbox{K}^{-1}$ \\
 $R_d$ & Gas constant for dry air & $287.0\ \mbox{J}\ \mbox{kg}^{-1}\ \mbox{K}^{-1}$ \\
-$R_\nu$ & Gas constant for water vapor & $461.5$ J kg$^{-1}$ K$^{-1}$ \\
-$\kappa$ & Ratio of $R_d$ to $c_p$ & $2/7$ \\
-$\varepsilon$ & Ratio of $R_d$ to $R_\nu$ & $0.622$ \\
+$R_w$ & Gas constant for water vapor & $461.5$ J kg$^{-1}$ K$^{-1}$ \\
+%$\kappa$ & Ratio of $R_d$ to $c_p$ & $2/7$ \\
+$\varepsilon$ & Ratio of $R_d$ to $R_w$ & $0.622$ \\
 $M_v$ & Constant for virtual temperature conversion & $0.608$ \\
 $\rho_{water}$ & Reference density of water & 1000 kg m$^{-3}$ \\
 \hline 
@@ -367,9 +369,140 @@ $ \delta_{\theta}=2 $ degrees and $ \delta_{\lambda}=3 \delta_{\theta}$.  The Ya
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Equation Sets} \label{sec:EquationSets}
+\section{Moist Nonhydrostatic Equation Sets} \label{sec:EquationSets}
 
-{\color{red}[ALL] Include the continuous equation set that you use for your model here.}
+In this section we describe the fluid equations utilized by nonhydrostatic models.  The material derivative is used for  quantities in the Lagrangian frame (following individual air parcels), and is given by
+\begin{align}
+\diff{}{t} = \pdiff{}{t} + \vb{u} \cdot \nabla.
+\end{align}  Note that tracer variables $q_i$, including specific humidity $q$, satisfy the simple Lagrangian relationship
+\begin{align} \label{eq:TracerTransport}
+\diff{q_i}{t} = 0.
+\end{align}  
+
+
+\subsection{Diagnostic relationships}
+
+The atmospheric fluid is assumed to be an ideal gas.  For moist air, the ideal gas constant $R^\ast$, specific heat capacity at constant pressure $c_p^\ast$ and specific heat capacity at constant volume $c_v^\ast$ are given by
+\begin{align}
+R^\ast =& R_d + (R_w - R_d) q, & c_p^\ast =& c_{pd} + (c_{pw} - c_{pd}) q, & c_v^\ast =& c_{vd} + (c_{vw} - c_{vd}) q.
+\end{align}  Note that in many models, $R^\ast$, $c_p^\ast$ and $c_v^\ast$ are approximated by $R_d$, $c_{pd}$ and $c_{vd}$, respectively.  Dry air, water vapor and moist air quantities all satisfy the linear relationship $R = c_p - c_v$.  For a two-fluid system (dry air plus water vapor), two independent variables plus the specific humidity $q$ are needed to describe the thermodynamic state of the system.  Key thermodynamic variables include dry air density $\rho_d$, moist density $\rho$, pressure $p$, vapor pressure $e$, temperature $T$, virtual temperature $T_v$, Exner pressure $\pi$, potential temperature $\theta$, and virtual potential temperature $\theta_v$.  Common ratios $\kappa = R^\ast / c_p^\ast$, $\epsilon = R_d / R_w$, and $\gamma = c_p^\ast / c_v^\ast$ are adopted here.
+
+Relationships between key thermodynamic variables arise from the ideal gas law, along with definitions of Exner pressure, potential temperature and virtual potential temperature
+\begin{align} \label{eq:DiagnosticRelationships1}
+p =& \rho R_d T_v, & \pi =& \left( \frac{p}{p_0} \right)^{\kappa}, & \theta =& T \left( \frac{p_0}{p} \right)^{\kappa}, & \theta_v =& T_v \left( \frac{p_0}{p} \right)^{\kappa},
+\end{align}  which further give rise to
+\begin{align}
+p =& \left( \frac{\rho R_d \theta_v}{p_0^\kappa} \right)^{\kappa - 1}, & \pi =& \left( \frac{\rho R_d \theta_v}{p_0} \right)^{- R^\ast / c_v^\ast}, & \theta =& \frac{T}{\pi}, & \theta_v =& \frac{T_v}{\pi}.
+\end{align}
+
+Note that virtual temperature is typically approximated by
+\begin{align}
+T_v \approx& T \left(1 + \frac{(1-\epsilon)}{\epsilon} q \right),
+\end{align} which arises from the exact relationship
+\begin{align}
+T_v = \frac{T}{1 - \frac{e}{p} (1 - \epsilon)},
+\end{align} upon applying $e/p = q / \epsilon$ and using a Taylor expansion around $q = 0$.
+
+\subsection{Prognostic equations for thermodynamic variables}
+
+Note that, as a consequence of (\ref{eq:TracerTransport}), the following simplifications can be applied:
+\begin{align}
+\frac{1}{T_v} \diff{T_v}{t} =& \frac{1}{T} \diff{T}{t}, & \diff{R^\ast}{t} =& 0, & \diff{c_p^\ast}{t} =& 0, & \diff{c_v^\ast}{t} =& 0.
+\end{align}
+
+Mass conservation is typically represented through the continuity equation, which can be written in the Lagrangian frame as
+\begin{align} \label{eq:ContinuityEquation}
+\diff{\rho}{t} =& - \rho \nabla \cdot \vb{u},
+\end{align} or equivalently in the Eulerian frame,
+\begin{align}
+\pdiff{\rho}{t} =& - \nabla \cdot (\rho \vb{u}).
+\end{align}
+
+Further prognostic relationships can be derived from the thermodynamic equation, including the diabatic heating rate $J$,
+\begin{align}
+\frac{1}{T} \diff{T}{t} - \frac{\kappa}{p} \diff{p}{t} =& \frac{J}{c_p^\ast},
+\end{align} which can be alternatively written as
+\begin{align}
+\diff{\theta}{t} = \frac{J \theta}{c_p^\ast}, \quad \mbox{or} \quad \diff{\theta_v}{t} = \frac{J \theta_v}{c_p^\ast}.
+\end{align}  These equations can then be combined with (\ref{eq:ContinuityEquation}) to obtain
+\begin{align}
+\pdiff{}{t} (\rho \theta_v) + \nabla \cdot (\rho \theta_v \vb{u}) = \frac{J \rho \theta_v}{c_p^\ast},
+\end{align} or similarly for $\theta$.  In conjunction with the material derivative of the ideal gas law,  
+\begin{align}
+\frac{1}{p} \diff{p}{t} = \frac{1}{\rho} \diff{\rho}{t} + \frac{1}{T_v} \diff{T_v}{t},
+\end{align} the thermodynamic equation can be written in the form
+\begin{align}
+\frac{c_v^\ast}{R^\ast T_v} \diff{T_v}{t} - \frac{1}{\rho} \diff{\rho}{t} = \frac{J}{R^\ast}.
+\end{align}  Then substituting (\ref{eq:ContinuityEquation}) gives a prognostic equation for virtual temperature,
+\begin{align}
+\frac{c_v^\ast}{R^\ast} \diff{T_v}{t} + T_v \nabla \cdot \vb{u} = \frac{J T_v}{R^\ast}.
+\end{align}  The prognostic equation for temperature is identical except with $T$ substituted for $T_v$.  An analogous equations for pressure can be obtained through a similar procedure,
+\begin{align} \label{eq:PressurePrognosticEq}
+\frac{c_v^\ast}{c_p^\ast} \diff{p}{t} + p \nabla \cdot \vb{u} = \frac{J p}{c_p^\ast}.
+\end{align}  And similarly for Exner pressure,
+\begin{align}
+\frac{c_v^\ast}{R^\ast} \diff{\pi}{t} + \pi \nabla \cdot \vb{u} = \frac{J \pi}{c_p^\ast}.
+\end{align}
+
+\subsection{Momentum Equations}
+
+In coordinate-invariant form the prognostic velocity equations may be written in either the Lagrangian or Eulerian frame as
+\begin{align} \label{eq:PrognosticVelocity1}
+\diff{\vb{u}}{t} = \pdiff{\vb{u}}{t} + \vb{u} \cdot \nabla \vb{u} = - \frac{1}{\rho} \nabla p - 2 \vg{\Omega} \times \vb{u} - \nabla \Phi,
+\end{align} where $\vg{\Omega}$ denotes the planetary vorticity vector and $\Phi$ is the geopotential function.  The three terms on the right-hand-side of this expression correspond to pressure gradient, Coriolis, and gravitational force, respectively.  In Eulerian form one must be careful with the treatment of the momentum advection term $\vb{u} \cdot \nabla \vb{u}$, since for an arbitrary coordinate frame will give rise to Christoffel symbols associated with derivatives of the vector basis {\color{red}[citation needed]}.  Note that it is common to rewrite the pressure gradient force using the relationship
+\begin{align}
+- \frac{1}{\rho} \nabla p = - c_p^\ast \theta_v \nabla \pi,
+\end{align} which follows from (\ref{eq:DiagnosticRelationships1}).  A second form of (\ref{eq:PrognosticVelocity1}) emerges on substituting the vector calculus identity
+\begin{align}
+\vb{u} \cdot \nabla \vb{u} =& \nabla K + \vg{\zeta} \times \vb{u},
+\end{align} where $K = \frac{1}{2} (\vb{u} \cdot \vb{u})$ is the 3D Kinetic energy and $\vg{\zeta} = \nabla \times \vb{u}$ is the 3D relative vorticity vector.  This gives rise to the vector-invariant form,
+\begin{align} \label{eq:PrognosticVelocity2}
+\pdiff{\vb{u}}{t} = - \frac{1}{\rho} \nabla p - (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} - \nabla (K + \Phi). 
+\end{align}  Because no gradients of vectors appear in this equation, it avoids derivatives of the coordinate basis that would emerge in (\ref{eq:PrognosticVelocity1}).  In conjunction with (\ref{eq:ContinuityEquation}), both (\ref{eq:PrognosticVelocity1}) also give rise to the flux-form momentum equations,
+\begin{align}
+\pdiff{}{t} (\rho \vb{u}) = - \nabla \cdot (\vb{u} \otimes \vb{u} + \mathcal{I} p) - 2 \vg{\Omega} \times (\rho \vb{u}) - \rho \nabla \Phi,
+\end{align} where $\vb{u} \otimes \vb{u}$ denotes the outer product and $\mathcal{I}$ is the identity matrix.
+
+The equations above still provide some flexibility with regards to the choice of $\Phi$ and $\vg{\Omega}$.  For \textit{deep atmosphere} models, one typically chooses
+\begin{align}
+\Phi = \frac{g r^3}{3 a^2}, \quad \mbox{and} \quad \vg{\Omega} = \Omega ( \vb{k} \sin \phi + \vb{j} \cos \phi),
+\end{align} where $g$ is gravitational acceleration at the surface, $r$ is the radial coordinate, $a$ is the radius of the planet, $\Omega$ is the rotation rate (in s$^{-1}$), $\phi$ is the latitude, $\vb{j}$ is the unit vector oriented in the meridional direction, and $\vb{k}$ is the unit vector oriented in the vertical direction.  For \textit{shallow atmosphere} models, these expressions take the simpler form
+\begin{align}
+\Phi = g z, \quad \mbox{and} \quad \vg{\Omega} = \Omega \sin \phi \vb{k},
+\end{align} where $z$ is the altitude above the surface.  In this case we write $2 \vg{\Omega} = f \vb{k}$, where $f = 2 \Omega \sin \phi$ is the Coriolis parameter.
+
+\subsection{Conservation of Energy}
+
+\subsection{Discretization}
+
+
+
+Horizontal momentum equations:
+
+Lagrangian form:
+\begin{align}
+\diff{\vb{u}_h}{t} + f \vb{k} \times \vb{u}_h + \frac{1}{\rho} \nabla_s p + \nabla_s \phi = 0.
+\end{align}
+
+Clark form:
+\begin{align}
+\pdiff{\vb{u}_h}{t} + \nabla_h (K + \phi) + (\zeta + f) \vb{k} \times \vb{u}_h + \ldots + \dot{s} \nabla_h \left( \pdiff{z}{s} w \right)
+\end{align}
+
+Vertical velocity:
+\begin{align}
+\diff{w}{t} = 
+\end{align}
+
+\subsection{Discretization}
+
+The equations in this section make no assumptions about the horizontal coordinate frame, and are written in terms of an arbitrary vertical coordinate $s(t,x,y,z)$.  In this context, the material derivative takes the form
+\begin{align}
+\diff{}{t} = \pdiff{}{t} + \vb{u}_h \cdot \nabla_s + \dot{s} \pdiff{}{s},
+\end{align} where $\vb{u}_h$ is the 2D horizontal velocity vector, $\nabla_s$ is the horizontal gradient operator along surfaces of constant $s$, and $\dot{s}$ denotes the flow velocity perpendicular to surfaces of constant $s$, which relates the physical velocity components $\vb{u}_h$ and $w$ via
+\begin{align}
+\dot{s} = \diff{s}{t} = \pdiff{s}{t} + \vb{u}_h \cdot \nabla_z s + w \pdiff{s}{z},
+\end{align} where $\nabla_z$ is the horizontal gradient operator along surfaces of constant $z$.  
 
 \subsection{FV$^3$} \label{sec:FV3Equations}
 
@@ -473,7 +606,6 @@ pressure $p$ and
 hydrostatic pressure $\pi$. The variable 
 $\mu$ is a measure of departure from hydrostatic balance, 
 $s$ is related to the surface pressure $\pi_s$ and $B$ is a metric term. The last two variables are defined in (\ref{eq:gem_zeta}).
-The equations contain a total time derivative $\frac{ {d } }{dt}$ that expresses the change in time while following the air parcel.
 
 
 \subsection{ICON} \label{sec:ICONEquations}
@@ -533,24 +665,6 @@ The continuity, momentum and thermodynamic equations can be written as:
 \Pi = c_p \left( \frac{p_0}{p} \right)^{R_d/c_p} = c_p \left( \frac{R_d \rho \theta_v}{p_0} \right)^{R_d/c_v}.
 \end{equation}
 
-\subsection{Tracer transport}
-
-\noindent Lagrangian form:
-\begin{align}
-\diff{q}{t} &= 0.
-\end{align}
-
-\noindent Non-conservative Eulerian form:
-\begin{align}
-\pdiff{q}{t} &= - \vb{u} \cdot \nabla q.
-\end{align}
-
-\noindent Flux form:
-\begin{align}
-\pdiff{}{t} (\rho q) &= - \nabla \cdot (\rho q \vb{u}).
-\end{align}
-
-
 \subsection{Height-based coordinates}
 
 {\color{blue}Define Unstaggered, Lorenz and Charney-Phillips staggering here}
@@ -573,6 +687,27 @@ generalized vertical velocity $\dot{ \zeta }$ and tracers are on thermodynamic l
 \label{fig:gem_charney-phillips}
 \end{figure}
 %----------------------------------------------------
+
+\subsection{Tracer Transport}
+
+\noindent Lagrangian form:
+\begin{align}
+\diff{q}{t} &= 0.
+\end{align}
+
+\noindent Non-conservative Eulerian form:
+\begin{align}
+\pdiff{q}{t} &= - \vb{u} \cdot \nabla q.
+\end{align}
+
+\noindent Flux form:
+\begin{align}
+\pdiff{}{t} (\rho q) &= - \nabla \cdot (\rho q \vb{u}).
+\end{align}
+
+
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
