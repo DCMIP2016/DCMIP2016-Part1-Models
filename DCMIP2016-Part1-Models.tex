@@ -293,7 +293,15 @@ The classic latitude-longitude grid consists of a subdivision of the sphere prod
 
 \subsection{Cubed-sphere grid}
 
-The equiangular gnomonic cubed-sphere grid \citep{sadourny1972conservative, ronchi1996cubed} consists of six Cartesian patches arranged along the faces of a cube which is then inflated onto a spherical shell.  More information on this choice of grid can be found in \cite{ullrich2014global}.  On the equiangular cubed-sphere grid, coordinates are given as $(\alpha, \beta, p)$, with central angles $\alpha, \beta \in [- \frac{\pi}{4}, \frac{\pi}{4}]$ and panel index $p$.  The structure of this grid supports refinement through stretching \citep{Schmidt1977,harris2016high} or nesting \citep{harris2013two}.  The Cartesian structure of cubed-sphere grid panels is advantageous for numerical methods that are formulated in Cartesian coordinates, or that utilize dimension splitting.  Nonetheless, special treatment of the panel boundaries is often necessary since they represent coordinate discontinuities. {\color{red}[Cubed-sphere grid figure]}
+The equiangular gnomonic cubed-sphere grid \citep{sadourny1972conservative, ronchi1996cubed} consists of six Cartesian patches arranged along the faces of a cube which is then inflated onto a spherical shell.  More information on this choice of grid can be found in \cite{ullrich2014global}.  On the equiangular cubed-sphere grid, coordinates are given as $(\alpha, \beta, p)$, with central angles $\alpha, \beta \in [- \frac{\pi}{4}, \frac{\pi}{4}]$ and panel index $p$.  The structure of this grid supports refinement through stretching \citep{Schmidt1977,harris2016high} or nesting \citep{harris2013two}.  The Cartesian structure of cubed-sphere grid panels is advantageous for numerical methods that are formulated in Cartesian coordinates, or that utilize dimension splitting.  Nonetheless, special treatment of the panel boundaries is often necessary since they represent coordinate discontinuities.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=2in]{CubedSphereMesh.pdf}
+\end{center}
+\caption{An example cubed-sphere grid.} \label{fig:CubedSphereMesh}
+\end{figure}
+
 
 %FV$^3$ is discretized on the equiangular gnomonic cubed-sphere grid as described in \citet{PL2007JCP}. The gnomonic cubed sphere was found to yield the best balance of uniformity and simplicity for use with the FV algorithm. The structure of this grid supports refinement through stretching \citep{Schmidt1977,harris2016high} or nesting \citep{harris2013two}.  The convention for panel numbering used in FV$^3$ differs from that described above, so that odd-numbered panels are adjacent to the next-higher-numbered panel on their right-hand side, and even-numbered panels are adjacent to the next-higher numbered panel on their top side. 
 
@@ -379,7 +387,6 @@ In this section we describe the fluid equations utilized by nonhydrostatic model
 \diff{q_i}{t} = 0.
 \end{align}  
 
-
 \subsection{Diagnostic relationships}
 
 The atmospheric fluid is assumed to be an ideal gas.  For moist air, the ideal gas constant $R^\ast$, specific heat capacity at constant pressure $c_p^\ast$ and specific heat capacity at constant volume $c_v^\ast$ are given by
@@ -414,7 +421,7 @@ Mass conservation is typically represented through the continuity equation, whic
 \begin{align} \label{eq:ContinuityEquation}
 \diff{\rho}{t} =& - \rho \nabla \cdot \vb{u},
 \end{align} or equivalently in the Eulerian frame,
-\begin{align}
+\begin{align} \label{eq:EulerianContinuityEquation}
 \pdiff{\rho}{t} =& - \nabla \cdot (\rho \vb{u}).
 \end{align}
 
@@ -444,12 +451,13 @@ Further prognostic relationships can be derived from the thermodynamic equation,
 \frac{c_v^\ast}{R^\ast} \diff{\pi}{t} + \pi \nabla \cdot \vb{u} = \frac{J \pi}{c_p^\ast}.
 \end{align}
 
+
 \subsection{Momentum Equations}
 
 In coordinate-invariant form the prognostic velocity equations may be written in either the Lagrangian or Eulerian frame as
 \begin{align} \label{eq:PrognosticVelocity1}
 \diff{\vb{u}}{t} = \pdiff{\vb{u}}{t} + \vb{u} \cdot \nabla \vb{u} = - \frac{1}{\rho} \nabla p - 2 \vg{\Omega} \times \vb{u} - \nabla \Phi,
-\end{align} where $\vg{\Omega}$ denotes the planetary vorticity vector and $\Phi$ is the geopotential function.  The three terms on the right-hand-side of this expression correspond to pressure gradient, Coriolis, and gravitational force, respectively.  In Eulerian form one must be careful with the treatment of the momentum advection term $\vb{u} \cdot \nabla \vb{u}$, since for an arbitrary coordinate frame will give rise to Christoffel symbols associated with derivatives of the vector basis {\color{red}[citation needed]}.  Note that it is common to rewrite the pressure gradient force using the relationship
+\end{align} where $\vg{\Omega}$ denotes the planetary vorticity vector and $\Phi$ is the geopotential function.  The three terms on the right-hand-side of this expression correspond to pressure gradient, Coriolis, and gravitational force, respectively.  In Eulerian form one must be careful with the treatment of the momentum advection term $\vb{u} \cdot \nabla \vb{u}$, since in an arbitrary coordinate frame this term will give rise to Christoffel symbols associated with derivatives of the vector basis {\color{red}[citation needed]}.  Note that it is common to rewrite the pressure gradient force using the relationship
 \begin{align}
 - \frac{1}{\rho} \nabla p = - c_p^\ast \theta_v \nabla \pi,
 \end{align} which follows from (\ref{eq:DiagnosticRelationships1}).  A second form of (\ref{eq:PrognosticVelocity1}) emerges on substituting the vector calculus identity
@@ -463,43 +471,39 @@ In coordinate-invariant form the prognostic velocity equations may be written in
 \pdiff{}{t} (\rho \vb{u}) = - \nabla \cdot (\vb{u} \otimes \vb{u} + \mathcal{I} p) - 2 \vg{\Omega} \times (\rho \vb{u}) - \rho \nabla \Phi,
 \end{align} where $\vb{u} \otimes \vb{u}$ denotes the outer product and $\mathcal{I}$ is the identity matrix.
 
-The equations above still provide some flexibility with regards to the choice of $\Phi$ and $\vg{\Omega}$.  For \textit{deep atmosphere} models, one typically chooses
-\begin{align}
-\Phi = \frac{g r^3}{3 a^2}, \quad \mbox{and} \quad \vg{\Omega} = \Omega ( \vb{k} \sin \phi + \vb{j} \cos \phi),
-\end{align} where $g$ is gravitational acceleration at the surface, $r$ is the radial coordinate, $a$ is the radius of the planet, $\Omega$ is the rotation rate (in s$^{-1}$), $\phi$ is the latitude, $\vb{j}$ is the unit vector oriented in the meridional direction, and $\vb{k}$ is the unit vector oriented in the vertical direction.  For \textit{shallow atmosphere} models, these expressions take the simpler form
-\begin{align}
-\Phi = g z, \quad \mbox{and} \quad \vg{\Omega} = \Omega \sin \phi \vb{k},
-\end{align} where $z$ is the altitude above the surface.  In this case we write $2 \vg{\Omega} = f \vb{k}$, where $f = 2 \Omega \sin \phi$ is the Coriolis parameter.
-
 %Finally, a prognostic equation for geopotential follows directly from the material derivative,
 %\begin{align} \label{eq:Geopotential}
 %\diff{\Phi}{t} = \vb{u} \cdot \nabla \Phi.
 %\end{align}
 
-\subsection{Conservation of Energy}
-
-Total energy, equal to the sum of Kinetic, potential and internal energy, is given by
+The equations above still provide some flexibility with regards to the choice of $\Phi$ and $\vg{\Omega}$.  For \textit{deep atmosphere} models, one typically chooses
+\begin{align} \label{eq:DeepAtmosphereGeopotential}
+\Phi = g a^2 \left[\frac{1}{a} - \frac{1}{a+z}\right], \quad \mbox{and} \quad \vg{\Omega} = \Omega ( \vb{k} \sin \phi + \vb{j} \cos \phi),
+\end{align} where $g$ is gravitational acceleration at the surface, $a$ is the radius of the planet, $\Omega$ is the rotation rate (in s$^{-1}$), $\phi$ is the latitude, $\vb{j}$ is the unit vector oriented in the meridional direction, and $\vb{k}$ is the unit vector oriented in the vertical direction.  For models that don't utilize a height-based vertical coordinate, the geopotential is generally treated as a prognostic variable, with an evolution equation that emerges from the definition $w = dz/dt$,
 \begin{align}
-E = \rho (K + \Phi + c_v^\ast T_v).
-\end{align}  Differentiating total energy and using (\ref{eq:ContinuityEquation}) and (\ref{eq:PrognosticVelocity2}) then leads to
-\begin{align}
-\pdiff{E}{t} + \nabla \cdot (\rho \vb{u} (K + \Phi + c_p^\ast T_v)) = 0.
-\end{align} {\color{red}[This section needs work]}
+\diff{\Phi}{t} = \frac{a^2 g w}{(a + z)^2}.
+\end{align}  For \textit{shallow atmosphere} models, the geopotential takes the simpler form
+\begin{align} \label{eq:ShallowAtmosphereGeopotential}
+\Phi = g z, \quad \mbox{and} \quad \vg{\Omega} = \Omega \sin \phi \vb{k},
+\end{align} where $z$ is the altitude above the surface.  In this case we write $2 \vg{\Omega} = f \vb{k}$, where $f = 2 \Omega \sin \phi$ is the Coriolis parameter.  The evolution equation for the shallow atmosphere geopotential is then
+\begin{align} \label{eq:PrognosticShallowGeopotential}
+\diff{\Phi}{t} = g w.
+\end{align}
 
-\subsection{Contravariant Formulation}
+\subsection{Orthogonal Formulation}
 
 The vector velocity $\vb{u}$ is expanded as
 \begin{align}
 \vb{u} = \vb{u}_h + w \vb{k},
-\end{align} where $\vb{k} = \nabla z$ is the unit vector in the vertical direction and $\vb{u}_h \cdot \vb{k} = 0$  ($\vb{u}_h$ is aligned with surfaces of constant $z$).  The vector-invariant form velocity equation obtained by taking (\ref{eq:PrognosticVelocity2}) $\cdot \vb{k}$ expands as
-\begin{align}
+\end{align} where $\vb{k} = \nabla z$ is the unit vector in the vertical direction and $\vb{u}_h \cdot \vb{k} = 0$  ($\vb{u}_h$ is aligned with surfaces of constant $z$).  Note that this decomposition of $\vb{u}$ is not exactly the contravariant form, which instead uses $\nabla s$ in place of $\vb{k}$.  In the orthogonal formulation, the vector-invariant form velocity equation obtained by taking (\ref{eq:PrognosticVelocity2}) $\cdot \vb{k}$ expands as
+\begin{align} \label{eq:VerticalVelocityOrthogonal}
 \pdiff{w}{t} =& - \frac{1}{\rho} \pdiff{p}{z} - \pdiff{}{z} (K + \Phi) - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right] \cdot \vb{k},
 \end{align} which, from $\vb{u}_h = \vb{u} - w \vb{k}$, then gives rise to
 \begin{align} \label{eq:HorizontalVelocityOrthogonal}
 \pdiff{\vb{u}_h}{t} =& - \frac{1}{\rho} \nabla_z p - \nabla_z (K + \Phi) - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right]_z,
 \end{align} where the subscript $z$ denotes projection perpendicular to $\vb{k}$.
 
-It is also common to use the 2D Kinetic energy, $K_2 = \frac{1}{2} (\vb{u}_h \cdot \vb{u}_h)$, which admits the relationships
+Due to its association with hydrostatic models, it is common to use the 2D Kinetic energy, $K_2 = \frac{1}{2} (\vb{u}_h \cdot \vb{u}_h)$, which admits the relationships
 \begin{align}
 \left[ \vb{u}_h \cdot \nabla \vb{u}_h \right]_z =& \nabla_z K_2 + \zeta_h \vb{k} \times \vb{u}_h, \\
 (\vb{u}_h \cdot \nabla \vb{u}_h) \cdot \vb{k} =& - \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k})
@@ -508,13 +512,13 @@ It is also common to use the 2D Kinetic energy, $K_2 = \frac{1}{2} (\vb{u}_h \cd
 \vb{u} \cdot \nabla \vb{u} =& \vb{u}_h \cdot \nabla \vb{u}_h + \vb{u}_h \cdot \nabla (w \vb{k}) + w \vb{k} \cdot \nabla \vb{u}_h + w \vb{k} \cdot \nabla (w \vb{k}) \\
 =& \vb{u}_h \cdot \nabla \vb{u}_h + w \vb{u}_h \cdot \nabla \vb{k} + w \vb{k} \cdot \nabla \vb{u}_h + (\vb{u} \cdot \nabla w)\vb{k} \\
 =& \vb{u}_h \cdot \nabla \vb{u}_h + (\nabla \times \vb{u}_h) \times (w \vb{k}) + (\vb{u} \cdot \nabla w)\vb{k}
-\end{align} where we have used $\nabla \times \vb{k} = 0$.  Thus the vertical velocity equation, obtained by taking (\ref{eq:PrognosticVelocity1}) $\cdot \vb{k}$ takes the form
-\begin{align}
-\pdiff{w}{t} =& \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) - \vb{u} \cdot \nabla w - \frac{1}{\rho} \pdiff{p}{z} - \pdiff{\Phi}{z} 
+\end{align} where we have used $\nabla \times \vb{k} = 0$.  Thus the vertical velocity equation, obtained by taking (\ref{eq:PrognosticVelocity1}) $\cdot \vb{k}$, leading to
+\begin{align} \label{eq:PrognosticWEquationK2}
+\pdiff{w}{t} =& \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) - \vb{u} \cdot \nabla w - \frac{1}{\rho} \pdiff{p}{z} - \pdiff{\Phi}{z} - (2 \vg{\Omega} \times \vb{u}_h) \cdot \vb{k}
 \end{align}  which, from $\vb{u}_h = \vb{u} - w \vb{k}$, then gives rise to
-\begin{align}
-\pdiff{\vb{u}_h}{t} =& - \frac{1}{\rho} \nabla_z p - \nabla_z (K_2 + \Phi) - \zeta_h \vb{k} \times \vb{u}_h - (\nabla \times \vb{u}_h) \times (w \vb{k}).
-\end{align}
+\begin{align} \label{eq:PrognosticUhEquationK2}
+\pdiff{\vb{u}_h}{t} =& - \frac{1}{\rho} \nabla_z p - \nabla_z (K_2 + \Phi) - (\nabla \times \vb{u}_h) \times (w \vb{k}) - \zeta_h \vb{k} \times \vb{u}_h - [2 \vg{\Omega} \times \vb{u}]_z.
+\end{align}  Note that under the shallow atmosphere approximation, the metric term $\vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k})$ in (\ref{eq:PrognosticWEquation}) is set equal to zero in accordance with \cite{phillips1966equations}.
 
 The dynamics equations are then formulated in terms of the vertical coordinate $s(t,x,y,z)$ with $\partial s / \partial z \neq 0$ everywhere.  It can be shown that horizontal derivatives on $z$ surfaces are related to horizontal derivatives on $s$ surfaces via the relationship
 \begin{align}
@@ -529,72 +533,133 @@ In the new coordinate only $s$ is a function of $z$, and so by chain rule we obs
 \dot{s} = \diff{s}{t} = \pdiff{s}{t} + \vb{u} \cdot \nabla s = \pdiff{s}{t} + \vb{u}_h \cdot \nabla_z s + w \pdiff{s}{z},
 \end{align} where $\nabla_z$ is the horizontal gradient operator along surfaces of constant $z$.
 
-{\color{blue}Divergence:  By construction, between surfaces of constant $z$,
-\begin{align}
-\nabla \cdot \vb{u} = \nabla_z \cdot \vb{u}_h + \pdiff{w}{z}
-\end{align}
-%And between surfaces of constant $s$, [check in the time dependent case]
-%\begin{align}
-%\nabla \cdot \vb{u} = \nabla_s \cdot \vb{v}_h + \pdiff{\dot{s}}{s}
-%\end{align}
-
-Curl: ?}
-
 \subsection{Covariant Formulation}
 
 The covariant velocity vector $\vb{v}_h$ is defined so as to be the projection of $\vb{u}$ along $\vb{k}$ onto the surface of constant $s$,
 \begin{align} \label{eq:CovariantProjection}
 \vb{v}_h = \vb{u} - \left( \frac{\vb{u} \cdot \nabla s}{\vb{k} \cdot \nabla s} \right) \vb{k} = \vb{u} - \left( \dot{s} - \pdiff{s}{t} \right) \left( \pdiff{s}{z} \right)^{-1} \vb{k}.
 \end{align}  Note that $\vb{u}_h$ and $\vb{v}_h$ only vary in their vertical components.  Using (\ref{eq:CovariantProjection}), the material derivative along $s$ surfaces takes the form
-\begin{align}
+\begin{align} \label{eq:MaterialDerivative}
 \diff{}{t} = \pdiff{}{t} + \vb{u} \cdot \nabla = \pdiff{}{t} + \vb{v}_h \cdot \nabla_s + \left( \dot{s} - \pdiff{s}{t} \right) \left( \pdiff{s}{z} \right)^{-1} \pdiff{}{z} = \pdiff{}{t} + \vb{v}_h \cdot \nabla_s + \left( \dot{s} - \pdiff{s}{t} \right) \pdiff{}{s}.
-\end{align}  The evolution equation for the covariant velocity vector can then be derived:
-\begin{align}
-\pdiff{\vb{v}_h}{t} =& \pdiff{}{t} \left[ \vb{u} - \left( \frac{\vb{u} \cdot \nabla s}{\vb{k} \cdot \nabla s} \right) \vb{k} \right] \\
-=& \pdiff{\vb{u}}{t} - \left( \pdiff{\vb{u}}{t} \cdot \nabla s + \vb{u} \cdot \nabla \pdiff{s}{t} \right) \left( \vb{k} \cdot \nabla s \right)^{-1} \vb{k}  + (\vb{u} \cdot \nabla s) (\vb{k} \cdot \nabla s)^{-2} \left(\vb{k} \cdot \nabla \pdiff{s}{t} \right) \vb{k} \\
-=& \left[ \pdiff{\vb{u}}{t} \right]_s - (\vb{k} \cdot \nabla s)^{-1} \left( \vb{u} - \frac{\vb{u} \cdot \nabla s}{\vb{k} \cdot \nabla s} \vb{k} \right) \cdot \nabla \pdiff{s}{t} \vb{k} \\
-=& \left[ \pdiff{\vb{u}}{t} \right]_s - \left( \pdiff{s}{z} \right)^{-1} \left( \vb{v}_h \cdot \nabla \pdiff{s}{t} \right) \vb{k}.
+\end{align}  This equation is typically used to obtain a diagnostic relationship for $\dot{s}$, utilizing $w = dz/dt$,
+\begin{align} \label{eq:DiagnosticSDot}
+\dot{s} = \pdiff{s}{t} + \left( \pdiff{s}{z} \right) (w - \vb{v}_h \cdot \nabla_s z).
+\end{align}
+The evolution equation for the covariant velocity vector can then be derived:
+\begin{align} \label{eq:CovariantVelocityUpdate}
+\pdiff{\vb{v}_h}{t} =& \pdiff{}{t} \left[ \vb{u} - \left( \frac{\vb{u} \cdot \nabla s}{\vb{k} \cdot \nabla s} \right) \vb{k} \right] = \left[ \pdiff{\vb{u}}{t} \right]_s - \left( \pdiff{s}{z} \right)^{-1} \left( \vb{v}_h \cdot \nabla \pdiff{s}{t} \right) \vb{k}.
 \end{align}  Consequently, the evolution equation is simply the projection of the evolution equation for $\vb{u}$ onto surfaces of constant $s$ plus a vertical term associated with shifting $s$ surfaces.  In practice, only the horizontal components of $\vb{v}_h$ are treated prognostically, so this term does not appear in the evolution equations.
-
-{\color{blue}
-Taking (\ref{eq:PrognosticVelocity2}) $\cdot \nabla s$ (no time dependence) expands as
-\begin{align}
-\pdiff{\dot{s}}{t} (\vb{s} \cdot \nabla s) =& - \frac{1}{\rho} (\nabla p \cdot \nabla s) - \nabla (K + \Phi) \cdot \nabla s - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right] \cdot \nabla s
-\end{align}
-\begin{align}
-\pdiff{\vb{v}_h}{t} = \pdiff{}{t} (\vb{u} - \dot{s} \vb{s}) =& - \frac{1}{\rho} (\nabla p - \frac{\nabla p \cdot \nabla s}{\vb{s} \cdot \nabla s} \vb{s}) - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right] + \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right] \cdot \frac{(\nabla s) \vb{s}}{\vb{s} \cdot \nabla s}
-\end{align} Which leads to the covariant evolution equation:
-\begin{align}
-\pdiff{\vb{v}_h}{t} = \pdiff{}{t} (\vb{u} - \dot{s} \vb{s}) =& - \frac{1}{\rho} \nabla_s p - \nabla_s (K + \Phi) - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right]_s
-\end{align}
-
-Analogously, the contravariant evolution equation looks like:
-\begin{align}
-\pdiff{\vb{u}_h}{t} = \pdiff{}{t} (\vb{u} - w \vb{k}) =& - \frac{1}{\rho} \nabla_z p - \nabla_z (K + \Phi) - \left[(\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right]_z \\
-=& - \frac{1}{\rho} \left[ \nabla_s p - \pdiff{s}{z} (\nabla_s z) \pdiff{p}{s} \right]
-\end{align}}
-
 %\begin{align}
-%\nabla \cdot \vb{u} = \nabla_s \cdot \vb{u}_h - \pdiff{s}{z} (\nabla_s z) \pdiff{\vb{u}_h}{s} + \pdiff{s}{z} \pdiff{}{s} \left( \vb{v}_h \cdot \nabla_s z + \dot{s} \pdiff{z}{s} \right)
-%\end{align}
-{\color{blue}
+%=& \pdiff{\vb{u}}{t} - \left( \pdiff{\vb{u}}{t} \cdot \nabla s + \vb{u} \cdot \nabla \pdiff{s}{t} \right) \left( \vb{k} \cdot \nabla s \right)^{-1} \vb{k}  + (\vb{u} \cdot \nabla s) (\vb{k} \cdot \nabla s)^{-2} \left(\vb{k} \cdot \nabla \pdiff{s}{t} \right) \vb{k} \\
+%=& \left[ \pdiff{\vb{u}}{t} \right]_s - (\vb{k} \cdot \nabla s)^{-1} \left( \vb{u} - \frac{\vb{u} \cdot \nabla s}{\vb{k} \cdot \nabla s} \vb{k} \right) \cdot \nabla \pdiff{s}{t} \vb{k} \\
+%\end{align}  
+
+\subsection{Conservation Laws}
+
+For arbitrary vertical coordinates, it is common to adopt \textit{pseudo-density} in place of physical density,
 \begin{align}
-\diff{\vb{u}}{t} = \diff{\vb{u}_h}{t} + \diff{w}{t} \vb{k} + w \diff{\vb{k}}{t}.
+\rho_s = \rho (\vb{k} \cdot \nabla s)^{-1} = \rho \left( \pdiff{s}{z} \right)^{-1}.
+\end{align}  Whereas the density $\rho$ is associated with the total mass in an infinitesmal volume $\delta V = \delta x \times \delta y \times \delta z$, the pseudo-density instead describes the mass in the volume bounded above and below by $s$ surfaces, namely $\delta V_s = \delta x \times \delta y \times \delta s$.  The advantage of this formulation is that it automatically accounts for shifting $s$ surfaces and allows the continuity equation (\ref{eq:ContinuityEquation}) to be formulated as
+\begin{align} \label{eq:PrognosticPseudoDensity}
+\pdiff{\rho_s}{t} + \nabla_s \cdot (\rho_s \vb{u}_h) + \pdiff{}{s} (\rho_s \dot{s}) = 0.
+\end{align}  Hence for any quantity that is conserved following a fluid parcel (\textit{i.e.}, $dq/dt = 0$),
+\begin{align}
+\pdiff{\rho_s q}{t} + \nabla_s \cdot (\rho_s q \vb{u}_h) + \pdiff{}{s} (\rho_s q \dot{s}) = 0.
+\end{align}  In particular, the prognostic equation for virtual potential temperature (or equivalently for potential temperature) reads
+\begin{align} \label{eq:PrognosticPseudoDensityTheta}
+\pdiff{\rho_s \theta_v}{t} + \nabla_s \cdot (\rho_s \theta_v \vb{u}_h) + \pdiff{}{s} (\rho_s \theta_v \dot{s}) = \frac{J \rho_s \theta_v}{c_p^\ast}.
 \end{align}
 
-The equations in this section make no assumptions about the horizontal coordinate frame, and are written in terms of an arbitrary vertical coordinate $s(t,x,y,z)$.  In this context, the scalar material derivative takes the form
-\begin{align}
-\diff{}{t} = \pdiff{}{t} + \vb{u}_h \cdot \nabla_s + \dot{s} \pdiff{}{s},
-\end{align} where $\vb{u}_h$ is the 2D horizontal velocity vector, $\nabla_s$ is the horizontal gradient operator along surfaces of constant $s$, and $\dot{s}$ denotes the flow velocity perpendicular to surfaces of constant $s$, which relates the physical velocity components $\vb{u}_h$ and $w$ via
-\begin{align}
-\dot{s} = \diff{s}{t} = \pdiff{s}{t} + \vb{u}_h \cdot \nabla_z s + w \pdiff{s}{z},
-\end{align} where $\nabla_z$ is the horizontal gradient operator along surfaces of constant $z$.  Note that in any Eulerian formulation, $\partial s / \partial t = 0$.}
+\subsection{Examples of vertical coordinates}
 
-\subsection{FV$^3$} \label{sec:FV3Equations}
+\subsubsection{Terrain-following $z$ coordinates}
 
-%%%GFDL start
-FV$^3$ solves the fully-compressible shallow-atmosphere Euler equations using the vector-invariant equations for horizontal momentum on a mass-based Lagrangian vertical coordinate \citep{L2004MWR}. 
-%%%GFDL end
+In general, terrain-following coordinates are adopted so that the topographic surface is also a coordinate surface.  This simplifies the treatment of the bottom boundary condition.
+
+\subsubsection{Mass-based coordinates}
+
+Mass-based coordinates are a generalization of pressure-based coordinates to non-hydrostatic models, with a vertical coordinate defined as the total gravity-weighted overhead mass,
+\begin{align}
+s = \int^{\infty}_{z} \rho g dz.
+\end{align}  Under this definition,
+\begin{align}
+\pdiff{s}{z} = - \rho g.
+\end{align}  Geopotential is adopted as a prognostic variable and $\dot{s}$ is diagnosed using (\ref{eq:DiagnosticSDot}),
+\begin{align}
+\dot{s} = - \rho g \left( w - \vb{v}_h \cdot \nabla_s z \right).
+\end{align}
+
+\subsubsection{Floating Lagrangian coordinates}
+
+Under Lagrangian coordinates the coordinate $s$ is chosen so as to satisfy $\dot{s} = 0$.  This can be accomplished by choosing $s$ to equal potential temperature, although this has issues with monotonicity, or an imaginary conservative tracer \citep{L2004MWR} (for instance, the altitude of the fluid parcel at its initial time).
+
+A consequence of the use of floating Lagrangian coordinates is the need for vertical remapping to avoid severe deformation of coordinate surfaces.  Several options are available, with the piecewise-parabolic method being perhaps the most widely adopted \citep{colella1984piecewise, L2004MWR}. 
+
+\subsubsection{GEM zeta coordinate} \label{sec:GEM_zeta}
+
+{\color{red}[Fix notation]}
+
+The vertical coordinate of GEM model (denoted $\zeta$ in the model documentation) is of a log-hydrostatic-pressure type and is defined by
+\begin{align}\label{eq:gem_zeta}
+ \log \pi_h = s + B(s) \sigma_p, \qquad B(s) =\left( \frac {s-s_T} {(\log p_0) - s_T}\right)^r, \qquad \sigma_p = \log \left( \frac {\pi_h} {p_{0}} \right),
+\end{align}
+with $s_T= \log \pi_T$ and where $r$ is a variable exponent providing added freedom for adjusting the thickness of model layers over high terrain.
+Figure \ref{fig:gem_charney-phillips} shows the Charney-Phillips grid in GEM model, giving the position occupied by each variable in the vertical domain.
+Horizontal velocity $\vb{v}_h$, geopotential $\Phi$ and $q = \log(p/\pi_h)$ are on momentum levels.
+Temperature $T$, vertical velocity $w$,
+generalized vertical velocity $\dot{s}$ and tracers are on thermodynamic levels. 
+
+\subsection{Model Implementations}
+
+\subsubsection{Tempest} \label{sec:TempestEquations}
+
+Tempest is a shallow-atmosphere Eulerian model with terrain-following $z$-coordinates with prognostic density (\ref{eq:PrognosticPseudoDensity}), virtual potential temperature (\ref{eq:PrognosticPseudoDensityTheta}), and vector-invariant form for horizontal momentum (\ref{eq:CovariantVelocityUpdate}) in vector-invariant form (\ref{eq:HorizontalVelocityOrthogonal}) and vertical momentum (\ref{eq:VerticalVelocityOrthogonal}).  The specific heat capacities and ideal gas constant are approximated to be equal to their dry values $R^\ast \approx R_d$, $c^\ast_p \approx c_{pd}$ and $c^\ast_v \approx c_{vd}$.
+
+In the horizontal, Tempest utilizes a spectral-element formulation.
+
+\subsubsection{ICON} \label{sec:ICONEquations}
+
+ICON is a shallow-atmosphere Eulerian model based on \cite{gassmann2008} with terrain-following $z$-coordinates with prognostic density (\ref{eq:PrognosticPseudoDensity}), virtual potential temperature (\ref{eq:PrognosticPseudoDensityTheta}), and vector-invariant form for horizontal momentum (\ref{eq:CovariantVelocityUpdate}) in vector-invariant form (\ref{eq:HorizontalVelocityOrthogonal}) and vertical momentum (\ref{eq:VerticalVelocityOrthogonal}).  As with tempest, specific heat capacities and ideal gas constant are approximated by their dry values.  The model also uses a prognostic equation for Exner pressure to simplify vertical sound wave propagation, given by
+\begin{align}
+\pdiff{\pi}{t} + \frac{R_d}{c_{vd}} \frac{\pi}{\rho \theta_v} \nabla \cdot (\vb{u}_h \rho \theta_v) = \hat{Q},
+\end{align} where $\hat{Q}$ is an appropriately formulated diabatic heat term.
+
+The horizontal uses a Arakawa C-grid formulation on the triangular grid to prognose horizontal velocities normal to triangle edges $v_n$, making use of reconstructed tangental velocity components $v_t$.
+
+\subsubsection{FV$^3$} \label{sec:FV3Equations}
+
+The hydrostatic FV$^3$ model uses a mass-based floating Lagrangian coordinate along with the shallow-atmosphere approximation \citep{L2004MWR}.  Prognostic equations include horizontal momentum (\ref{eq:CovariantVelocityUpdate}) in 2D vector-invariant form (\ref{eq:PrognosticUhEquationK2}), pseudo-density (\ref{eq:PrognosticPseudoDensity}), and virtual potential temperature (\ref{eq:PrognosticPseudoDensityTheta}).  The non-hydrostatic model further incorporates prognostic geopotential (\ref{eq:PrognosticShallowGeopotential}) and vertical momentum (\ref{eq:PrognosticWEquationK2}).
+
+\subsubsection{GEM} \label{sec:GEM_equations}
+
+GEM is a semi-Lagrangian model with Eulerian log-hydrostatic-pressure coordinate $\pi_h$ described in section \ref{sec:GEM_zeta} \citep{Girard2014}.  The non-hydrostatic equations are written explicitly as deviations from hydrostatic balance, using
+\begin{align}
+\mu = \pdiff{p}{\pi_h} - 1,
+\end{align} in which case 
+\begin{align}
+\frac{d \vb{v}_h }{dt} + f {\bf k} \times {\bf{v}_{h}} + R_d T_v\nabla_\zeta \,  \log\, p+ \left( 1 + \mu \right) \nabla_\zeta {\Phi} =& 0, \\
+\frac{d w}{dt}- g \mu =& 0, \\
+\frac{d}{dt} \ln \left( \pi \pdiff{\ln \pi}{\zeta}\right) + \nabla_{ \zeta }\cdot {\bf V}_{{h}}+\frac{\partial \dot{ \zeta }}{\partial \zeta }  =& 0, \\
+\frac{d \ln T_v}{dt} - \kappa \frac {d \ln p} {dt} =& 0, \\
+R_dT_v+  \frac{p}{\pi} \frac{\partial \Phi}{\partial \log \pi} =& 0, \\
+\frac{d \phi}{dt}-  g w  =& 0, \\
+1+ \mu - \frac{p}{\pi}   \frac{\partial \log p}{\partial \log  \pi} =& 0, \\
+\ln \pi =& \zeta + Bs.
+\end{align}
+
+\subsection{GEM} \label{sec:GEM_equations}
+The equations of GEM model \citep{Girard2014} written out for a log-hydrostatic-pressure like coordinate $\zeta$  system co-rotating with the earth are:
+
+
+\noindent with horizontal velocity ${\bf V}_h$, 
+generalized vertical velocity $\dot{ \zeta }=\frac{d\zeta}{dt}$, 
+vertical velocity $w$,
+geopotential $\phi$, 
+virtual temperature $T_v$, 
+pressure $p$ and
+hydrostatic pressure $\pi$. The variable 
+$\mu$ is a measure of departure from hydrostatic balance, 
+$s$ is related to the surface pressure $\pi_s$ and $B$ is a metric term. The last two variables are defined in (\ref{eq:gem_zeta}).
 
 \subsection{FVM} \label{sec:FVMEquations}
 
@@ -656,115 +721,22 @@ in \eqref{fvm:thermodynamic} represents the diffusion of heat.
 %$\mathbf{M}$ and $\mathcal{H}$ subsume various rhs forcings to the
 %momentum \eqref{fvm:momentum} and thermodynamic \eqref{fvm:thermodynamic} equations.
 
-\subsection{GEM} \label{sec:GEM_equations}
-The equations of GEM model \citep{Girard2014} written out for a log-hydrostatic-pressure like coordinate $\zeta$  system co-rotating with the earth are:
-\begin{eqnarray}
-\frac{ {d \bf V}_{h} }{dt}+ f {\bf k} \times {\bf{V}_{h}} + R_d T_v\nabla
-_\zeta \,  \ln\, p+ \left( 1 + \mu \right) \nabla
-_\zeta {\phi} = 0,
-\label{eq:gem_eq_1} \\
-\frac{d w}{dt}- g \mu = 0,
-\label{eq:gem_eq_2} \\
-\frac{d}{dt} \ln \left( \pi \pdiff{\ln \pi}{\zeta}\right)
-+ \nabla
-_{ \zeta }\cdot {\bf V}_{{h}}+\frac{\partial
-\dot{ \zeta }}{\partial
-\zeta }  = 0,
-\label{eq:gem_eq_3} \\
-\frac{d \ln T_v}{dt} - \kappa \frac {d \ln p} {dt}=0,
-\label{eq:gem_eq_4} \\
-R_dT_v+  \frac{p}{\pi} \frac{\partial \phi}{\partial \ln \pi}=0,
-\label{eq:gem_eq_5} \\
-\frac{d \phi}{dt}-  g w  = 0,
-\label{eq:gem_eq_6} \\
-1+ \mu - \frac{p}{\pi}   \frac{\partial \ln p}{\partial \ln  \pi}=0,
-\label{eq:gem_eq_7} \\
-\ln \pi= \zeta+Bs ,
-\label{eq:gem_eq_8}
-\end{eqnarray}
-
-\noindent with horizontal velocity ${\bf V}_h$, 
-generalized vertical velocity $\dot{ \zeta }=\frac{d\zeta}{dt}$, 
-vertical velocity $w$,
-geopotential $\phi$, 
-virtual temperature $T_v$, 
-pressure $p$ and
-hydrostatic pressure $\pi$. The variable 
-$\mu$ is a measure of departure from hydrostatic balance, 
-$s$ is related to the surface pressure $\pi_s$ and $B$ is a metric term. The last two variables are defined in (\ref{eq:gem_zeta}).
 
 
-\subsection{ICON} \label{sec:ICONEquations}
+\subsection{Conservation of Energy}
 
-The equation system of the ICON model is based upon the prognostic variables suggested by \cite{gassmann2008} 
-but uses the two-dimensional rather than the three-dimensional Lamb transformation to convert the nonlinear momentum
-advection into a vector-invariant form. So far, the shallow-atmosphere approximation is applied, but there
-are plans to add an option for the unapproximated deep-atmosphere equations. The basic equation system reads as follows
-\begin{align}\label{1eqmo}
-\pdiff{v_n}{t} + \pdiff{K_h}{n} + (\zeta + f)v_t + w\pdiff{v_n}{z} = -c_{pd} \theta_v \pdiff{ \pi}{n} + F(v_n)
-\end{align}
-\begin{align}\label{3eqmo}
-\pdiff{w}{t} + {\bf v_h} \cdot \nabla w + w \pdiff{w}{z} = -c_{pd} \theta_v \pdiff{\pi}{z} - g  
-\end{align}
-\begin{align}\label{conteq}
-\pdiff{\rho}{t} + \nabla \cdot ({\bf v} \rho) = 0
-\end{align}
-\begin{align}\label{traceq}
-\pdiff{\rho q}{t} + \nabla \cdot ({\bf v} \rho q) = S(\rho q)
-\end{align}
-\begin{align}\label{thdeq1}
-\pdiff{\rho \theta_v}{t} + \nabla \cdot ({\bf v} \rho \theta_v) = \tilde{Q}
-\end{align}
-{As in \cite{gassmann2013},} Eq. (\ref{thdeq1}) is reformulated using the time derivative of
-\begin{align}\label{def-exner}
-\pi = \left( \frac{R_d}{p_{00}} \rho \theta_v \right)^\frac{R_d}{c_{vd}}
-\end{align}
-in order to obtain
-\begin{align}\label{thdeq}
-\pdiff{\pi}{t} + \frac{R_d}{c_{vd}} \frac{\pi}{\rho \theta_v} \nabla \cdot ({\bf v} \rho \theta_v) = \hat{Q} \,,
-\end{align}
-{which simplifies the implicit numerical treatment of the terms representing vertical sound wave propagation.}
-The prognostic variables of the (untransformed) equation system are the horizontal velocity component normal to the triangle edges $v_n$, the
-vertical wind component $w$, density $\rho$, and virtual potential temperature $\theta_v$. When coupled with moisture physics,
-$\rho$ represents the full air density including liquid and solid hydrometeors. The reconstructed
-tangential velocity component is denoted as $v_t$, and in accordance with the model code, it is assumed here that 
-$(v_t,v_n,w)$ form a right-handed system. $\bf v_h$ and $\bf v$ denote the horizontal and three-dimensional wind vector,
-respectively. The remaining symbols are the vertical vorticity component $\zeta$, 
-the Coriolis parameter $f$, the horizontal part of the kinetic energy $K_h = \frac{1}{2} (v_n^2 + v_t^2)$,
-the Exner function $\pi$, the specific heat capacities of dry air at constant pressure $c_{pd}$ and volume $c_{vd}$,
-the gas constant of dry air $R_d = c_{pd}-c_{vd}$, the gravitational acceleration $g$, {and the reference pressure
-$p_{00}$ = 1000 hPa conventionally used for defining the potential temperature.} $\pdiff{}{n}$ denotes a horizontal derivative
-in edge-normal direction, i.e. between the two adjacent mass points. Moreover, $F(v_n)$ denotes source
-terms for horizontal momentum (to be specified below), and $\tilde{Q}$ and $\hat{Q}$ denote appropriately 
-formulated diabatic heat source terms. In the tracer equation $q$ denotes the mixing ration with respect to the full air density $\rho$, and $S(\rho q)$ represents the source term for a tracer $q$.
-
-
-\subsection{Tempest} \label{sec:TempestEquations}
-
-The continuity, momentum and thermodynamic equations can be written as:
+Total energy, equal to the sum of Kinetic, potential and internal energy, is given by
 \begin{align}
-\pdiff{\rho}{t} &= - \nabla \cdot (\rho \vb{u}), \\
-\pdiff{\vb{u}}{t} &= - \nabla (K + \Phi) - \theta \nabla \Pi + \vg{\eta} \times \vb{u}, \\
-\pdiff{\theta_v}{t} &= - \vb{u} \cdot \nabla \theta_v,
-\end{align} in terms of Kinetic energy $K = \vb{u} \cdot \vb{u}$, geopotential $\Phi = g_c z$ and absolute vorticity $\vg{\eta} = \vg{\zeta} + \vg{\Omega}$, which consists of relative vorticity $\vg{\zeta} = \nabla \times \vb{u}$ and planetary vorticity $\vg{\Omega}$.  The Exner pressure is related to the prognosed density and potential temperature via
-\begin{equation} \label{eq:BaseNonhydrostaticEOS}
-\Pi = c_p \left( \frac{p_0}{p} \right)^{R_d/c_p} = c_p \left( \frac{R_d \rho \theta_v}{p_0} \right)^{R_d/c_v}.
-\end{equation}
+E = \rho (K + \Phi + c_v^\ast T_v).
+\end{align}  Differentiating total energy and using (\ref{eq:ContinuityEquation}) and (\ref{eq:PrognosticVelocity2}) then leads to
+\begin{align}
+\pdiff{E}{t} + \nabla \cdot (\rho \vb{u} (K + \Phi + c_p^\ast T_v)) = 0.
+\end{align} {\color{red}[This section needs work]}
+
 
 \subsection{Height-based coordinates}
 
 {\color{blue}Define Unstaggered, Lorenz and Charney-Phillips staggering here}
-
-\subsection{Mass-based coordinates} \label{sec:GEM_zeta}
-The vertical coordinate of GEM model named $ \zeta$ is of a log-hydrostatic-pressure type and is defined by:
-\begin{align}\label{eq:gem_zeta}
- \ln \pi= \zeta+B(\zeta) s \, \, ; \, \, B(\zeta) =\left( \frac {\zeta-\zeta_T} {\zeta_s-\zeta_T}\right)^r \,; \, s= \ln ( \frac {\pi_s} {p_{o}}) \,; \, \, p_{o}=1000 \,\, \mbox{hPa},
-\end{align}
-with $\zeta_T= \ln \pi_T$, $\zeta_s= \ln {p_{o}}$ and where $r$ is a variable exponent providing added freedom for adjusting the thickness of model layers over high terrain.
-Figure \ref{fig:gem_charney-phillips} shows the Charney-Phillips grid in GEM model, giving the position occupied by each variable in the vertical domain.
-Horizontal velocity ${\bf V}_h$, geopotential $\phi$ and $q=\ln(p/\pi)$ are on momentum levels.
-Temperature $T$, vertical velocity $w$,
-generalized vertical velocity $\dot{ \zeta }$ and tracers are on thermodynamic levels. 
 
 %----------------------------------------------------
 \begin{figure}[]
