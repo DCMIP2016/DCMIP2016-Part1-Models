@@ -399,7 +399,7 @@ Relationships between key thermodynamic variables arise from the ideal gas law, 
 p =& \rho R_d T_v, & \pi =& \left( \frac{p}{p_0} \right)^{\kappa}, & \theta =& T \left( \frac{p_0}{p} \right)^{\kappa}, & \theta_v =& T_v \left( \frac{p_0}{p} \right)^{\kappa},
 \end{align}  which further give rise to
 \begin{align}
-p =& \left( \frac{\rho R_d \theta_v}{p_0^\kappa} \right)^{\kappa - 1}, & \pi =& \left( \frac{\rho R_d \theta_v}{p_0} \right)^{- R^\ast / c_v^\ast}, & \theta =& \frac{T}{\pi}, & \theta_v =& \frac{T_v}{\pi}.
+p =& \left( \frac{\rho R_d \theta_v}{p_0^\kappa} \right)^{\gamma}, & \pi =& \left( \frac{\rho R_d \theta_v}{p_0} \right)^{R^\ast / c_v^\ast}, & \theta =& \frac{T}{\pi}, & \theta_v =& \frac{T_v}{\pi}.
 \end{align}
 
 Note that virtual temperature is typically approximated by
@@ -443,7 +443,7 @@ Further prognostic relationships can be derived from the thermodynamic equation,
 \end{align}  Then substituting (\ref{eq:ContinuityEquation}) gives a prognostic equation for virtual temperature,
 \begin{align}
 \frac{c_v^\ast}{R^\ast} \diff{T_v}{t} + T_v \nabla \cdot \vb{u} = \frac{J T_v}{R^\ast}.
-\end{align}  The prognostic equation for temperature is identical except with $T$ substituted for $T_v$.  An analogous equations for pressure can be obtained through a similar procedure,
+\end{align}  The prognostic equation for temperature is identical except with $T$ substituted for $T_v$.  An analogous equations for pressure can be obtained through a similar procedure, {\color{red}[Double check these two]}
 \begin{align} \label{eq:PressurePrognosticEq}
 \frac{c_v^\ast}{c_p^\ast} \diff{p}{t} + p \nabla \cdot \vb{u} = \frac{J p}{c_p^\ast}.
 \end{align}  And similarly for Exner pressure,
@@ -492,64 +492,143 @@ The equations above still provide some flexibility with regards to the choice of
 
 \subsection{Orthogonal Formulation}
 
-The vector velocity $\vb{u}$ is expanded as
+Under the orthogonal formulation, projection of a vector field $\vb{b}$ onto its horizontal components is defined via
+\begin{align}
+[\vb{b}]_z = \vb{b} - (\vb{b} \cdot \vb{k}) \vb{k}.
+\end{align}  When applied to the velocity vector this gives rise to the decomposition
 \begin{align}
 \vb{u} = \vb{u}_h + w \vb{k},
-\end{align} where $\vb{k} = \nabla z$ is the unit vector in the vertical direction and $\vb{u}_h \cdot \vb{k} = 0$  ($\vb{u}_h$ is aligned with surfaces of constant $z$).  Note that this decomposition of $\vb{u}$ is not exactly the contravariant form, which instead uses $\nabla s$ in place of $\vb{k}$.  In the orthogonal formulation, the vector-invariant form velocity equation obtained by taking (\ref{eq:PrognosticVelocity2}) $\cdot \vb{k}$ expands as
+\end{align} where $\vb{k} = \nabla z$ is the unit vector in the vertical direction and $\vb{u}_h = [\vb{u}]_z$ ($\vb{u}_h$ is aligned with surfaces of constant $z$).  In the orthogonal formulation, the material derivative expands as
+\begin{align} \label{eq:MaterialDerivative}
+\diff{}{t} = \pdiff{}{t} + \vb{u}_h \cdot \nabla + w \vb{k} \cdot \nabla.
+\end{align}  For the special case of the material derivative applied to scalars, this equation can also be written as
+\begin{align} \label{eq:MaterialDerivativeScalar}
+\diff{}{t} = \pdiff{}{t} + \vb{u}_h \cdot \nabla_z + w \pdiff{}{z}.
+\end{align} where $\nabla_z b = [\nabla b]_z$ denotes the gradient along constant $z$ surfaces.  From here, the vector-invariant form velocity equation obtained by taking (\ref{eq:PrognosticVelocity2}) $\cdot \vb{k}$ expands as
 \begin{align} \label{eq:VerticalVelocityOrthogonal}
 \pdiff{w}{t} =& - \frac{1}{\rho} \pdiff{p}{z} - \pdiff{}{z} (K + \Phi) - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right] \cdot \vb{k},
 \end{align} which, from $\vb{u}_h = \vb{u} - w \vb{k}$, then gives rise to
 \begin{align} \label{eq:HorizontalVelocityOrthogonal}
-\pdiff{\vb{u}_h}{t} =& - \frac{1}{\rho} \nabla_z p - \nabla_z (K + \Phi) - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right]_z,
-\end{align} where the subscript $z$ denotes projection perpendicular to $\vb{k}$.
+\pdiff{\vb{u}_h}{t} =& - \frac{1}{\rho} \nabla_z p - \nabla_z (K + \Phi) - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right]_z.\end{align}
 
-Due to its association with hydrostatic models, it is common to use the 2D Kinetic energy, $K_2 = \frac{1}{2} (\vb{u}_h \cdot \vb{u}_h)$, which admits the relationships
+%{\color{red}[Using $K = K_2 + w^2/2$ does this give rise to a simpler version of the $K_2$ evolution equations?]}
+
+Due to its association with hydrostatic models, it is common to use the 2D Kinetic energy, $K_2 = \frac{1}{2} (\vb{u}_h \cdot \vb{u}_h)$.  Decomposing the momentum transport term into horizontal and vertical components gives
+\begin{align}
+\vb{u} \cdot \nabla \vb{u} =& \vb{u}_h \cdot \nabla \vb{u}_h + (\nabla \times \vb{u}_h) \times (w \vb{k}) + (\vb{u} \cdot \nabla w) \vb{k}.
+\end{align}  The first term in this expression admits the relationships
 \begin{align}
 \left[ \vb{u}_h \cdot \nabla \vb{u}_h \right]_z =& \nabla_z K_2 + \zeta_h \vb{k} \times \vb{u}_h, \\
-(\vb{u}_h \cdot \nabla \vb{u}_h) \cdot \vb{k} =& - \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k})
-\end{align} where $\zeta_h = (\nabla \times \vb{u}_h) \cdot \vb{k}$ is the vorticity scalar.  Note that this equation does incorporate metric terms associated with horizontal advection of $\vb{k}$ which must be accounted for.  In this case
+(\vb{u}_h \cdot \nabla \vb{u}_h) \cdot \vb{k} =& - \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) = - K_2 (\nabla \cdot \vb{k}) - \tfrac{1}{2} \left[ \vb{u}_h \cdot (\nabla \times \vb{u}_t)  + (\nabla \times \vb{u}_h) \cdot \vb{u}_t \right]
+\end{align} where $\zeta_h = (\nabla \times \vb{u}_h) \cdot \vb{k}$ is the relative vorticity scalar and $\vb{u}_t = \vb{k} \times \vb{u}_h$.  Note that this equation does incorporate metric terms associated with horizontal advection of $\vb{k}$ which must be accounted for.
+
+{\color{blue}
+\noindent \textbf{Derivation.}
 \begin{align}
 \vb{u} \cdot \nabla \vb{u} =& \vb{u}_h \cdot \nabla \vb{u}_h + \vb{u}_h \cdot \nabla (w \vb{k}) + w \vb{k} \cdot \nabla \vb{u}_h + w \vb{k} \cdot \nabla (w \vb{k}) \\
-=& \vb{u}_h \cdot \nabla \vb{u}_h + w \vb{u}_h \cdot \nabla \vb{k} + w \vb{k} \cdot \nabla \vb{u}_h + (\vb{u} \cdot \nabla w)\vb{k} \\
-=& \vb{u}_h \cdot \nabla \vb{u}_h + (\nabla \times \vb{u}_h) \times (w \vb{k}) + (\vb{u} \cdot \nabla w)\vb{k}
-\end{align} where we have used $\nabla \times \vb{k} = 0$.  Thus the vertical velocity equation, obtained by taking (\ref{eq:PrognosticVelocity1}) $\cdot \vb{k}$, leading to
+=& \vb{u}_h \cdot \nabla \vb{u}_h + \nabla( \vb{u}_h \cdot (w \vb{k}) ) - (w \vb{k}) \times (\nabla \times \vb{u}_h) - \vb{u}_h \times (\nabla \times w \vb{k}) + \nabla ( \tfrac{1}{2} w^2) + ((\nabla \times (w \vb{k})) \times (w \vb{k})) \\
+=& \vb{u}_h \cdot \nabla \vb{u}_h + (\nabla \times \vb{u}_h) \times (w \vb{k}) + (\vb{u} \cdot \nabla w) \vb{k}
+\end{align} where we have used
+\begin{align}
+(\nabla \times (w \vb{k})) \times (w \vb{k}) =& (w (\nabla \times \vb{k}) + (\nabla w) \times \vb{k}) \times (w \vb{k}) = - w \vb{k} \times (\nabla w \times \vb{k}) = (- w \vb{k} \cdot \vb{k}) \nabla w - (- w \vb{k} \cdot \nabla w) \vb{k} \\
+- \vb{u}_h \times (\nabla \times w \vb{k}) =& - \vb{u}_h \times (w (\nabla \times \vb{k}) + (\nabla w) \times \vb{k}) = - \vb{u}_h \times (\nabla w \times \vb{k}) = (\vb{u}_h \cdot \nabla w) \vb{k}
+\end{align}}
+
+
+Thus the vertical velocity equation, obtained by taking (\ref{eq:PrognosticVelocity1}) $\cdot \vb{k}$, leading to
 \begin{align} \label{eq:PrognosticWEquationK2}
 \pdiff{w}{t} =& \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) - \vb{u} \cdot \nabla w - \frac{1}{\rho} \pdiff{p}{z} - \pdiff{\Phi}{z} - (2 \vg{\Omega} \times \vb{u}_h) \cdot \vb{k}
-\end{align}  which, from $\vb{u}_h = \vb{u} - w \vb{k}$, then gives rise to
+\end{align}  and
 \begin{align} \label{eq:PrognosticUhEquationK2}
 \pdiff{\vb{u}_h}{t} =& - \frac{1}{\rho} \nabla_z p - \nabla_z (K_2 + \Phi) - (\nabla \times \vb{u}_h) \times (w \vb{k}) - \zeta_h \vb{k} \times \vb{u}_h - [2 \vg{\Omega} \times \vb{u}]_z.
-\end{align}  Note that under the shallow atmosphere approximation, the metric term $\vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k})$ in (\ref{eq:PrognosticWEquation}) is set equal to zero in accordance with \cite{phillips1966equations}.
+\end{align}  Note that under the shallow atmosphere approximation, the metric term $\vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k})$ in (\ref{eq:PrognosticWEquationK2}) is set equal to zero in accordance with \cite{phillips1966equations}.
 
-The dynamics equations are then formulated in terms of the vertical coordinate $s(t,x,y,z)$ with $\partial s / \partial z \neq 0$ everywhere.  It can be shown that horizontal derivatives on $z$ surfaces are related to horizontal derivatives on $s$ surfaces via the relationship
-\begin{align}
-\nabla_z = \nabla_s - \pdiff{s}{z} (\nabla_s z) \pdiff{}{s}.
-\end{align}  This equation can be used directly to rewrite (\ref{eq:HorizontalVelocityOrthogonal}) in terms of derivatives over $s$.
-
-In the new coordinate only $s$ is a function of $z$, and so by chain rule we observe
-\begin{align}
+The dynamics equations are then formulated in terms of the vertical coordinate $s(t,x,y,z)$ with $\partial s / \partial z \neq 0$ everywhere.  In the new coordinate only $s$ is a function of $z$, and so by chain rule we have
+\begin{align} \label{eq:VerticalChainRule}
 \pdiff{}{z} = \pdiff{s}{z} \pdiff{}{s}.
-\end{align}  The flow velocity $\dot{s}$ perpendicular to surfaces of constants $s$, which is needed to compute the vertical flux, is then given by
+\end{align}  Chain rule also motivates the definition of the horizontal gradient operator on $s$ surfaces, denoted $\nabla_s$, 
 \begin{align}
-\dot{s} = \diff{s}{t} = \pdiff{s}{t} + \vb{u} \cdot \nabla s = \pdiff{s}{t} + \vb{u}_h \cdot \nabla_z s + w \pdiff{s}{z},
-\end{align} where $\nabla_z$ is the horizontal gradient operator along surfaces of constant $z$.
+\nabla_s \equiv \nabla_z - \left( \pdiff{s}{z} \right)^{-1} ( \nabla_z s ) \pdiff{}{z}.
+\end{align}  Applying this operator to $z$ gives
+\begin{align}
+\nabla_z s = - \left( \pdiff{s}{z} \right) \nabla_s z,
+\end{align} which in conjunction with (\ref{eq:VerticalChainRule}) admits the more commonly observed relationship
+\begin{align} \label{eq:HorizontalChainRule}
+\nabla_z = \nabla_s - \pdiff{s}{z} (\nabla_s z) \pdiff{}{s}.
+\end{align}  This equation can be used directly to rewrite (\ref{eq:HorizontalVelocityOrthogonal}) or (\ref{eq:PrognosticUhEquationK2}) in terms of derivatives over $s$.  Note that the operators $\nabla_z$ and $\nabla_s$ are usually introduced in the context of 2D flows, however the construction described here has the advantage of working seamlessly in a 3D context, while admitting the properties $\vb{k} \cdot \nabla_z = 0$ and $\vb{k} \cdot \nabla_s = 0$.
+
+The generalized velocity $\dot{s}$ following a fluid parcel is defined by
+\begin{align} \label{eq:DefinitionDotS}
+\dot{s} \equiv \diff{s}{t} = \pdiff{s}{t} + \vb{u} \cdot \nabla s = \pdiff{s}{t} + \vb{u}_h \cdot \nabla_z s + w \pdiff{s}{z}.
+\end{align}  A diagnostic relationship for $w$ in terms of $\dot{s}$ then follows,
+\begin{align}
+w = \left( \pdiff{s}{z} \right)^{-1} \left( \dot{s} - \pdiff{s}{t} - \vb{u}_h \cdot \nabla_z s \right).
+\end{align} Substituting this expression back into (\ref{eq:MaterialDerivativeScalar}) gives the material derivative of scalars on $s$ surfaces,
+\begin{align}
+\diff{}{t} =& \pdiff{}{t} + \vb{u}_h \cdot \left( \nabla_z - \left( \pdiff{s}{z} \right)^{-1} (\nabla_z s) \pdiff{}{z} \right) + \left( \dot{s} - \pdiff{s}{t} \right) \left( \pdiff{s}{z} \right)^{-1} \pdiff{}{z}, \nonumber \\
+=& \pdiff{}{t} + \vb{u}_h \cdot \nabla_s + \left( \dot{s} - \pdiff{s}{t} \right) \pdiff{}{s}.
+\end{align}
 
 \subsection{Covariant Formulation}
 
-The covariant velocity vector $\vb{v}_h$ is defined so as to be the projection of $\vb{u}$ along $\vb{k}$ onto the surface of constant $s$,
-\begin{align} \label{eq:CovariantProjection}
-\vb{v}_h = \vb{u} - \left( \frac{\vb{u} \cdot \nabla s}{\vb{k} \cdot \nabla s} \right) \vb{k} = \vb{u} - \left( \dot{s} - \pdiff{s}{t} \right) \left( \pdiff{s}{z} \right)^{-1} \vb{k}.
-\end{align}  Note that $\vb{u}_h$ and $\vb{v}_h$ only vary in their vertical components.  Using (\ref{eq:CovariantProjection}), the material derivative along $s$ surfaces takes the form
-\begin{align} \label{eq:MaterialDerivative}
-\diff{}{t} = \pdiff{}{t} + \vb{u} \cdot \nabla = \pdiff{}{t} + \vb{v}_h \cdot \nabla_s + \left( \dot{s} - \pdiff{s}{t} \right) \left( \pdiff{s}{z} \right)^{-1} \pdiff{}{z} = \pdiff{}{t} + \vb{v}_h \cdot \nabla_s + \left( \dot{s} - \pdiff{s}{t} \right) \pdiff{}{s}.
-\end{align}  This equation is typically used to obtain a diagnostic relationship for $\dot{s}$, utilizing $w = dz/dt$,
-\begin{align} \label{eq:DiagnosticSDot}
-\dot{s} = \pdiff{s}{t} + \left( \pdiff{s}{z} \right) (w - \vb{v}_h \cdot \nabla_s z).
-\end{align}
-The evolution equation for the covariant velocity vector can then be derived:
-\begin{align} \label{eq:CovariantVelocityUpdate}
-\pdiff{\vb{v}_h}{t} =& \pdiff{}{t} \left[ \vb{u} - \left( \frac{\vb{u} \cdot \nabla s}{\vb{k} \cdot \nabla s} \right) \vb{k} \right] = \left[ \pdiff{\vb{u}}{t} \right]_s - \left( \pdiff{s}{z} \right)^{-1} \left( \vb{v}_h \cdot \nabla \pdiff{s}{t} \right) \vb{k}.
-\end{align}  Consequently, the evolution equation is simply the projection of the evolution equation for $\vb{u}$ onto surfaces of constant $s$ plus a vertical term associated with shifting $s$ surfaces.  In practice, only the horizontal components of $\vb{v}_h$ are treated prognostically, so this term does not appear in the evolution equations.
+In conjunction with (\ref{eq:HorizontalChainRule}), the horizontal momentum equation (either  (\ref{eq:HorizontalVelocityOrthogonal}) or (\ref{eq:PrognosticUhEquationK2})) with an arbitrary vertical coordinate gives rise to a two-term pressure gradient.  This can be avoided by prognosing the covariant components of the velocity in place of the physical velocity components.  The horizontal covariance operator is defined by
+\begin{align}
+[\vb{b}]_s \equiv [\vb{b}]_z + (\nabla_s z) (\vb{k} \cdot \vb{b}).
+\end{align} Hence the covariant horizontal velocity is given by
+\begin{align}
+\vb{v}_h \equiv [\vb{u}]_s = \vb{u}_h + (\nabla_s z) w.
+\end{align}  For a time-dependent $s$ coordinate,
+\begin{align}
+\pdiff{}{t} (\nabla_s z) =& \pdiff{}{t} \left[ - (\nabla_z s) \left( \pdiff{s}{z} \right)^{-1} \right] \\
+=& - \left( \nabla_z \pdiff{s}{t} \right) \left( \pdiff{s}{z} \right)^{-1} + (\nabla_z s) \left( \pdiff{s}{z} \right)^{-2} \pdiff{}{z} \pdiff{s}{t} \\
+=& - \left( \pdiff{s}{z} \right)^{-1} \nabla_s \left( \pdiff{s}{t} \right)
+\end{align}  And so the evolution equation for the covariant velocity is
+\begin{align}
+\pdiff{\vb{v}_h}{t} =& \pdiff{\vb{u}_h}{t} + \pdiff{w}{t} (\nabla_s z) + w \pdiff{}{t} (\nabla_s z) \\
+=& - \frac{1}{\rho} \nabla_s p - \nabla_s (K + \Phi) - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right]_s - w \left( \pdiff{s}{z} \right)^{-1} \nabla_s \left( \pdiff{s}{t} \right).
+\end{align}  Although a time-dependent $s$ is admitted by this equation, its fully Eulerian nature makes it difficult to use in this case since degrees of freedom are not guaranteed to align with constant $s$ surfaces.
+
+\subsection{Floating Lagrangian Formulation}
+
+Under the floating Lagrangian formulation, the coordinate $s$ is chosen so as to satisfy $\dot{s} = 0$.  This can be accomplished by choosing $s$ to equal potential temperature, although this has issues with monotonicity, or an imaginary conservative tracer \citep{L2004MWR} (for instance, the altitude of the fluid parcel at its initial time).
+
+A consequence of the use of floating Lagrangian coordinates is the need for vertical remapping to avoid severe deformation of coordinate surfaces.  Several options are available, with the piecewise-parabolic method being perhaps the most widely adopted \citep{colella1984piecewise, L2004MWR}. 
+
+In the case of time-varying $s$ coordinates, degrees of freedom are usually stored on $s$ surfaces.  To track floating surfaces of constant $s$ we define the floating Lagrangian derivative,
+\begin{align}
+\frac{d_s}{dt} = \pdiff{}{t} + w \vb{k} \cdot \nabla,
+\end{align} which is used to define the tendency in variables that are allowed to ``float'' vertically along surfaces that adjust with the advection velocity.  From (\ref{eq:VerticalVelocityOrthogonal}), the vertical velocity equation then takes the form
+\begin{align}
+\frac{d_s w}{d t} =& \pdiff{w}{t} + w \pdiff{w}{z} \\
+=& - \frac{1}{\rho} \left( \pdiff{s}{z} \right) \pdiff{p}{s} - \left( \pdiff{s}{z} \right) \pdiff{}{s} (K_2 + \Phi) - [ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} ] \cdot \vb{k}.
+\end{align}  From (\ref{eq:PrognosticUhEquationK2}), the horizontal velocity equation takes the form
+\begin{align}
+\frac{d_s \vb{u}_h}{d t} =& \pdiff{\vb{u}_h}{t} + w \vb{k} \cdot \nabla \vb{u}_h \\
+=& - \frac{1}{\rho} \nabla_z p - \nabla_z (K_2 + \Phi) - \zeta_h \vb{k} \times \vb{u}_h - [2 \vg{\Omega} \times \vb{u}]_z - w (\vb{u}_h \cdot \nabla \vb{k}),
+\end{align} where we have also used
+\begin{align}
+w \vb{k} \cdot \nabla \vb{u}_h = - w \vb{u}_h \cdot \nabla \vb{k} - (w \vb{k}) \times (\nabla \times \vb{u}_h).
+\end{align}  Note that under the shallow atmosphere approximation, the $(\vb{u}_h \cdot \nabla \vb{k})$ term is typically dropped.
+
 %\begin{align}
+%=& \pdiff{\vb{u}}{t} + \vb{u}_h \cdot \nabla \vb{u}_h + \vb{u}_h \cdot \nabla (w \vb{k}) \\
+%=& \pdiff{\vb{u}}{t} + \vb{u}_h \cdot \nabla \vb{u}_h + w (\vb{u}_h \cdot \nabla \vb{k}) + (\vb{u}_h \cdot \nabla w) \vb{k}.
+%\end{align}
+
+%Using (\ref{eq:CovariantProjection}), the material derivative along $s$ surfaces takes the form
+%\begin{align} \label{eq:MaterialDerivative}
+%\diff{}{t} = \pdiff{}{t} + \vb{u} \cdot \nabla = \pdiff{}{t} + \vb{v}_h \cdot \nabla + \left( \dot{s} - \pdiff{s}{t} \right) \left( \pdiff{s}{z} \right)^{-1} \pdiff{}{z} = \pdiff{}{t} + \vb{v}_h \cdot \nabla + \left( \dot{s} - \pdiff{s}{t} \right) \pdiff{}{s}.
+%\end{align}  This equation is typically used to obtain a diagnostic relationship for $\dot{s}$, utilizing $w = dz/dt$,
+%\begin{align} \label{eq:DiagnosticSDot}
+%\dot{s} = \pdiff{s}{t} + \left( \pdiff{s}{z} \right) (w - \vb{v}_h \cdot \vb{k}).
+%\end{align}
+
+%The evolution equation for the covariant velocity vector can then be derived:
+%\begin{align} \label{eq:CovariantVelocityUpdate}
+%\pdiff{\vb{v}_h}{t} =& \pdiff{}{t} \left[ \vb{u} - \left( \frac{\vb{u} \cdot \nabla s}{\vb{k} \cdot \nabla s} \right) \vb{k} \right] = \left[ \pdiff{\vb{u}}{t} \right]_s - \left( \pdiff{s}{z} \right)^{-1} \left( \vb{v}_h \cdot \nabla \pdiff{s}{t} \right) \vb{k}.
+%\end{align}  Consequently, the evolution equation is simply the projection of the evolution equation for $\vb{u}$ onto surfaces of constant $s$ plus a vertical term associated with shifting $s$ surfaces.  In practice, only the horizontal components of $\vb{v}_h$ are treated prognostically, so this term does not appear in the evolution equations.
+%\begin{align}
+
 %=& \pdiff{\vb{u}}{t} - \left( \pdiff{\vb{u}}{t} \cdot \nabla s + \vb{u} \cdot \nabla \pdiff{s}{t} \right) \left( \vb{k} \cdot \nabla s \right)^{-1} \vb{k}  + (\vb{u} \cdot \nabla s) (\vb{k} \cdot \nabla s)^{-2} \left(\vb{k} \cdot \nabla \pdiff{s}{t} \right) \vb{k} \\
 %=& \left[ \pdiff{\vb{u}}{t} \right]_s - (\vb{k} \cdot \nabla s)^{-1} \left( \vb{u} - \frac{\vb{u} \cdot \nabla s}{\vb{k} \cdot \nabla s} \vb{k} \right) \cdot \nabla \pdiff{s}{t} \vb{k} \\
 %\end{align}  
@@ -588,12 +667,6 @@ s = \int^{\infty}_{z} \rho g dz.
 \begin{align}
 \dot{s} = - \rho g \left( w - \vb{v}_h \cdot \nabla_s z \right).
 \end{align}
-
-\subsubsection{Floating Lagrangian coordinates}
-
-Under Lagrangian coordinates the coordinate $s$ is chosen so as to satisfy $\dot{s} = 0$.  This can be accomplished by choosing $s$ to equal potential temperature, although this has issues with monotonicity, or an imaginary conservative tracer \citep{L2004MWR} (for instance, the altitude of the fluid parcel at its initial time).
-
-A consequence of the use of floating Lagrangian coordinates is the need for vertical remapping to avoid severe deformation of coordinate surfaces.  Several options are available, with the piecewise-parabolic method being perhaps the most widely adopted \citep{colella1984piecewise, L2004MWR}. 
 
 \subsubsection{GEM zeta coordinate} \label{sec:GEM_zeta}
 
