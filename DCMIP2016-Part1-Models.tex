@@ -198,7 +198,7 @@ This paper provides a comprehensive review of the design of modern non-hydrostat
 
 \introduction  %% \introduction[modified heading if necessary]
 
-{\color{red}INSTRUCTIONS FOR AUTHORS: Fill in text in section 3, 4, 5, 6, 7 and 8 below.}
+%{\color{red}INSTRUCTIONS FOR AUTHORS: Fill in text in section 3, 4, 5, 6, 7 and 8 below.}
 
 The Dynamical Core Model Intercomparison Project (DCMIP) is an ongoing effort targeting the intercomparison of a fundamental component of global atmospheric modeling systems: the dynamical core.  Although this component's role is simply to solve the equations of fluid motion (the Navi\'er-Stokes equations) throughout the atmosphere, there are numerous confounding factors that arise as a consequence of compromises that are required to make simulation computationally feasible.  These factors include the choice of model grid, vertical coordinates, representation of topography, numerical method, physics/dynamics coupler, and the manner in which artificial diffusion, filters and/or energy/mass fixers are applied.
 
@@ -309,9 +309,23 @@ The equiangular gnomonic cubed-sphere grid \citep{sadourny1972conservative, ronc
 
 For the common global applications, the icosahedral triangular grid is derived from the spherical icosahedron that consists of 20 equilateral spherical triangles, 30 great circle edges and 12 vertices.  These initial triangles are then subdivided repeatedly until the desired mean resolution is obtained. For a single subdivision each edge is divided in $n$ arcs of equal length, thus defining new vertices, which by proper connection to other new vertices result in $n^{2}$ triangles filling the original triangle. By construction the new vertices share 6 triangles, thus the refinement process brakes the initial isotropy of the icosahedron and results in non-equilateral triangles of different sizes.
 
-Several methods are available for subdividing the triangular regions.  One such approach is implemented by the ICON grid generator, which allows an ``arbitrary'' subdivision factor $n$ for the first refinement step only, the so-called root refinement. Typical choices are $n$ = 2, 3 or 5. All additional $m$ refinement steps use $n$ = 2, i.e. are bisection steps. A global grid resulting from a root division factor $n$ and $m$ bisections, denominated as \textit{RnBm} grid,  has $n_c = 20 \cdot n^2 \cdot 2^{2m}$ cells, $n_e = 3/2 \cdot n_c$ edges and $n_v = 10\cdot n^{2}\cdot 2^{2m}+2$ vertices. The anisotropy of global grids is reduced by the spring dynamics of \cite{tomita2001}.  For a discussion of the effective resolution see \cite{dipankar2015large}.  The ICON grid generator further allows for inset regional grids, produced by additional refinement steps that are only applied over a limited region, or set of regions.  The dynamical core then allows for either one-way or two-way coupling of the refined region to the parent model. The current operational numerical weather prediction of the Deutscher Wetterdienst (German Weather Service, DWD) for instance uses a $R3B7$ global grid with 2949120 cells and 13 km mean resolution in combination with a refined region over Europe at 6.5 km resolution.
+Several methods are available for subdividing the triangular regions.  One such approach is implemented by the ICON grid generator, which allows an ``arbitrary'' subdivision factor $n$ for the first refinement step only, the so-called root refinement. Typical choices are $n$ = 2, 3 or 5. All additional $m$ refinement steps use $n$ = 2, i.e. are bisection steps. A global grid resulting from a root division factor $n$ and $m$ bisections, denominated as \textit{RnBm} grid,  has $n_c = 20 \cdot n^2 \cdot 2^{2m}$ cells, $n_e = 3/2 \cdot n_c$ edges and $n_v = 10\cdot n^{2}\cdot 2^{2m}+2$ vertices. The anisotropy of global grids is reduced by the spring dynamics of \cite{tomita2001}.  An example of such a grid is depicted in Figure \ref{fig:ICONMesh}.  For a discussion of the effective resolution see \cite{dipankar2015large}.  The ICON grid generator further allows for inset regional grids, produced by additional refinement steps that are only applied over a limited region, or set of regions.  The dynamical core then allows for either one-way or two-way coupling of the refined region to the parent model. The current operational numerical weather prediction of the Deutscher Wetterdienst (German Weather Service, DWD) for instance uses a $R3B7$ global grid with 2949120 cells and 13 km mean resolution in combination with a refined region over Europe at 6.5 km resolution.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=2.2in, trim={4cm 8.2cm 4cm 8.2cm},clip]{ICON_grid_nested_schematic.pdf}
+\end{center}
+\caption{An icosahedral (triangular) grid with additional refinement over Europe (shown in red).} \label{fig:ICONMesh}
+\end{figure}
 
 \subsection{Icosahedral (hexagonal) grid}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=2.2in, trim={4cm 8.2cm 4cm 8.2cm},clip]{ICON_grid_dual_R2B3_noWorldMap.pdf}
+\end{center}
+\caption{An icosahedral (hexagonal) grid.} \label{fig:ICONIcosahedlalHexGrid}
+\end{figure}
 
 \subsection{Constrained Centroidal Voronoi Tessellation (CCVT) grids}
 
@@ -443,7 +457,7 @@ Further prognostic relationships can be derived from the thermodynamic equation,
 \end{align}  Then substituting (\ref{eq:ContinuityEquation}) gives a prognostic equation for virtual temperature,
 \begin{align}
 \frac{c_v^\ast}{R^\ast} \diff{T_v}{t} + T_v \nabla \cdot \vb{u} = \frac{J T_v}{R^\ast}.
-\end{align}  The prognostic equation for temperature is identical except with $T$ substituted for $T_v$.  An analogous equations for pressure can be obtained through a similar procedure, {\color{red}[Double check these two]}
+\end{align}  The prognostic equation for temperature is identical except with $T$ substituted for $T_v$.  An analogous equations for pressure can be obtained through a similar procedure,
 \begin{align} \label{eq:PressurePrognosticEq}
 \frac{c_v^\ast}{c_p^\ast} \diff{p}{t} + p \nabla \cdot \vb{u} = \frac{J p}{c_p^\ast}.
 \end{align}  And similarly for Exner pressure,
@@ -459,7 +473,7 @@ In coordinate-invariant form the prognostic velocity equations may be written in
 \diff{\vb{u}}{t} = \pdiff{\vb{u}}{t} + \vb{u} \cdot \nabla \vb{u} = - \frac{1}{\rho} \nabla p - 2 \vg{\Omega} \times \vb{u} - \nabla \Phi,
 \end{align} where $\vg{\Omega}$ denotes the planetary vorticity vector and $\Phi$ is the geopotential function.  The three terms on the right-hand-side of this expression correspond to pressure gradient, Coriolis, and gravitational force, respectively.  In Eulerian form one must be careful with the treatment of the momentum advection term $\vb{u} \cdot \nabla \vb{u}$, since in an arbitrary coordinate frame this term will give rise to Christoffel symbols associated with derivatives of the vector basis {\color{red}[citation needed]}.  Note that it is common to rewrite the pressure gradient force using the relationship
 \begin{align}
-- \frac{1}{\rho} \nabla p = - c_p^\ast \theta_v \nabla \pi,
+- \frac{1}{\rho} \nabla p = - \frac{R_d c_p^\ast}{R^\ast} \theta_v \nabla \pi,
 \end{align} which follows from (\ref{eq:DiagnosticRelationships1}).  A second form of (\ref{eq:PrognosticVelocity1}) emerges on substituting the vector calculus identity
 \begin{align}
 \vb{u} \cdot \nabla \vb{u} =& \nabla K + \vg{\zeta} \times \vb{u},
@@ -520,7 +534,7 @@ Due to its association with hydrostatic models, it is common to use the 2D Kinet
 \begin{align}
 \left[ \vb{u}_h \cdot \nabla \vb{u}_h \right]_z =& \nabla_z K_2 + \zeta_h \vb{k} \times \vb{u}_h, \\
 (\vb{u}_h \cdot \nabla \vb{u}_h) \cdot \vb{k} =& - \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) = - K_2 (\nabla \cdot \vb{k}) - \tfrac{1}{2} \left[ \vb{u}_h \cdot (\nabla \times \vb{u}_t)  + (\nabla \times \vb{u}_h) \cdot \vb{u}_t \right]
-\end{align} where $\zeta_h = (\nabla \times \vb{u}_h) \cdot \vb{k}$ is the relative vorticity scalar and $\vb{u}_t = \vb{k} \times \vb{u}_h$.  Note that this equation does incorporate metric terms associated with horizontal advection of $\vb{k}$ which must be accounted for.
+\end{align} where $\zeta_h = (\nabla \times \vb{u}) \cdot \vb{k} = (\nabla \times \vb{u}_h) \cdot \vb{k}$ is the relative vorticity scalar and $\vb{u}_t = \vb{k} \times \vb{u}_h$.  Note that this equation does incorporate metric terms associated with horizontal advection of $\vb{k}$ which must be accounted for.
 
 {\color{blue}
 \noindent \textbf{Derivation.}
@@ -543,31 +557,48 @@ Thus the vertical velocity equation, obtained by taking (\ref{eq:PrognosticVeloc
 \pdiff{\vb{u}_h}{t} =& - \frac{1}{\rho} \nabla_z p - \nabla_z (K_2 + \Phi) - (\nabla \times \vb{u}_h) \times (w \vb{k}) - \zeta_h \vb{k} \times \vb{u}_h - [2 \vg{\Omega} \times \vb{u}]_z.
 \end{align}  Note that under the shallow atmosphere approximation, the metric term $\vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k})$ in (\ref{eq:PrognosticWEquationK2}) is set equal to zero in accordance with \cite{phillips1966equations}.
 
-The dynamics equations are then formulated in terms of the vertical coordinate $s(t,x,y,z)$ with $\partial s / \partial z \neq 0$ everywhere.  In the new coordinate only $s$ is a function of $z$, and so by chain rule we have
-\begin{align} \label{eq:VerticalChainRule}
-\pdiff{}{z} = \pdiff{s}{z} \pdiff{}{s}.
-\end{align}  Chain rule also motivates the definition of the horizontal gradient operator on $s$ surfaces, denoted $\nabla_s$, 
-\begin{align}
-\nabla_s \equiv \nabla_z - \left( \pdiff{s}{z} \right)^{-1} ( \nabla_z s ) \pdiff{}{z}.
-\end{align}  Applying this operator to $z$ gives
-\begin{align}
-\nabla_z s = - \left( \pdiff{s}{z} \right) \nabla_s z,
-\end{align} which in conjunction with (\ref{eq:VerticalChainRule}) admits the more commonly observed relationship
+\subsection{Arbitrary vertical coordinates}
+
+The dynamical equations are now formulated in terms of the vertical coordinate $s(t,\vb{x},z)$ with $\partial s / \partial z \neq 0$ everywhere, i.e. following \cite{Kasahara1974} (hereafter K74).  Since $\vb{x}$ and $t$ are shared between the two coordinate systems, the chain rule can be applied to obtain expressions
+\begin{align} \label{eq:ChainRule}
+\pdiff{}{z} =& \pdiff{s}{z} \pdiff{}{s}, & \nabla_s =& \nabla_z + (\nabla_s z) (\vb{k} \cdot \nabla), & \left( \pdiff{}{t} \right)_s =& \pdiff{}{t} + \left( \pdiff{z}{t} \right)_s (\vb{k} \cdot \nabla),
+\end{align} which correspond to derivatives in the vertical, in the horizontal and in time.  This final expression is used to describe the rate of change of a quantity on $s$ surfaces.  When applied to $s$, these operators yields the useful identities
+\begin{align} \label{eq:NablaZSIdentity}
+\nabla_z s = - \left( \pdiff{s}{z} \right) \nabla_s z, \qquad \mbox{and} \qquad \pdiff{s}{t} = - \pdiff{s}{z} \left( \pdiff{z}{t} \right)_s.
+\end{align}  From here (\ref{eq:ChainRule}) also gives rise to
 \begin{align} \label{eq:HorizontalChainRule}
 \nabla_z = \nabla_s - \pdiff{s}{z} (\nabla_s z) \pdiff{}{s}.
 \end{align}  This equation can be used directly to rewrite (\ref{eq:HorizontalVelocityOrthogonal}) or (\ref{eq:PrognosticUhEquationK2}) in terms of derivatives over $s$.  Note that the operators $\nabla_z$ and $\nabla_s$ are usually introduced in the context of 2D flows, however the construction described here has the advantage of working seamlessly in a 3D context, while admitting the properties $\vb{k} \cdot \nabla_z = 0$ and $\vb{k} \cdot \nabla_s = 0$.
 
 The generalized velocity $\dot{s}$ following a fluid parcel is defined by
 \begin{align} \label{eq:DefinitionDotS}
-\dot{s} \equiv \diff{s}{t} = \pdiff{s}{t} + \vb{u} \cdot \nabla s = \pdiff{s}{t} + \vb{u}_h \cdot \nabla_z s + w \pdiff{s}{z}.
-\end{align}  A diagnostic relationship for $w$ in terms of $\dot{s}$ then follows,
+\dot{s} \equiv \diff{s}{t} = \pdiff{s}{t} + \vb{u} \cdot \nabla s = \vb{u}_h \cdot \nabla_z s + \left[ w - \left( \pdiff{z}{t} \right)_s \right] \pdiff{s}{z}.
+\end{align}  Then using (\ref{eq:ChainRule}) and (\ref{eq:DefinitionDotS}) to rewrite (\ref{eq:MaterialDerivativeScalar}) gives an expression for the material derivative for scalars on $s$ surfaces,
 \begin{align}
-w = \left( \pdiff{s}{z} \right)^{-1} \left( \dot{s} - \pdiff{s}{t} - \vb{u}_h \cdot \nabla_z s \right).
-\end{align} Substituting this expression back into (\ref{eq:MaterialDerivativeScalar}) gives the material derivative of scalars on $s$ surfaces,
-\begin{align}
-\diff{}{t} =& \pdiff{}{t} + \vb{u}_h \cdot \left( \nabla_z - \left( \pdiff{s}{z} \right)^{-1} (\nabla_z s) \pdiff{}{z} \right) + \left( \dot{s} - \pdiff{s}{t} \right) \left( \pdiff{s}{z} \right)^{-1} \pdiff{}{z}, \nonumber \\
-=& \pdiff{}{t} + \vb{u}_h \cdot \nabla_s + \left( \dot{s} - \pdiff{s}{t} \right) \pdiff{}{s}.
+\diff{A}{t} =& \left( \pdiff{A}{t} \right)_s - \pdiff{s}{z} \left( \pdiff{z}{t} \right)_s \pdiff{A}{s} + \vb{u}_h \cdot \left[ \nabla_s A + (\nabla_z s) \pdiff{A}{s} \right] + w \pdiff{s}{z} \pdiff{A}{s} \\
+=& \left( \pdiff{A}{t} \right)_s  + \vb{u}_h \cdot \nabla_s A + \dot{s} \pdiff{A}{s}  \label{eq:MaterialDerivativeS}
 \end{align}
+
+The prognostic equation for vertical velocity from (\ref{eq:VerticalVelocityOrthogonal}) is then reformulated using (\ref{eq:ChainRule}),
+\begin{align} \label{eq:VerticalVelocityOrthogonalS}
+\left(\pdiff{w}{t} \right)_s =& \pdiff{s}{z} \left[ \left( \pdiff{z}{t} \right)_s \pdiff{w}{s} - \frac{1}{\rho} \pdiff{p}{s} - \pdiff{}{s} (K + \Phi) \right] - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right] \cdot \vb{k}.
+\end{align}  Similarly, the prognostic equation for horizontal velocity from (\ref{eq:HorizontalVelocityOrthogonal}) is reformulated as
+\begin{align} \label{eq:HorizontalVelocityOrthogonalS}
+\left( \pdiff{\vb{u}_h}{t} \right)_s =& - \frac{1}{\rho} \nabla_z p - \nabla_z (K + \Phi) - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right]_z + \left( \pdiff{z}{t} \right)_s (\vb{k} \cdot \nabla \vb{u}_h).
+\end{align}  Note that the last term of this expression can then be expanded using
+\begin{align}
+(\vb{k} \cdot \nabla \vb{u}_h) =& - \vb{u}_h \cdot \nabla \vb{k} - \vb{k} \times (\nabla \times \vb{u}_h),
+\end{align} where under the shallow-atmosphere approximation $(\vb{u}_h \cdot \nabla \vb{k})$ is typically dropped.
+
+The prognostic equations utilizing horizontal kinetic energy $K_2$ in place of $K$ are similarly derived from (\ref{eq:PrognosticWEquationK2}),
+\begin{align} \label{eq:PrognosticWEquationK2S}
+\left( \pdiff{w}{t} \right)_s =& \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) - \vb{u}_h \cdot \nabla w + \left( \pdiff{s}{z} \right) \left\{ \left[ \left( \pdiff{z}{t} \right)_s - w \right] \pdiff{w}{s} - \frac{1}{\rho} \pdiff{p}{s} - \pdiff{}{s} (K_2 + \Phi) \right\} - (2 \vg{\Omega} \times \vb{u}_h) \cdot \vb{k},
+\end{align} and from (\ref{eq:PrognosticUhEquationK2}),
+\begin{align} \label{eq:PrognosticUhEquationK2S}
+\left( \pdiff{\vb{u}_h}{t} \right)_s =& - \frac{1}{\rho} \nabla_z p - \nabla_z (K_2 + \Phi) - \left[ \left( \pdiff{z}{t} \right)_s - w \right] \vb{k} \times (\nabla \times \vb{u}_h)  - \zeta_h \vb{k} \times \vb{u}_h - [2 \vg{\Omega} \times \vb{u}]_z - w (\vb{u}_h \cdot \nabla \vb{k}).
+\end{align}  Observe that both of these equations are simplified if $(\partial z / \partial t)_s = w$.
+
+{\color{red}[Is there an easy way to write down the curl (specifically relative vorticity) in arbitrary vertical coordinates?]}
 
 \subsection{Covariant Formulation}
 
@@ -579,36 +610,61 @@ In conjunction with (\ref{eq:HorizontalChainRule}), the horizontal momentum equa
 \vb{v}_h \equiv [\vb{u}]_s = \vb{u}_h + (\nabla_s z) w.
 \end{align}  For a time-dependent $s$ coordinate,
 \begin{align}
-\pdiff{}{t} (\nabla_s z) =& \pdiff{}{t} \left[ - (\nabla_z s) \left( \pdiff{s}{z} \right)^{-1} \right] \\
-=& - \left( \nabla_z \pdiff{s}{t} \right) \left( \pdiff{s}{z} \right)^{-1} + (\nabla_z s) \left( \pdiff{s}{z} \right)^{-2} \pdiff{}{z} \pdiff{s}{t} \\
-=& - \left( \pdiff{s}{z} \right)^{-1} \nabla_s \left( \pdiff{s}{t} \right)
-\end{align}  And so the evolution equation for the covariant velocity is
+\left[ \pdiff{}{t} (\nabla_s z) \right]_s =& \nabla_s \left( \pdiff{z}{t} \right)_s,
+\end{align} and so, using (\ref{eq:VerticalVelocityOrthogonalS}) and (\ref{eq:PrognosticUhEquationK2S}) the evolution equation for the covariant horizontal velocity reads
 \begin{align}
-\pdiff{\vb{v}_h}{t} =& \pdiff{\vb{u}_h}{t} + \pdiff{w}{t} (\nabla_s z) + w \pdiff{}{t} (\nabla_s z) \\
-=& - \frac{1}{\rho} \nabla_s p - \nabla_s (K + \Phi) - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right]_s - w \left( \pdiff{s}{z} \right)^{-1} \nabla_s \left( \pdiff{s}{t} \right).
-\end{align}  Although a time-dependent $s$ is admitted by this equation, its fully Eulerian nature makes it difficult to use in this case since degrees of freedom are not guaranteed to align with constant $s$ surfaces.
+\left( \pdiff{\vb{v}_h}{t} \right)_s =& \left( \pdiff{\vb{u}_h}{t} \right)_s + \left( \pdiff{w}{t} \right)_s (\nabla_s z) + w \nabla_s \left( \pdiff{z}{t} \right)_s \\
+%=& - \frac{1}{\rho} \nabla_z p - \nabla_z (K_2 + \Phi) - \left[ \left( \pdiff{z}{t} \right)_s - w \right] \vb{k} \times (\nabla \times \vb{u}_h)  - \zeta_h \vb{k} \times \vb{u}_h - [2 \vg{\Omega} \times \vb{u}]_z - w (\vb{u}_h \cdot \nabla \vb{k}) \\
+%& + (\nabla_s z) \left\{ \pdiff{s}{z} \left[ \left( \pdiff{z}{t} \right)_s \pdiff{w}{s} - \frac{1}{\rho} \pdiff{p}{s} - \pdiff{}{s} (K_2 + \Phi) - w \pdiff{w}{s} \right] - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right] \cdot \vb{k} \right\} \\
+%& + w \nabla_s \left( \pdiff{z}{t} \right)_s \\
+=& - \frac{1}{\rho} \nabla_s p - \nabla_s (K_2 + \Phi) + w \nabla_s \left( \pdiff{z}{t} \right)_s - w (\vb{u}_h \cdot \nabla \vb{k}) - [(2 \vg{\Omega} + \vg{\zeta}) \times \vb{u}]_s \nonumber \\
+& \qquad - \left[ \left( \pdiff{z}{t} \right)_s - w \right] \left[ \vb{k} \times (\nabla \times \vb{u}_h) + (\nabla_s z) \left( \pdiff{s}{z} \right) \pdiff{w}{s} \right]. \label{eq:CovariantVelocityUpdateS}
+\end{align}  Again, observe that this equation simplifies significantly if $(\partial z / \partial t)_s = w$.
 
-\subsection{Floating Lagrangian Formulation}
 
-Under the floating Lagrangian formulation, the coordinate $s$ is chosen so as to satisfy $\dot{s} = 0$.  This can be accomplished by choosing $s$ to equal potential temperature, although this has issues with monotonicity, or an imaginary conservative tracer \citep{L2004MWR} (for instance, the altitude of the fluid parcel at its initial time).
+%For a time-dependent $s$ coordinate,
+%\begin{align}
+%\pdiff{}{t} (\nabla_s z) =& \pdiff{}{t} \left[ - (\nabla_z s) \left( \pdiff{s}{z} \right)^{-1} \right] \\
+%=& - \left( \nabla_z \pdiff{s}{t} \right) \left( \pdiff{s}{z} \right)^{-1} + (\nabla_z s) \left( \pdiff{s}{z} \right)^{-2} \pdiff{}{z} \pdiff{s}{t} \\
+%=& - \left( \pdiff{s}{z} \right)^{-1} \nabla_s \left( \pdiff{s}{t} \right)
+%\end{align}
+%For a time-dependent $s$ coordinate,
+%\begin{align}
+%\left[ \pdiff{}{t} (\nabla_s z) \right]_s =& - \left( \nabla_z \pdiff{s}{t} \right) \left( \pdiff{s}{z} \right)^{-1} + (\nabla_z s) \left( \pdiff{s}{z} \right)^{-2} \pdiff{}{z} \pdiff{s}{t} + \left( \pdiff{z}{t} \right)_s (\vb{k} \cdot \nabla) (\nabla_s z) \\
+%=& - \left( \nabla_z \pdiff{s}{t} \right) \left( \pdiff{s}{z} \right)^{-1} + (\nabla_z s) \left( \pdiff{s}{z} \right)^{-2} \pdiff{}{z} \pdiff{s}{t} + \left( \pdiff{z}{t} \right)_s (\vb{k} \cdot \nabla) \left[ - (\nabla_z s) \left( \pdiff{s}{z} \right)^{-1} \right] \\
+%=& - \left( \pdiff{s}{z} \right)^{-1} \nabla_s \left( \pdiff{s}{t} \right) - \left( \pdiff{z}{t} \right)_s \left( \pdiff{s}{z} \right)^{-1} \nabla_z \left( \pdiff{s}{z} \right) + \left( \pdiff{z}{t} \right)_s \left( \pdiff{s}{z} \right)^{-2} (\nabla_z s) \pdiff{}{z} \pdiff{s}{z} \\
+%=& \left( \pdiff{s}{z} \right)^{-1} \left[ - \nabla_s \left( \pdiff{s}{t} \right) - \left( \pdiff{z}{t} \right)_s \nabla_s \left( \pdiff{s}{z} \right)  \right] \\
+%=& \nabla_s \left( \pdiff{z}{t} \right)_s
+%\end{align}
 
-A consequence of the use of floating Lagrangian coordinates is the need for vertical remapping to avoid severe deformation of coordinate surfaces.  Several options are available, with the piecewise-parabolic method being perhaps the most widely adopted \citep{colella1984piecewise, L2004MWR}. 
+%Then using (\ref{eq:MaterialDerivativeS}) gives
+%\begin{align}
+%\left( \pdiff{\vb{v}_h}{t} \right)_s =& - \frac{1}{\rho} \nabla_s p - \nabla_s (K + \Phi) - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right]_s - w \left( \pdiff{s}{z} \right)^{-1} \nabla_s \left( \pdiff{s}{t} \right) - \left( \pdiff{z}{t} \right)_s (\vb{k} \cdot \nabla \vb{v}_h) 
+%\end{align}
 
-In the case of time-varying $s$ coordinates, degrees of freedom are usually stored on $s$ surfaces.  To track floating surfaces of constant $s$ we define the floating Lagrangian derivative,
-\begin{align}
-\frac{d_s}{dt} = \pdiff{}{t} + w \vb{k} \cdot \nabla,
-\end{align} which is used to define the tendency in variables that are allowed to ``float'' vertically along surfaces that adjust with the advection velocity.  From (\ref{eq:VerticalVelocityOrthogonal}), the vertical velocity equation then takes the form
-\begin{align}
-\frac{d_s w}{d t} =& \pdiff{w}{t} + w \pdiff{w}{z} \\
-=& - \frac{1}{\rho} \left( \pdiff{s}{z} \right) \pdiff{p}{s} - \left( \pdiff{s}{z} \right) \pdiff{}{s} (K_2 + \Phi) - [ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} ] \cdot \vb{k}.
-\end{align}  From (\ref{eq:PrognosticUhEquationK2}), the horizontal velocity equation takes the form
-\begin{align}
-\frac{d_s \vb{u}_h}{d t} =& \pdiff{\vb{u}_h}{t} + w \vb{k} \cdot \nabla \vb{u}_h \\
-=& - \frac{1}{\rho} \nabla_z p - \nabla_z (K_2 + \Phi) - \zeta_h \vb{k} \times \vb{u}_h - [2 \vg{\Omega} \times \vb{u}]_z - w (\vb{u}_h \cdot \nabla \vb{k}),
-\end{align} where we have also used
-\begin{align}
-w \vb{k} \cdot \nabla \vb{u}_h = - w \vb{u}_h \cdot \nabla \vb{k} - (w \vb{k}) \times (\nabla \times \vb{u}_h).
-\end{align}  Note that under the shallow atmosphere approximation, the $(\vb{u}_h \cdot \nabla \vb{k})$ term is typically dropped.
+%Although a time-dependent $s$ is admitted by this equation, its fully Eulerian nature makes it difficult to use in this case since degrees of freedom are not guaranteed to align with constant $s$ surfaces.
+
+%\subsection{Floating Lagrangian Formulation}
+
+%Under the floating Lagrangian formulation, the coordinate $s$ is chosen so as to satisfy $\dot{s} = 0$.  This can be accomplished by choosing $s$ to equal potential temperature, although this has issues with monotonicity, or an imaginary conservative tracer \citep{L2004MWR} (for instance, the altitude of the fluid parcel at its initial time).
+
+%A consequence of the use of floating Lagrangian coordinates is the need for vertical remapping to avoid severe deformation of coordinate surfaces.  Several options are available, with the piecewise-parabolic method being perhaps the most widely adopted \citep{colella1984piecewise, L2004MWR}. 
+
+%In the case of time-varying $s$ coordinates, degrees of freedom are usually stored on $s$ surfaces.  To track floating surfaces of constant $s$ we define the floating Lagrangian derivative,
+%\begin{align}
+%\frac{d_s}{dt} = \pdiff{}{t} + w \vb{k} \cdot \nabla,
+%\end{align} which is used to define the tendency in variables that are allowed to ``float'' vertically along surfaces that adjust with the advection velocity.  From (\ref{eq:VerticalVelocityOrthogonal}), the vertical velocity equation then takes the form
+%\begin{align}
+%\frac{d_s w}{d t} =& \pdiff{w}{t} + w \pdiff{w}{z} \\
+%=& - \frac{1}{\rho} \left( \pdiff{s}{z} \right) \pdiff{p}{s} - \left( \pdiff{s}{z} \right) \pdiff{}{s} (K_2 + \Phi) - [ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} ] \cdot \vb{k}.
+%\end{align}  From (\ref{eq:PrognosticUhEquationK2}), the horizontal velocity equation takes the form
+%\begin{align}
+%\frac{d_s \vb{u}_h}{d t} =& \pdiff{\vb{u}_h}{t} + w \vb{k} \cdot \nabla \vb{u}_h \\
+%=& - \frac{1}{\rho} \nabla_z p - \nabla_z (K_2 + \Phi) - \zeta_h \vb{k} \times \vb{u}_h - [2 \vg{\Omega} \times \vb{u}]_z - w (\vb{u}_h \cdot \nabla \vb{k}),
+%\end{align} where we have also used
+%\begin{align}
+%w \vb{k} \cdot \nabla \vb{u}_h = - w \vb{u}_h \cdot \nabla \vb{k} - (w \vb{k}) \times (\nabla \times \vb{u}_h).
+%\end{align}  Note that under the shallow atmosphere approximation, the $(\vb{u}_h \cdot \nabla \vb{k})$ term is typically dropped.
 
 %\begin{align}
 %=& \pdiff{\vb{u}}{t} + \vb{u}_h \cdot \nabla \vb{u}_h + \vb{u}_h \cdot \nabla (w \vb{k}) \\
@@ -633,15 +689,42 @@ w \vb{k} \cdot \nabla \vb{u}_h = - w \vb{u}_h \cdot \nabla \vb{k} - (w \vb{k}) \
 %=& \left[ \pdiff{\vb{u}}{t} \right]_s - (\vb{k} \cdot \nabla s)^{-1} \left( \vb{u} - \frac{\vb{u} \cdot \nabla s}{\vb{k} \cdot \nabla s} \vb{k} \right) \cdot \nabla \pdiff{s}{t} \vb{k} \\
 %\end{align}  
 
-\subsection{Conservation Laws}
+\subsection{Conservation Laws in Arbitrary Vertical Coordinates}
 
-For arbitrary vertical coordinates, it is common to adopt \textit{pseudo-density} in place of physical density,
+In this section we rewrite the continuity equation in arbitrary vertical coordinates.  The divergence of the contravariant velocity field on surfaces of constant $s$ can be obtained from (\ref{eq:ChainRule}), which is valid for both shallow- and deep-atmosphere formulations and equal to K74 eq. (3.17),
+\begin{align} \label{eq:DivergenceS}
+\nabla_s \cdot \vb{u}_h = \nabla_z \cdot \vb{u}_h + \left( \pdiff{s}{z} \right) (\nabla_s z) \cdot \left( \pdiff{\vb{u}_h}{s} \right).
+\end{align}
+
+On the sphere the 3D divergence takes the form
+\begin{align} \label{eq:ThreeDDivergence}
+\nabla \cdot \vb{u} = \nabla_z \cdot \vb{u}_h + \frac{1}{\alpha} \pdiff{}{z} (\alpha w),
+\end{align} where $\alpha = 1$ for shallow-atmosphere models and $\alpha = r^2 = (a + z)^2$ for deep-atmosphere models.  Using $w = dz/dt$, this last term also takes the form
+\begin{align} \label{eq:GeneralVerticalTermX}
+\frac{1}{\alpha} \pdiff{}{z} (\alpha w) = \pdiff{w}{z} + \frac{w}{\alpha} \pdiff{\alpha}{z} = \pdiff{w}{z} + \frac{1}{\alpha} \diff{\alpha}{t}.
+\end{align}
+
+Using (\ref{eq:NablaZSIdentity}) to rewrite (\ref{eq:DefinitionDotS}) gives rise to
 \begin{align}
-\rho_s = \rho (\vb{k} \cdot \nabla s)^{-1} = \rho \left( \pdiff{s}{z} \right)^{-1}.
-\end{align}  Whereas the density $\rho$ is associated with the total mass in an infinitesmal volume $\delta V = \delta x \times \delta y \times \delta z$, the pseudo-density instead describes the mass in the volume bounded above and below by $s$ surfaces, namely $\delta V_s = \delta x \times \delta y \times \delta s$.  The advantage of this formulation is that it automatically accounts for shifting $s$ surfaces and allows the continuity equation (\ref{eq:ContinuityEquation}) to be formulated as
+w = \left( \pdiff{z}{t} \right)_s + \vb{u}_h \cdot \nabla_s z + \dot{s} \left( \pdiff{s}{z} \right)^{-1},
+\end{align} which is then differentiated to yield K74 eq. (3.16),
+\begin{align} \label{eq:WDerivativeS}
+\pdiff{w}{z} = \left( \pdiff{s}{z} \right) \left[ \diff{}{t} \left( \pdiff{s}{z} \right)^{-1} + \left( \pdiff{\vb{u}_h}{s} \right) \cdot (\nabla_s z) \right] + \pdiff{\dot{s}}{s} = 0.
+\end{align}  Substituting this expression into the continuity equation (\ref{eq:ContinuityEquation}), and using (\ref{eq:ThreeDDivergence}), (\ref{eq:GeneralVerticalTermX}), and (\ref{eq:WDerivativeS}) then leads to
+\begin{align}
+\diff{}{t} \left[ \alpha \left( \pdiff{s}{z} \right)^{-1} \rho \right] + \alpha \left( \pdiff{s}{z} \right)^{-1} \rho \left[ \nabla_z \cdot \vb{u}_h + \left( \pdiff{s}{z} \right) \left( \pdiff{\vb{u}_h}{s} \right) \cdot (\nabla_s z) \right] + \alpha \left( \pdiff{s}{z} \right)^{-1} \rho \pdiff{\dot{s}}{s} = 0.
+\end{align}  Defining the \textit{pseudodensity} as 
+\begin{align}
+\rho_s = \alpha \left( \pdiff{s}{z} \right)^{-1} \rho,
+\end{align} and using (\ref{eq:MaterialDerivativeS}) in the form
 \begin{align} \label{eq:PrognosticPseudoDensity}
-\pdiff{\rho_s}{t} + \nabla_s \cdot (\rho_s \vb{u}_h) + \pdiff{}{s} (\rho_s \dot{s}) = 0.
-\end{align}  Hence for any quantity that is conserved following a fluid parcel (\textit{i.e.}, $dq/dt = 0$),
+\diff{\rho_s}{t} = \left( \diff{\rho_s}{t} \right)_s + \vb{u}_h \cdot \nabla_s \rho_s + \dot{s} \pdiff{\rho_s}{s},
+\end{align} along with (\ref{eq:DivergenceS}) leads to
+\begin{align}
+\left( \diff{\rho_s}{t} \right)_s + \nabla_s \cdot (\rho_s \vb{u}_h) + \pdiff{}{s} (\rho_s \dot{s}) = 0.
+\end{align}
+
+Hence for any quantity that is conserved following a fluid parcel (\textit{i.e.}, $dq/dt = 0$),
 \begin{align}
 \pdiff{\rho_s q}{t} + \nabla_s \cdot (\rho_s q \vb{u}_h) + \pdiff{}{s} (\rho_s q \dot{s}) = 0.
 \end{align}  In particular, the prognostic equation for virtual potential temperature (or equivalently for potential temperature) reads
@@ -653,7 +736,10 @@ For arbitrary vertical coordinates, it is common to adopt \textit{pseudo-density
 
 \subsubsection{Terrain-following $z$ coordinates}
 
-In general, terrain-following coordinates are adopted so that the topographic surface is also a coordinate surface.  This simplifies the treatment of the bottom boundary condition.
+In general, terrain-following coordinates are adopted so that the topographic surface is also a coordinate surface.  This simplifies the treatment of the bottom boundary condition.  Common terrain-following coordinates include \cite{galchen1975}, which takes the form
+\begin{align}
+s = z_{\footnotesize \mbox{top}} \left( \frac{z - z_s}{z_{\footnotesize \mbox{top}} - z_s} \right).
+\end{align}  Another coordinate with smoother variation away from the surface was also introduced by \cite{schar2002new}.
 
 \subsubsection{Mass-based coordinates}
 
@@ -663,9 +749,6 @@ s = \int^{\infty}_{z} \rho g dz.
 \end{align}  Under this definition,
 \begin{align}
 \pdiff{s}{z} = - \rho g.
-\end{align}  Geopotential is adopted as a prognostic variable and $\dot{s}$ is diagnosed using (\ref{eq:DiagnosticSDot}),
-\begin{align}
-\dot{s} = - \rho g \left( w - \vb{v}_h \cdot \nabla_s z \right).
 \end{align}
 
 \subsubsection{GEM zeta coordinate} \label{sec:GEM_zeta}
@@ -682,17 +765,29 @@ Horizontal velocity $\vb{v}_h$, geopotential $\Phi$ and $q = \log(p/\pi_h)$ are 
 Temperature $T$, vertical velocity $w$,
 generalized vertical velocity $\dot{s}$ and tracers are on thermodynamic levels. 
 
+\subsection{Vertical staggering}
+
+{\color{blue}Define Unstaggered, Lorenz and Charney-Phillips staggering here with figure}
+
+%----------------------------------------------------
+\begin{figure}[]
+\includegraphics[height=6cm]{gem_charney-phillips.png}
+\caption{A modification of the Charney-Phillips grid found in GEM}
+\label{fig:gem_charney-phillips}
+\end{figure}
+%----------------------------------------------------
+
 \subsection{Model Implementations}
 
 \subsubsection{Tempest} \label{sec:TempestEquations}
 
-Tempest is a shallow-atmosphere Eulerian model with terrain-following $z$-coordinates with prognostic density (\ref{eq:PrognosticPseudoDensity}), virtual potential temperature (\ref{eq:PrognosticPseudoDensityTheta}), and vector-invariant form for horizontal momentum (\ref{eq:CovariantVelocityUpdate}) in vector-invariant form (\ref{eq:HorizontalVelocityOrthogonal}) and vertical momentum (\ref{eq:VerticalVelocityOrthogonal}).  The specific heat capacities and ideal gas constant are approximated to be equal to their dry values $R^\ast \approx R_d$, $c^\ast_p \approx c_{pd}$ and $c^\ast_v \approx c_{vd}$.
+Tempest is a shallow-atmosphere Eulerian model with terrain-following $z$-coordinates with prognostic density (\ref{eq:PrognosticPseudoDensity}), virtual potential temperature (\ref{eq:PrognosticPseudoDensityTheta}), and vector-invariant form for horizontal momentum with $(\partial z / \partial t)_s = 0$ (\ref{{eq:CovariantVelocityUpdateS}}) and vertical momentum (\ref{eq:VerticalVelocityOrthogonal}).  The specific heat capacities and ideal gas constant are approximated to be equal to their dry values $R^\ast \approx R_d$, $c^\ast_p \approx c_{pd}$ and $c^\ast_v \approx c_{vd}$.
 
-In the horizontal, Tempest utilizes a spectral-element formulation.
+%In the horizontal, Tempest utilizes a spectral-element formulation.
 
 \subsubsection{ICON} \label{sec:ICONEquations}
 
-ICON is a shallow-atmosphere Eulerian model based on \cite{gassmann2008} with terrain-following $z$-coordinates with prognostic density (\ref{eq:PrognosticPseudoDensity}), virtual potential temperature (\ref{eq:PrognosticPseudoDensityTheta}), and vector-invariant form for horizontal momentum (\ref{eq:CovariantVelocityUpdate}) in vector-invariant form (\ref{eq:HorizontalVelocityOrthogonal}) and vertical momentum (\ref{eq:VerticalVelocityOrthogonal}).  As with tempest, specific heat capacities and ideal gas constant are approximated by their dry values.  The model also uses a prognostic equation for Exner pressure to simplify vertical sound wave propagation, given by
+ICON is a shallow-atmosphere Eulerian model based on \cite{gassmann2008} with terrain-following $z$-coordinates with prognostic density (\ref{eq:PrognosticPseudoDensity}), virtual potential temperature (\ref{eq:PrognosticPseudoDensityTheta}), and vector-invariant form for horizontal momentum in vector-invariant form (\ref{eq:HorizontalVelocityOrthogonal}) and vertical momentum (\ref{eq:VerticalVelocityOrthogonal}).  As with tempest, specific heat capacities and ideal gas constant are approximated by their dry values.  The model also uses a prognostic equation for Exner pressure to simplify vertical sound wave propagation, given by
 \begin{align}
 \pdiff{\pi}{t} + \frac{R_d}{c_{vd}} \frac{\pi}{\rho \theta_v} \nabla \cdot (\vb{u}_h \rho \theta_v) = \hat{Q},
 \end{align} where $\hat{Q}$ is an appropriately formulated diabatic heat term.
@@ -794,64 +889,49 @@ in \eqref{fvm:thermodynamic} represents the diffusion of heat.
 %$\mathbf{M}$ and $\mathcal{H}$ subsume various rhs forcings to the
 %momentum \eqref{fvm:momentum} and thermodynamic \eqref{fvm:thermodynamic} equations.
 
-
-
-\subsection{Conservation of Energy}
-
-Total energy, equal to the sum of Kinetic, potential and internal energy, is given by
-\begin{align}
-E = \rho (K + \Phi + c_v^\ast T_v).
-\end{align}  Differentiating total energy and using (\ref{eq:ContinuityEquation}) and (\ref{eq:PrognosticVelocity2}) then leads to
-\begin{align}
-\pdiff{E}{t} + \nabla \cdot (\rho \vb{u} (K + \Phi + c_p^\ast T_v)) = 0.
-\end{align} {\color{red}[This section needs work]}
-
-
-\subsection{Height-based coordinates}
-
-{\color{blue}Define Unstaggered, Lorenz and Charney-Phillips staggering here}
-
-%----------------------------------------------------
-\begin{figure}[]
-\includegraphics[height=10cm]{gem_charney-phillips.png}
-\caption{ Charney-Phillips grid }
-\label{fig:gem_charney-phillips}
-\end{figure}
-%----------------------------------------------------
-
-\subsection{Tracer Transport}
-
-\noindent Lagrangian form:
-\begin{align}
-\diff{q}{t} &= 0.
-\end{align}
-
-\noindent Non-conservative Eulerian form:
-\begin{align}
-\pdiff{q}{t} &= - \vb{u} \cdot \nabla q.
-\end{align}
-
-\noindent Flux form:
-\begin{align}
-\pdiff{}{t} (\rho q) &= - \nabla \cdot (\rho q \vb{u}).
-\end{align}
-
-
-
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Diffusion and Stabilization} \label{sec:DiffusionStabilization}
+\section{Diffusion, Stabilization, Filters and Fixers} \label{sec:DiffusionStabilization}
 
-{\color{red}[ALL] Include explicit diffusion and stabilization techniques that you have applied in the dynamical core here.}
+Most dynamical cores implement specialized techniques for diffusion or stabilization.  Diffusion is a numerical technique that removes spurious numerical noise from the simulation, where the numerical noise typically arises because of inaccuracies in the treatment of waves with wavelengths near the grid scale.  Stabilization is a numerical technique that prevents energy growth and allows the model to be run over long periods.  Diffusion or stabilization options include physically-motivated turbulence parameterizations, added viscosity or hyperviscosity terms with tunable coefficients, or wave-mode filters.  Since the discretization can also lead to an unphysical loss of mass or energy, mass or energy fixers are also employed to replace lost mass or energy to the system.  A comprehensive overview of schemes for diffusion and stabilization schemes can be found in \cite{jablonowski2011pros}.  In this section we discuss some of the diffusion and stabilization strategies employed by the DCMIP suite of dynamical cores.
+
+\subsection{ICON}
+
+The ICON model employs damping and diffusion operators for numerical stabilization and dynamic closure. The details of this scheme appear in sections 2.4 and 2.5 of \cite{zangl2014} and summarized here:
+
+For damping, in the corrector step a fourth-order divergence damping term $F_{d}(\mathbf{v})$ is applied in order to allow calling the computationally more expensive diffusion operator (see below) at the physics time steps without incurring numerical stability problems under extreme conditions.
+\begin{align}
+F_{d}(\mathbf{v}) = - f_d \overline{a_c}^2 \nabla \tilde{\nabla} \cdot \left(\nabla \left(\tilde{\nabla} \cdot v + 
+\frac{\Delta }{\Delta z} \left(w-\overline{\overline{w_{cc}}^c}^i \right)\right)\right) \,.
+\end{align}
+$f_d$ typically attains values between $\frac{1}{1000 \Delta t}$ and $\frac{1}{250 \Delta t}$, and $\overline{a_c}$ is the global mean cell area.
+
+ICON also includes Rayleigh damping on $w$ following \cite{klemp2008}, which serves to prevent unphysical reflections of gravity waves at the model top. The Rayleigh damping is restricted to a fixed number of levels below the model top, and the damping coefficient is given by a hyperbolic tangent.
+
+The horizontal diffusion consists of a flow dependent second-order Smagorinsky diffusion of velocity ($F_{D2}(v_n)$) and potential temperature  ($F_{D2}(\theta)$) combined with a fourth-order background diffusion of velocity $F_{D4}(v_n)$.
+\begin{align} \label{smagn2}
+F_{D2}(v_n) = 4 K_h \tilde{\nabla}^2(v_n)
+\end{align}
+\begin{align}
+F_{D2}(\theta) = a_c \tilde{\nabla} \cdot \left(K_h \frac{\Delta \theta}{\Delta n} \right) \,.
+\end{align}
+\begin{align}
+F_{D4}(v_n) = - k_4 a_e^2 \tilde{\nabla}^2 (\tilde{\nabla}^2(v_n)) \,.
+\end{align}
+An empirically determined offset of $0.75 k_4 a_e$ is subtracted from $K_h$ in order to avoid excessive diffusion under weakly disturbed conditions.
+
+A fourth-order computational diffusion is also available for vertical wind speed $w$. This filter term is needed at resolutions of O(1 km) or finer because the advection of vertical wind speed has no implicit damping of small-scale structures.  This term appears as
+\begin{align}
+F_{D}(w) = - k_w a_c^2 \nabla^2 (\nabla^2(w)) 
+\end{align}
 
 \subsection{FV3}
 
 Explicit dissipation in FV$^3$ is applied separately to the divergence and to the horizontal fluxes in the governing equations. The D-grid discretization applies no direct implicit dissipation to the divergence, so divergence damping is an intrinsic part of the solver algorithm since otherwise there are no processes by which energy contained in the divergent modes is removed at the grid scale.  FV$^3$ has options for fourth-, sixth-, or eighth-order divergence damping; a second-order option is also available for use in idealized convergence tests, which can be applied in addition to the higher-order diffusion. The monotonicity constraint used in computing the fluxes in the  momentum, thermodynamic, and mass continuity equations is sufficient to damp and stabilize the non-divergent component of the flow. If additional damping is desired, or if the monotonicity constraint has been disabled, there is an option to apply hyperdiffusion to the fluxes in each of these equations, with the exception of the tracer transport, which always uses monotonic transport with no explicit diffusion. This dissipation is of the same order of accuracy as the divergence damping; however the nondimensional coefficient needed is much smaller, usually by at least 3--4 times, than the divergence damping. Both divergence damping and hyperdiffusion are applied along the Lagrangian surfaces and are re-computed every acoustic timestep; there is no explicit damping perpendicular to the Lagrangian surfaces. An option to convert kinetic energy lost to the hyperdiffusion to heat is available. FV$^3$ can also apply a horizontal Smagorinsky eddy diffusion if desired.
 
 A substantial amount of wave absorption is provided by the flexible-lid (constant-pressure) upper boundary;  FV$^3$ also applies second-order diffusion to all fields, except the tracers, to create a sponge layer, typically comprising the top two layers of the domain, to damp other signals reaching the top of the domain. An energy-conserving Rayleigh damping, applied consistently to all three components of the winds, is also available, which is strongest in the top layer of the domain and becomes weaker with distance until reaching a runtime-specified cut-off pressure. 
+
+FV$^3$ has an option to restore lost energy by the adiabatic dynamics, in whole or a fraction thereof (decided by a namelist option at runtime), by globally adding a Exner-function weighted potential temperature increment. This is only done before the physics is called and is not used in idealized simulations. 
 
 \subsection{GEM}
 
@@ -864,86 +944,12 @@ For stabilization purpose,
 the temporal discretization of GEM presented  
 in section \ref{sec:GEM_temporal} uses an off-centering parameter $b^{A} = 0.6$.
 
-\subsection{ICON}
-
-The ICON model employs damping and diffusion operators for numerical stabilization and dynamic closure. Details are described in sections 2.4 and 2.5 of \cite{zangl2014}. Here a brief summary:
-
-\emph{Damping: }In the corrector step a fourth-order divergence damping term $F_{d}(\mathbf{v})$ is applied in order to allow calling the computationally more expensive diffusion operator (see below) at the physics time steps only without incurring numerical stability problems under extreme conditions.
-\begin{align}
-F_{d}(\mathbf{v}) = - f_d \overline{a_c}^2 \nabla \tilde{\nabla} \cdot \left(\nabla \left(\tilde{\nabla} \cdot v + 
-\frac{\Delta }{\Delta z} \left(w-\overline{\overline{w_{cc}}^c}^i \right)\right)\right) \,.
-\end{align}
-$f_d$ typically attains values between $\frac{1}{1000 \Delta t}$ and $\frac{1}{250 \Delta t}$, and $\overline{a_c}$ is the global mean cell area.
-
-Another artificial damping term is Rayleigh damping on $w$ following \cite{klemp2008}, which serves to prevent unphysical reflections of gravity waves at the model top. The Rayleigh damping is restricted to a fixed number of levels below the model top, and the damping coefficient is given by a hyperbolic tangent.
-
-\emph{Diffusion: }The horizontal diffusion consists of a flow dependent second-order Smagorinsky diffusion of velocity ($F_{D2}(v_n)$) and potential temperature  ($F_{D2}(\theta)$) combined with a fourth-order background diffusion of velocity $F_{D4}(v_n)$.
-\begin{align} \label{smagn2}
-F_{D2}(v_n) = 4 K_h \tilde{\nabla}^2(v_n)
-\end{align}
-\begin{align}
-F_{D2}(\theta) = a_c \tilde{\nabla} \cdot \left(K_h \frac{\Delta \theta}{\Delta n} \right) \,.
-\end{align}
-\begin{align}
-F_{D4}(v_n) = - k_4 a_e^2 \tilde{\nabla}^2 (\tilde{\nabla}^2(v_n)) \,.
-\end{align}
-An empirically determined offset of $0.75 k_4 a_e$ is subtracted from $K_h$ in order to avoid excessive diffusion under weakly disturbed conditions.
-
-A fourth-order computational diffusion is also available for vertical wind speed $w$. This filter term is needed at resolutions of O(1 km) or finer because the advection of vertical wind speed has no implicit damping of small-scale structures. Consequently diffusion of $w$ is employed for the DCMIP SCELL test.
-\begin{align}
-F_{D}(w) = - k_w a_c^2 \nabla^2 (\nabla^2(w)) 
-\end{align}
-
-\subsection{Scalar viscosity}
-
-\noindent Scalar viscosity (direct):
-\begin{align} \label{eq:scalar_viscosity_direct}
-\diff{s}{t} &= \ldots + \nu \nabla \cdot \nabla s.
-\end{align}
-
-\noindent Scalar viscosity (conservative):
-\begin{align} \label{eq:scalar_viscosity_conservative}
-\diff{}{t} (\rho q) &= \ldots + \nu \nabla \cdot ( \rho \nabla q ).
-\end{align}
-
-\subsection{Smagorinsky eddy viscosity}
-
-\subsection{Vector viscosity, divergence and vorticity damping}
-
-\noindent Vector viscosity:
-\begin{align} \label{eq:vector_viscosity}
-\diff{\vb{u}}{t} &= \ldots + \nu \nabla^2 \vb{u}
-\end{align}
-
-\noindent Divergence damping:
-\begin{align} \label{eq:divergence_damping}
-\diff{\vb{u}}{t} &= \ldots + \nu_{div} \nabla (\nabla \cdot \vb{u})
-\end{align}
-
-\noindent Vorticity damping:
-\begin{align} \label{eq:vorticity_damping}
-\diff{\vb{u}}{t} &= \ldots + \nu_{vort} \nabla \times (\nabla \times \vb{u})
-\end{align}
-
-\subsection{Hyperviscosity} \label{sec:Diffusion_Hyperviscosity}
-
-{\color{blue}Repeated application of the scalar and vector viscosity operators}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Filters and Fixers} \label{sec:FiltersFixers}
-
-{\color{red}[ALL] Include explicit filters and fixers that you have utilized in the dynamical core here.}
-
-\subsection{Mass borrowing (positive definite preservation)}
-
 In GEM model, shape-preserving solutions are computed for tracers by using the quasi-monotone semi-Lagrangian (QMSL) method \citep{Bermejo1992QMSL}. 
 
-\subsection{Mass fixers}
 
-\subsection{Energy fixers}
+\subsection{Tempest}
 
-FV$^3$ has an option to restore lost energy by the adiabatic dynamics, in whole or a fraction thereof (decided by a namelist option at runtime), by globally adding a Exner-function weighted potential temperature increment. This is only done before the physics is called and is not used in idealized simulations. 
+{\color{blue}Repeated application of the scalar and vector viscosity operators}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
