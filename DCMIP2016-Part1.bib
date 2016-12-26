@@ -38,6 +38,132 @@
   publisher={Springer}
 }
 
+@article{lloyd1982least,
+  title={Least squares quantization in PCM},
+  author={Lloyd, Stuart},
+  journal={IEEE transactions on information theory},
+  volume={28},
+  number={2},
+  pages={129--137},
+  year={1982},
+  publisher={IEEE}
+}
+
+@article{giraldo2013implicit,
+  title={Implicit-explicit formulations of a three-dimensional nonhydrostatic unified model of the atmosphere (NUMA)},
+  author={Giraldo, Francis X and Kelly, James F and Constantinescu, EM},
+  journal={SIAM Journal on Scientific Computing},
+  volume={35},
+  number={5},
+  pages={B1162--B1194},
+  year={2013},
+  publisher={SIAM}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DYNAMICO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@article{Dubos2015DYNAMICO10,
+    author = {Dubos, T. and Dubey, S. and Tort, M. and Mittal, R. and Meurdesoif, Y. and Hourdin, F.},
+    citeulike-article-id = {13797021},
+    citeulike-linkout-0 = {http://dx.doi.org/10.5194/gmd-8-3131-2015},
+    citeulike-linkout-1 = {http://www.geosci-model-dev.net/8/3131/2015/},
+    day = {07},
+    issn = {1991-9603},
+    journal = {Geoscientific Model Development},
+    junk = {10.5194/gmd-8-3131-2015},
+    junk = {http://dx.doi.org/10.5194/gmd-8-3131-2015},
+    keywords = {energy, finite\_diff, finite\_volume, hamiltonian, hexagon, hydrostatic, staggered},
+    month = oct,
+    number = {10},
+    pages = {3131--3150},
+    posted-at = {2016-10-14 08:03:27},
+    priority = {2},
+    publisher = {Copernicus Publications},
+    title = {{DYNAMICO}-1.0, an icosahedral hydrostatic dynamical core designed for consistency and versatility},
+    volume = {8},
+    year = {2015}
+}
+
+@article{Dubey2015Intercomparison,
+    author = {Dubey, S. and Dubos, T. and Hourdin, F. and Upadhyaya, H. C.},
+    citeulike-article-id = {13599849},
+    citeulike-linkout-0 = {http://dx.doi.org/10.1016/j.apm.2015.04.015},
+    issn = {0307904X},
+    journal = {Applied Mathematical Modelling},
+    junk = {10.1016/j.apm.2015.04.015},
+    junk = {http://dx.doi.org/10.1016/j.apm.2015.04.015},
+    keywords = {transport},
+    month = apr,
+    posted-at = {2015-04-30 15:46:03},
+    priority = {2},
+    title = {On the inter-comparison of two tracer transport schemes on icosahedal grids},
+    year = {2015}
+}
+
+@article{Dubos2014Equations,
+    author = {Dubos, Thomas and Tort, Marine},
+    citeulike-article-id = {13248816},
+    citeulike-linkout-0 = {http://journals.ametsoc.org/doi/abs/10.1175/MWR-D-14-00069.1},
+    citeulike-linkout-1 = {http://dx.doi.org/10.1175/mwr-d-14-00069.1},
+    day = {2},
+    journal = {Monthly Weather Review},
+    junk = {10.1175/mwr-d-14-00069.1},
+    junk = {http://dx.doi.org/10.1175/mwr-d-14-00069.1},
+    keywords = {hamiltonian, vertical\_coord},
+    month = jul,
+    number = {10},
+    pages = {3860--3880},
+    posted-at = {2014-11-19 13:16:48},
+    priority = {2},
+    publisher = {American Meteorological Society},
+    title = {Equations of Atmospheric Motion in {Non-Eulerian} Vertical Coordinates: {Vector-Invariant} Form and {Quasi-Hamiltonian} Formulation},
+    volume = {142},
+    year = {2014}
+}
+
+@article{Thuburn2009Numerical,
+    abstract = {A C-grid staggering, in which the mass variable is stored at cell centers and the normal velocity component is stored at cell faces (or edges in two dimensions) is attractive for atmospheric modeling since it enables a relatively accurate representation of fast wave modes. However, the discretization of the Coriolis terms is non-trivial. For constant Coriolis parameter, the linearized shallow water equations support geostrophic modes: stationary solutions in geostrophic balance. A naive discretization of the Coriolis terms can cause geostrophic modes to become non-stationary, causing unphysical behaviour of numerical solutions. Recent work has shown how to discretize the Coriolis terms on a planar regular hexagonal grid to ensure that geostrophic modes are stationary while the Coriolis terms remain energy conserving. In this paper this result is extended to arbitrarily structured C-grids. An explicit formula is given for constructing an appropriate discretization of the Coriolis terms. The general formula is illustrated by showing that it recovers previously known results for the planar regular hexagonal C-grid and the spherical longitude–latitude C-grid. Numerical calculation confirms that the scheme does indeed give stationary geostrophic modes for the hexagonal–pentagonal and triangular geodesic C-grids on the sphere.},
+    author = {Thuburn, J. and Ringler, T. D. and Skamarock, W. C. and Klemp, J. B.},
+    citeulike-article-id = {5488215},
+    citeulike-linkout-0 = {http://dx.doi.org/10.1016/j.jcp.2009.08.006},
+    day = {01},
+    issn = {00219991},
+    journal = {Journal of Computational Physics},
+    junk = {10.1016/j.jcp.2009.08.006},
+    junk = {http://dx.doi.org/10.1016/j.jcp.2009.08.006},
+    keywords = {icosahedron},
+    month = dec,
+    number = {22},
+    pages = {8321--8335},
+    posted-at = {2010-09-03 10:46:05},
+    priority = {2},
+    title = {Numerical representation of geostrophic modes on arbitrarily structured C-grids},
+    volume = {228},
+    year = {2009}
+}
+
+@article{Ringler2010Unified,
+    abstract = {A numerical scheme applicable to arbitrarily-structured C-grids is presented for the nonlinear shallow-water equations. By discretizing the vector-invariant form of the momentum equation, the relationship between the nonlinear Coriolis force and the potential vorticity flux can be used to guarantee that mass, velocity and potential vorticity evolve in a consistent and compatible manner. Underpinning the consistency and compatibility of the discrete system is the construction of an auxiliary thickness equation that is staggered from the primary thickness equation and collocated with the vorticity field. The numerical scheme also exhibits conservation of total energy to within time-truncation error. Simulations of the standard shallow-water test cases confirm the analysis and show convergence rates between 1st - and 2nd -order accuracy when discretizing the system with quasi-uniform spherical Voronoi diagrams. The numerical method is applicable to a wide class of meshes, including latitude–longitude grids, Voronoi diagrams, Delaunay triangulations and conformally-mapped cubed-sphere meshes.},
+    author = {Ringler, T. D. and Thuburn, J. and Klemp, J. B. and Skamarock, W. C.},
+    citeulike-article-id = {6462581},
+    citeulike-linkout-0 = {http://dx.doi.org/10.1016/j.jcp.2009.12.007},
+    day = {01},
+    issn = {00219991},
+    journal = {Journal of Computational Physics},
+    junk = {10.1016/j.jcp.2009.12.007},
+    junk = {http://dx.doi.org/10.1016/j.jcp.2009.12.007},
+    month = may,
+    number = {9},
+    pages = {3065--3090},
+    posted-at = {2010-05-10 23:07:02},
+    priority = {2},
+    title = {A unified approach to energy conservation and potential vorticity dynamics for arbitrarily-structured C-grids},
+    volume = {229},
+    year = {2010}
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FV3
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
