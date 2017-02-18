@@ -141,8 +141,8 @@
 \Author[17]{Thomas}{Dubos}
 \Author[17]{Yann}{Meurdesoif}
 
-\Author[18]{Elijah}{Goodfriend}
-\Author[18]{Hans}{Johansen}
+%\Author[18]{Elijah}{Goodfriend}
+%\Author[18]{Hans}{Johansen}
 
 \affil[1]{University of California, Davis}
 \affil[2]{University of Michigan}
@@ -313,7 +313,7 @@ The CSU model uses an optimized geodesic grid to discretize the sphere, with hei
 DYNAMICO is a mimetic finite-difference / finite-volume model, solving initially the hydrostatic primitive equations and recently extended to solve the shallow-atmosphere fully-compressible equations. The grid is an hexagonal C-grid in the horizontal and a Lorenz grid in the vertical. DYNAMICO's design uniquely combines:
  \begin{itemize}
 \item A representation of the prognostic and diagnostic fields following the ideas of discrete differential geometry,\citep{Dubos2015DYNAMICO10}
-\item A novel Hamiltonian formulation of the equations of motion in non-Eulerian coordinates  \citep{Dubos2014Equations} which is imitated at the discrete level using builing blocks from the litterature,\citep{Thuburn2009Numerical,Ringler2010Unified}, and yielding, to a certain extent, an energy-conserving spatial discretization, and
+\item A novel Hamiltonian formulation of the equations of motion in non-Eulerian coordinates  \citep{Dubos2014Equations} which is imitated at the discrete level using building blocks from the litterature,\citep{thuburn2009numerical,ringler2010unified}, and yielding, to a certain extent, an energy-conserving spatial discretization, and
 \item a novel explicit-implicit splitting which results in a simple, efficient and scalable implicit solver while allowing stable time steps close or identical to those of the hydrostatic solver (Dubos and Dubey, in preparation). 
 \end{itemize} In addition, it features a conservative positive-definite transport scheme based on a slope-limited finite-volume approach \citep{Dubey2015Intercomparison}.
 
@@ -374,7 +374,7 @@ than 1). The physics time step is identical to the dynamics time step.
 \subsection{Global Environmental Multiscale (GEM) Model} \label{sec:GEM_core}
 
 The GEM model, which is used for operational forecasting at Environment Canada, uses the Yin-Yang grid and horizontal discretization on an Arakawa C grid.  The vertical coordinate is of a log-hydrostatic-pressure type and vertical discretization is based on the Charney-Phillips grid.  A two time level semi-Lagrangian implicit time discretization is implemented as described in section \ref{sec:GEM_temporal}.  A scalar viscosity is employed for wind components and tracers 
-via an application of (\ref{eq:scalar_viscosity_direct}).  Viscosity operations are applied after the completion of the dynamic time step. {\color{red}[Perhaps expand this text a little bit?]}
+via an application of a scalar Laplacian.  Viscosity operations are applied after the completion of the dynamic time step. {\color{red}[Perhaps expand this text a little bit?]}
 
 \subsection{High-Order Method Modeling Environment (HOMME)}
 
@@ -390,11 +390,11 @@ The ICON model discretizes the compressible equations for a shallow atmosphere i
 
 \subsection{Model for Prediction Across Scales (MPAS)}
 
-{\color{red}[SKAMAROCK]}
+The Model for Prediction Across Scales (MPAS) \citep{skamarock2012multiscale} uses an Arakawa C-grid built on a centroidal Voronoi tessellation, in conjunction with the mimetic TRiSK discretization \citep{thuburn2009numerical,ringler2010unified}.  Advection terms are nominally third- to fourth-order and are handled in accordance with \cite{skamarock2011conservative}.  In the vertical, MPAS employs a Lorenz-type second-order nodal finite volume method with a smoothed terrain-following height coordinate.  The prognostic variables are dry air pseudodensity $\tilde{\rho}_d$, dry momentum $\tilde{\rho}_d \vb{u}$, and a modified moist potential temperature.  Integration in time is handled via the split-explicit method of \cite{klemp2007conservative}.  Various filters are available for controlling spurious oscillations, including Smagorinsky-type eddy viscosity, and fourth-order hyperdiffusion.
 
 \subsection{Tempest}
 
-The Tempest model \citep{ullrich2014global, guerra2016high} uses a horizontal spectral element discretization and vertical staggered nodal finite element method based on the cubed-sphere grid with terrain-following height-based coordinate.  The standard Eulerian equations are employed with moist density $\rho$, thermodynamic closure $\theta_v$ and tracer density $\rho q$.  These continuous equations are given in section \ref{sec:TempestEquations}.  The implementation includes both fully explicit time integration, using the UKG53 scheme described in section \ref{sec:UKG53Scheme}, and implicit-explicit options, where horizontal terms are explicitly discretized and vertical terms are treated implicitly.  Scalar hyperviscosity is employed for $\rho$, $\theta$ and tracer variables via repeated application of (\ref{eq:scalar_viscosity_direct}).  Vector hyperviscosity is also applied by decomposing the horizontal vector Laplacian into divergence damping (\ref{eq:divergence_damping}) and vorticity damping (\ref{eq:vorticity_damping}) terms.  Both viscosity operations are applied after the completion of all Runge-Kutta sub-cycles.
+The Tempest model \citep{ullrich2014global, guerra2016high} uses a horizontal spectral element discretization and vertical nodal finite volume method with Lorenz staggering based on the cubed-sphere grid with terrain-following height-based coordinate.  The standard Eulerian equations are employed with moist density $\rho$, thermodynamic closure $\theta_v$ and tracer density $\rho q$.  These continuous equations are given in section \ref{sec:TempestEquations}.  The implementation includes both fully explicit time integration, using the UKG53 scheme described in section \ref{sec:UKG53Scheme}, and implicit-explicit options, where horizontal terms are explicitly discretized and vertical terms are treated implicitly.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -496,9 +496,9 @@ $ \delta_{\theta}=2 $ degrees and $ \delta_{\lambda}=3 \delta_{\theta}$.  The Ya
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Moist Non-hydrostatic Equation Sets} \label{sec:EquationSets}
+\section{Moist Nonhydrostatic Equation Sets} \label{sec:EquationSets}
 
-In this section we describe the fluid equations utilized by non-hydrostatic models.  The material derivative is used for  quantities in the Lagrangian frame (following individual air parcels), and is given by
+In this section we describe the fluid equations utilized by nonhydrostatic models.  The material derivative is used for  quantities in the Lagrangian frame (following individual air parcels), and is given by
 \begin{align}
 \diff{}{t} = \pdiff{}{t} + \vb{u} \cdot \nabla.
 \end{align}  Note that tracer variables $q_i$, including specific humidity $q$, satisfy the simple Lagrangian relationship
@@ -576,13 +576,13 @@ Further prognostic relationships can be derived from the thermodynamic equation,
 In coordinate-invariant form the prognostic velocity equations may be written in either the Lagrangian or Eulerian frame as
 \begin{align} \label{eq:PrognosticVelocity1}
 \diff{\vb{u}}{t} = \pdiff{\vb{u}}{t} + \vb{u} \cdot \nabla \vb{u} = - \frac{1}{\rho} \nabla p - 2 \vg{\Omega} \times \vb{u} - \nabla \Phi,
-\end{align} where $\vg{\Omega}$ denotes the planetary vorticity vector and $\Phi$ is the geopotential function.  The three terms on the right-hand-side of this expression correspond to pressure gradient, Coriolis, and gravitational force, respectively.  In Eulerian form one must be careful with the treatment of the momentum advection term $\vb{u} \cdot \nabla \vb{u}$, since in an arbitrary coordinate frame this term will give rise to Christoffel symbols associated with derivatives of the vector basis {\color{red}[citation needed]}.  Note that it is common to rewrite the pressure gradient force using the relationship
+\end{align} where $\vg{\Omega}$ denotes the planetary vorticity vector and $\Phi$ is the geopotential function.  The three terms on the right-hand-side of this expression correspond to pressure gradient, Coriolis, and gravitational force, respectively.  In Eulerian form one must be careful with the treatment of the momentum advection term $\vb{u} \cdot \nabla \vb{u}$, since in an arbitrary coordinate frame this term will give rise to Christoffel symbols associated with derivatives of the vector basis.  Note that it is common to rewrite the pressure gradient force using the relationship
 \begin{align}
 - \frac{1}{\rho} \nabla p = - \frac{R_d c_p^\ast}{R^\ast} \theta_v \nabla \pi,
 \end{align} which follows from (\ref{eq:DiagnosticRelationships1}).  A second form of (\ref{eq:PrognosticVelocity1}) emerges on substituting the vector calculus identity
 \begin{align}
 \vb{u} \cdot \nabla \vb{u} =& \nabla K + \vg{\zeta} \times \vb{u},
-\end{align} where $K = \frac{1}{2} (\vb{u} \cdot \vb{u})$ is the 3D Kinetic energy and $\vg{\zeta} = \nabla \times \vb{u}$ is the 3D relative vorticity vector.  This gives rise to the vector-invariant form,
+\end{align} where $K = \frac{1}{2} (\vb{u} \cdot \vb{u})$ is the 3D Kinetic energy and $\vg{\zeta} = \nabla \times \vb{u}$ is the 3D relative vorticity vector.  This gives rise to the 3D vector-invariant form,
 \begin{align} \label{eq:PrognosticVelocity2}
 \pdiff{\vb{u}}{t} = - \frac{1}{\rho} \nabla p - \nabla (K + \Phi) - (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u}. 
 \end{align}  Because no gradients of vectors appear in this equation, it avoids derivatives of the coordinate basis that would emerge in (\ref{eq:PrognosticVelocity1}).  In conjunction with (\ref{eq:ContinuityEquation}), both (\ref{eq:PrognosticVelocity1}) also give rise to the flux-form momentum equations,
@@ -632,34 +632,21 @@ Under the orthogonal formulation, projection of a vector field $\vb{b}$ onto its
 
 %{\color{red}[Using $K = K_2 + w^2/2$ does this give rise to a simpler version of the $K_2$ evolution equations?]}
 
-It is also common to use the 2D Kinetic energy, $K_2 = \frac{1}{2} (\vb{u}_h \cdot \vb{u}_h)$.  Decomposing the momentum transport term into horizontal and vertical components gives
+Due to its association with hydrostatic models, it is common to use the 2D Kinetic energy, $K_2 = \frac{1}{2} (\vb{u}_h \cdot \vb{u}_h)$.  Decomposing the momentum transport term into horizontal and vertical components gives
 \begin{align}
 \vb{u} \cdot \nabla \vb{u} =& \vb{u}_h \cdot \nabla \vb{u}_h + (\nabla \times \vb{u}_h) \times (w \vb{k}) + (\vb{u} \cdot \nabla w) \vb{k}.
 \end{align}  The first term in this expression admits the relationships
 \begin{align}
-\left[ \vb{u}_h \cdot \nabla \vb{u}_h \right]_z =& \nabla_z K_2 + \zeta_h \vb{k} \times \vb{u}_h, \\
-(\vb{u}_h \cdot \nabla \vb{u}_h) \cdot \vb{k} =& - \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) = - K_2 (\nabla \cdot \vb{k}) - \tfrac{1}{2} \left[ \vb{u}_h \cdot (\nabla \times \vb{u}_t)  + (\nabla \times \vb{u}_h) \cdot \vb{u}_t \right]
+\left[ \vb{u}_h \cdot \nabla \vb{u}_h \right]_z =& \nabla_z K_2 + \zeta_h \vb{k} \times \vb{u}_h, \label{eq:UhDotNablaUhRelationship1} \\
+(\vb{u}_h \cdot \nabla \vb{u}_h) \cdot \vb{k} =& - \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) = - K_2 (\nabla \cdot \vb{k}) - \tfrac{1}{2} \left[ \vb{u}_h \cdot (\nabla \times \vb{u}_t)  + (\nabla \times \vb{u}_h) \cdot \vb{u}_t \right] \label{eq:UhDotNablaUhRelationship2}
 \end{align} where $\zeta_h = (\nabla \times \vb{u}) \cdot \vb{k} = (\nabla \times \vb{u}_h) \cdot \vb{k}$ is the relative vorticity scalar and $\vb{u}_t = \vb{k} \times \vb{u}_h$.  Note that this equation does incorporate metric terms associated with horizontal advection of $\vb{k}$ which must be accounted for.
 
-{\color{blue}
-\noindent \textbf{Derivation.}
-\begin{align}
-\vb{u} \cdot \nabla \vb{u} =& \vb{u}_h \cdot \nabla \vb{u}_h + \vb{u}_h \cdot \nabla (w \vb{k}) + w \vb{k} \cdot \nabla \vb{u}_h + w \vb{k} \cdot \nabla (w \vb{k}) \\
-=& \vb{u}_h \cdot \nabla \vb{u}_h + \nabla( \vb{u}_h \cdot (w \vb{k}) ) - (w \vb{k}) \times (\nabla \times \vb{u}_h) - \vb{u}_h \times (\nabla \times w \vb{k}) + \nabla ( \tfrac{1}{2} w^2) + ((\nabla \times (w \vb{k})) \times (w \vb{k})) \\
-=& \vb{u}_h \cdot \nabla \vb{u}_h + (\nabla \times \vb{u}_h) \times (w \vb{k}) + (\vb{u} \cdot \nabla w) \vb{k}
-\end{align} where we have used
-\begin{align}
-(\nabla \times (w \vb{k})) \times (w \vb{k}) =& (w (\nabla \times \vb{k}) + (\nabla w) \times \vb{k}) \times (w \vb{k}) = - w \vb{k} \times (\nabla w \times \vb{k}) = (- w \vb{k} \cdot \vb{k}) \nabla w - (- w \vb{k} \cdot \nabla w) \vb{k} \\
-- \vb{u}_h \times (\nabla \times w \vb{k}) =& - \vb{u}_h \times (w (\nabla \times \vb{k}) + (\nabla w) \times \vb{k}) = - \vb{u}_h \times (\nabla w \times \vb{k}) = (\vb{u}_h \cdot \nabla w) \vb{k}
-\end{align}}
-
-
-Thus the vertical velocity equation, obtained by taking (\ref{eq:PrognosticVelocity1}) $\cdot \vb{k}$, leading to
+Thus the vertical velocity equation, obtained by taking (\ref{eq:PrognosticVelocity1})$\cdot \vb{k}$, is
 \begin{align} \label{eq:PrognosticWEquationK2}
-\pdiff{w}{t} =& \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) - \vb{u} \cdot \nabla w - \frac{1}{\rho} \pdiff{p}{z} - \pdiff{\Phi}{z} - (2 \vg{\Omega} \times \vb{u}) \cdot \vb{k}
-\end{align}  and
+\pdiff{w}{t} =& \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) - w \pdiff{w}{z} - \vb{u}_h \cdot \nabla_z w - \pdiff{\Phi}{z} - \frac{1}{\rho} \pdiff{p}{z} - (2 \vg{\Omega} \times \vb{u}_h) \cdot \vb{k}.
+\end{align}  Then subtracting (\ref{eq:PrognosticWEquationK2})$\vb{k}$ from (\ref{eq:PrognosticVelocity1}) gives
 \begin{align} \label{eq:PrognosticUhEquationK2}
-\pdiff{\vb{u}_h}{t} =& - \frac{1}{\rho} \nabla_z p - \nabla_z (K_2 + \Phi) - (\nabla \times \vb{u}_h) \times (w \vb{k}) - \zeta_h \vb{k} \times \vb{u}_h - [2 \vg{\Omega} \times \vb{u}]_z.
+\pdiff{\vb{u}_h}{t} =& - w (\vb{u}_h \cdot \nabla \vb{k}) - w \pdiff{\vb{u}_h}{z} - \nabla_z (K_2 + \Phi) - \frac{1}{\rho} \nabla_z p - \zeta_h \vb{k} \times \vb{u}_h - [2 \vg{\Omega} \times \vb{u}]_z.
 \end{align}  Note that under the shallow atmosphere approximation, the metric term $\vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k})$ in (\ref{eq:PrognosticWEquationK2}) is set equal to zero in accordance with \cite{phillips1966equations}.
 
 \subsection{Arbitrary vertical coordinates}
@@ -667,13 +654,21 @@ Thus the vertical velocity equation, obtained by taking (\ref{eq:PrognosticVeloc
 The dynamical equations are now formulated in terms of the vertical coordinate $s(t,\vb{x},z)$ with $\partial s / \partial z \neq 0$ everywhere, i.e. following \cite{kasahara1974various} (hereafter K74).  Since $\vb{x}$ and $t$ are shared between the two coordinate systems, the chain rule can be applied to obtain expressions
 \begin{align} \label{eq:ChainRule}
 \pdiff{}{z} =& \pdiff{s}{z} \pdiff{}{s}, & \nabla_s =& \nabla_z + (\nabla_s z) (\vb{k} \cdot \nabla), & \left( \pdiff{}{t} \right)_s =& \pdiff{}{t} + \left( \pdiff{z}{t} \right)_s (\vb{k} \cdot \nabla),
-\end{align} which correspond to derivatives in the vertical, in the horizontal and in time.  This final expression is used to describe the rate of change of a quantity on $s$ surfaces.  When applied to $s$, these operators yields the useful identities
+\end{align} which correspond to derivatives in the vertical, in the horizontal and in time.  This final expression is used to describe the rate of change of a quantity on $s$ surfaces.  These operators then yield the useful identities
 \begin{align} \label{eq:NablaZSIdentity}
-\nabla_z s = - \left( \pdiff{s}{z} \right) \nabla_s z, \qquad \mbox{and} \qquad \pdiff{s}{t} = - \pdiff{s}{z} \left( \pdiff{z}{t} \right)_s.
+\pdiff{s}{z} =& \left( \pdiff{z}{s} \right)^{-1}, & \nabla_z s =& - \left( \pdiff{s}{z} \right) \nabla_s z, & \pdiff{s}{t} =& - \pdiff{s}{z} \left( \pdiff{z}{t} \right)_s.
 \end{align}  From here (\ref{eq:ChainRule}) also gives rise to
 \begin{align} \label{eq:HorizontalChainRule}
-\nabla_z = \nabla_s - \pdiff{s}{z} (\nabla_s z) \pdiff{}{s}.
-\end{align}  This equation can be used directly to rewrite (\ref{eq:HorizontalVelocityOrthogonal}) or (\ref{eq:PrognosticUhEquationK2}) in terms of derivatives over $s$.  Note that the operators $\nabla_z$ and $\nabla_s$ are usually introduced in the context of 2D flows, however the construction described here has the advantage of working seamlessly in a 3D context, while admitting the properties $\vb{k} \cdot \nabla_z = 0$ and $\vb{k} \cdot \nabla_s = 0$.
+\nabla_z = \nabla_s - \pdiff{s}{z} (\nabla_s z) \pdiff{}{s},
+\end{align} which can be used directly to rewrite (\ref{eq:HorizontalVelocityOrthogonal}) or (\ref{eq:PrognosticUhEquationK2}) in terms of derivatives over $s$.  Note that the operators $\nabla_z$ and $\nabla_s$ are usually introduced in the context of 2D flows, however the construction described here has the advantage of working seamlessly in a 3D context, while admitting the properties $\vb{k} \cdot \nabla_z A = 0$ and $\vb{k} \cdot \nabla_s A = 0$ for any scalar field $A$.
+
+From (\ref{eq:ChainRule}), it can be shown that the 2D divergence on $s$ surfaces (given by K74 eq. (3.17)) is
+\begin{align} \label{eq:DivergenceS}
+\nabla_s \cdot \vb{u}_h = \nabla_z \cdot \vb{u}_h + \left( \pdiff{s}{z} \right) (\nabla_s z) \cdot \left( \pdiff{\vb{u}_h}{s} \right),
+\end{align} and that the 2D curl is given by
+\begin{align} \label{eq:CurlS}
+\nabla_s \times \vb{u}_h = \nabla_z \times \vb{u}_h + \left( \pdiff{s}{z} \right) (\nabla_s z) \times \left( \pdiff{\vb{u}_h}{s} \right),
+\end{align} where $\nabla_z \times \vb{u}_h = \vb{k} (\vb{k} \cdot (\nabla \times \vb{u}_h))$.  Notably, these expressions are valid for both shallow- and deep-atmosphere formulations.
 
 The generalized velocity $\dot{s}$ following a fluid parcel is defined by
 \begin{align} \label{eq:DefinitionDotS}
@@ -682,135 +677,135 @@ The generalized velocity $\dot{s}$ following a fluid parcel is defined by
 \begin{align}
 \diff{A}{t} =& \left( \pdiff{A}{t} \right)_s - \pdiff{s}{z} \left( \pdiff{z}{t} \right)_s \pdiff{A}{s} + \vb{u}_h \cdot \left[ \nabla_s A + (\nabla_z s) \pdiff{A}{s} \right] + w \pdiff{s}{z} \pdiff{A}{s} \\
 =& \left( \pdiff{A}{t} \right)_s  + \vb{u}_h \cdot \nabla_s A + \dot{s} \pdiff{A}{s}  \label{eq:MaterialDerivativeS}
+\end{align}  A similar expression arises for vectors, although in this case $\vb{u}_h \cdot \nabla \vb{a} \neq \vb{u}_h \cdot \nabla_z \vb{a}$ implies we cannot use the operator $\nabla_s$ in the form (\ref{eq:ChainRule}), and instead obtain
+\begin{align} \label{eq:MaterialDerivativeVectorS}
+\diff{\vb{a}}{t} =& \left( \pdiff{\vb{a}}{t} \right)_s + \left[ \vb{u}_h \cdot \nabla \vb{a} + (\vb{u}_h \cdot \nabla_s z) (\vb{k} \cdot \nabla \vb{a}) \right] + \dot{s} \pdiff{\vb{a}}{s}.
 \end{align}
 
-The prognostic equation for vertical velocity from (\ref{eq:VerticalVelocityOrthogonal}) is then reformulated using (\ref{eq:ChainRule}),
-\begin{align} \label{eq:VerticalVelocityOrthogonalS}
-\left(\pdiff{w}{t} \right)_s =& \pdiff{s}{z} \left[ \left( \pdiff{z}{t} \right)_s \pdiff{w}{s} - \frac{1}{\rho} \pdiff{p}{s} - \pdiff{}{s} (K + \Phi) \right] - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u}_h \right] \cdot \vb{k}.
-\end{align}  Similarly, the prognostic equation for horizontal velocity from (\ref{eq:HorizontalVelocityOrthogonal}) is reformulated as
-\begin{align} \label{eq:HorizontalVelocityOrthogonalS}
-\left( \pdiff{\vb{u}_h}{t} \right)_s =& - \frac{1}{\rho} \nabla_z p - \nabla_z (K + \Phi) - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right]_z + \left( \pdiff{z}{t} \right)_s (\vb{k} \cdot \nabla \vb{u}_h).
-\end{align}  Note that the last term of this expression can then be expanded using
+%{\color{red}[Is this needed?]} Note that
+%\begin{align}
+%\nabla A = \nabla_z A + \vb{k} \pdiff{A}{z} = \nabla_s A - \pdiff{s}{z} (\nabla_s z) \pdiff{A}{s} + \vb{k} \pdiff{s}{z} \pdiff{A}{s} = \nabla_s A + ( \vb{k} - \nabla_s z) \pdiff{s}{z} \pdiff{A}{s}
+%\end{align}
+
+\subsection{2D Vector Invariant Form}
+
+The prognostic equations utilizing horizontal kinetic energy $K_2$ in place of $K$ are similarly derived by applying (\ref{eq:ChainRule}) to (\ref{eq:PrognosticWEquationK2}), yielding
+\begin{align} \label{eq:PrognosticWEquationK2Sa}
+\left( \pdiff{w}{t} \right)_s =& \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) - \vb{u}_h \cdot \nabla w + \left( \pdiff{s}{z} \right) \left\{ \left[ \left( \pdiff{z}{t} \right)_s - w \right] \pdiff{w}{s} - \pdiff{\Phi}{s} - \frac{1}{\rho} \pdiff{p}{s} \right\} - (2 \vg{\Omega} \times \vb{u}_h) \cdot \vb{k}.
+\end{align}  Similarly, from (\ref{eq:PrognosticUhEquationK2}),
+\begin{align} \label{eq:PrognosticUhEquationK2Sa}
+\left( \pdiff{\vb{u}_h}{t} \right)_s =& - w (\vb{u}_h \cdot \nabla \vb{k}) + \left[ \left( \pdiff{z}{t} \right)_s - w \right] \left( \pdiff{s}{z} \right) \pdiff{\vb{u}_h}{s} - \zeta_h \vb{k} \times \vb{u}_h - \nabla_z (K_2 + \Phi) - \frac{1}{\rho} \nabla_z p - [2 \vg{\Omega} \times \vb{u}]_z.
+\end{align}  Observe that both of these equations simplify when $w = (\partial z / \partial t)_s$, \textit{i.e.} model levels are advected with the vertical wind.
+
+An alternative form of these equation can similarly be obtained in terms of $\dot{s}$.  Substituting (\ref{eq:DefinitionDotS}) into (\ref{eq:PrognosticWEquationK2Sa}) then gives
+\begin{align} \label{eq:PrognosticWEquationK2Sb}
+\left( \pdiff{w}{t} \right)_s =& \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) - \vb{u}_h \cdot \nabla_s w - \dot{s} \pdiff{w}{s} + \left( \pdiff{s}{z} \right) \left[ - \pdiff{\Phi}{s} - \frac{1}{\rho} \pdiff{p}{s} \right] - (2 \vg{\Omega} \times \vb{u}_h) \cdot \vb{k}.
+\end{align}  Similarly, substituting (\ref{eq:DefinitionDotS}) into (\ref{eq:PrognosticUhEquationK2Sa}) and using the identity
 \begin{align}
-(\vb{k} \cdot \nabla \vb{u}_h) =& - \vb{u}_h \cdot \nabla \vb{k} - \vb{k} \times (\nabla \times \vb{u}_h),
-\end{align} where under the shallow-atmosphere approximation $(\vb{u}_h \cdot \nabla \vb{k})$ is typically dropped.
+(\vb{u}_h \cdot \nabla_s z) \left( \pdiff{s}{z} \right) \pdiff{\vb{u}_h}{s} = (\nabla_s \times \vb{u}_h) \times \vb{u}_h - \zeta_h \vb{k} \times \vb{u}_h + (\nabla_s z) \pdiff{K_2}{z}
+\end{align}
+ then gives
+\begin{align} \label{eq:PrognosticUhEquationK2Sb}
+\left( \pdiff{\vb{u}_h}{t} \right)_s =& - w (\vb{u}_h \cdot \nabla \vb{k}) - \nabla_s K_2 - \zeta_s \vb{k} \times \vb{u}_h - \dot{s} \pdiff{\vb{u}_h}{s} - \nabla_z \Phi - \frac{1}{\rho} \nabla_z p - [2 \vg{\Omega} \times \vb{u}]_z,
+\end{align} where
+\begin{align}
+\nabla_s \times \vb{u}_h = \vb{k} \zeta_s, \quad \mbox{and} \quad \zeta_s = \vb{k} \cdot (\nabla_s \times \vb{u}_h).
+\end{align}  In this case the vertical advection terms are removed when $\dot{s} = 0$, \textit{i.e.} the vertical coordinate is advected with the 3D wind $\vb{u}$.
 
-The prognostic equations utilizing horizontal kinetic energy $K_2$ in place of $K$ are similarly derived from (\ref{eq:PrognosticWEquationK2}),
-\begin{align} \label{eq:PrognosticWEquationK2S}
-\left( \pdiff{w}{t} \right)_s =& \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) - \vb{u}_h \cdot \nabla w + \left( \pdiff{s}{z} \right) \left\{ \left[ \left( \pdiff{z}{t} \right)_s - w \right] \pdiff{w}{s} - \frac{1}{\rho} \pdiff{p}{s} - \pdiff{}{s} (K_2 + \Phi) \right\} - (2 \vg{\Omega} \times \vb{u}_h) \cdot \vb{k},
-\end{align} and from (\ref{eq:PrognosticUhEquationK2}),
-\begin{align} \label{eq:PrognosticUhEquationK2S}
-\left( \pdiff{\vb{u}_h}{t} \right)_s =& - \frac{1}{\rho} \nabla_z p - \nabla_z (K_2 + \Phi) - \left[ \left( \pdiff{z}{t} \right)_s - w \right] \vb{k} \times (\nabla \times \vb{u}_h)  - \zeta_h \vb{k} \times \vb{u}_h - [2 \vg{\Omega} \times \vb{u}]_z - w (\vb{u}_h \cdot \nabla \vb{k}).
-\end{align}  Observe that both of these equations are simplified if $(\partial z / \partial t)_s = w$.
+Note that under the shallow-atmosphere approximation, the first metric terms (those that include $(\vb{u}_h \cdot \nabla \vb{k})$) in (\ref{eq:PrognosticWEquationK2Sa})-(\ref{eq:PrognosticUhEquationK2Sb}) are typically dropped.
 
-%{\color{red}[Is there an easy way to write down the curl (specifically relative vorticity) in arbitrary vertical coordinates?]}
+\subsection{3D Vector Invariant Form}
 
-\subsection{Covariant Formulation}
+From (\ref{eq:PrognosticVelocity2}) and (\ref{eq:ChainRule}) the evolution equation for the 3D velocity vector takes the form
+%\begin{align}
+%\pdiff{\vb{u}}{t} = - \frac{1}{\rho} \nabla p - \nabla (K + \Phi) - (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u}
+%\end{align} we have
+\begin{align}
+\left( \pdiff{\vb{u}}{t} \right)_s = \left( \pdiff{z}{t} \right)_s (\vb{k} \cdot \nabla \vb{u}) - \nabla (K + \Phi) - \frac{1}{\rho} \nabla p - (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u}
+\end{align}  Then taking the dot product of this expression with $\vb{k}$ gives
+\begin{align} \label{eq:PrognosticWEquation}
+\left(\pdiff{w}{t} \right)_s =& \left( \pdiff{s}{z} \right) \left[ \left( \pdiff{z}{t} \right)_s \pdiff{w}{s} - \pdiff{}{s} (K + \Phi) - \frac{1}{\rho} \pdiff{p}{s} \right] - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right] \cdot \vb{k}
+\end{align} where we have used $\vb{k} \cdot (\vb{k} \cdot \nabla \vb{u}) = \vb{k} \cdot \nabla w$.
+ Similarly, the prognostic equation for horizontal velocity from (\ref{eq:HorizontalVelocityOrthogonal}) is reformulated as
+\begin{align} \label{eq:PrognosticUhEquationKS}
+\left( \pdiff{\vb{u}_h}{t} \right)_s =& \left( \pdiff{z}{t} \right)_s \left( \pdiff{s}{z} \right) \pdiff{\vb{u}_h}{s} - \nabla_z (K + \Phi) - \frac{1}{\rho} \nabla_z p - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right]_z.
+\end{align}  Note that the vorticity term in this expression can be simplified further using
+\begin{align}
+[(\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u}]_z = - (\zeta_h + \vb{k} \cdot 2 \vg{\Omega}) (\vb{u}_h \times \vb{k}) - w \vb{k} \times (\vg{\zeta} + 2 \vg{\Omega}),
+\end{align} and
+\begin{align}
+- \vb{k} \times \vg{\zeta} =& \vb{k} \cdot \nabla \vb{u} - \nabla (\vb{k} \cdot \vb{u}) + \vb{u} \cdot \nabla \vb{k} = \pdiff{\vb{u}_h}{z} - \nabla_z w + \vb{u}_h \cdot \nabla \vb{k}.
+\end{align}
+%so that (\ref{eq:PrognosticUhEquationKS}) takes the form
+%\begin{align}
+%\left( \pdiff{\vb{u}_h}{t} \right)_s =& \left( \pdiff{z}{t} \right)_s \left( \pdiff{s}{z} \right) \pdiff{\vb{u}_h}{s} - \nabla_z (K + \Phi) - \frac{1}{\rho} \nabla_z p - \left[ 2 \vg{\Omega} \times \vb{u} \right]_z - \zeta_h (\vb{u}_h \times \vb{k}) + w \left[ \pdiff{\vb{u}_h}{z} - \nabla_z w + \vb{u}_h \cdot \nabla \vb{k} \right]
+%\end{align}
 
-In conjunction with (\ref{eq:HorizontalChainRule}), the horizontal momentum equation (either  (\ref{eq:HorizontalVelocityOrthogonal}) or (\ref{eq:PrognosticUhEquationK2})) with an arbitrary vertical coordinate gives rise to a two-term pressure gradient.  This can be avoided by prognosing the covariant components of the velocity in place of the physical velocity components.  The horizontal partial covariance operator is defined by
+\subsection{Covariant Component Formulation}
+
+In conjunction with (\ref{eq:HorizontalChainRule}), the horizontal momentum equation (in 2D vector invariant form as  (\ref{eq:PrognosticUhEquationK2Sa}) or (\ref{eq:PrognosticUhEquationK2Sb}), or in 3D vector invariant form as (\ref{eq:PrognosticUhEquationKS})) with an arbitrary vertical coordinate gives rise to a two-term pressure gradient.  This can be avoided by prognosing the covariant components of the velocity in place of the physical velocity components.  We define a horizontal covariance operator by
 \begin{align}
 [\vb{b}]_s \equiv [\vb{b}]_z + (\nabla_s z) (\vb{k} \cdot \vb{b}).
-\end{align} Hence the covariant horizontal velocity is given by
+\end{align} Applying this operator to the horizontal velocity gives
 \begin{align}
 \vb{v}_h \equiv [\vb{u}]_s = \vb{u}_h + (\nabla_s z) w.
-\end{align}  For a time-dependent $s$ coordinate,
+\end{align}  For a time-dependent $s$ coordinate, we obtain the identity
 \begin{align}
 \left[ \pdiff{}{t} (\nabla_s z) \right]_s =& \nabla_s \left( \pdiff{z}{t} \right)_s,
-\end{align} and so, using (\ref{eq:VerticalVelocityOrthogonalS}) and (\ref{eq:PrognosticUhEquationK2S}) the evolution equation for the covariant horizontal velocity reads
+\end{align} and so can write
+\begin{align} \label{eq:CovariantExpansion}
+\left( \pdiff{\vb{v}_h}{t} \right)_s =& \left( \pdiff{\vb{u}_h}{t} \right)_s + (\nabla_s z) \left( \pdiff{w}{t} \right)_s + w \nabla_s \left( \pdiff{z}{t} \right)_s.
+\end{align}  Then using (\ref{eq:CovariantExpansion}), (\ref{eq:PrognosticWEquation}) and (\ref{eq:PrognosticUhEquationKS}) and identity
 \begin{align}
-\left( \pdiff{\vb{v}_h}{t} \right)_s =& \left( \pdiff{\vb{u}_h}{t} \right)_s + \left( \pdiff{w}{t} \right)_s (\nabla_s z) + w \nabla_s \left( \pdiff{z}{t} \right)_s \\
-%=& - \frac{1}{\rho} \nabla_z p - \nabla_z (K_2 + \Phi) - \left[ \left( \pdiff{z}{t} \right)_s - w \right] \vb{k} \times (\nabla \times \vb{u}_h)  - \zeta_h \vb{k} \times \vb{u}_h - [2 \vg{\Omega} \times \vb{u}]_z - w (\vb{u}_h \cdot \nabla \vb{k}) \\
-%& + (\nabla_s z) \left\{ \pdiff{s}{z} \left[ \left( \pdiff{z}{t} \right)_s \pdiff{w}{s} - \frac{1}{\rho} \pdiff{p}{s} - \pdiff{}{s} (K_2 + \Phi) - w \pdiff{w}{s} \right] - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right] \cdot \vb{k} \right\} \\
-%& + w \nabla_s \left( \pdiff{z}{t} \right)_s \\
-=& - \frac{1}{\rho} \nabla_s p - \nabla_s (K_2 + \Phi) + w \nabla_s \left( \pdiff{z}{t} \right)_s - w (\vb{u}_h \cdot \nabla \vb{k}) - [( \vg{\zeta} + 2 \vg{\Omega}) \times \vb{u}]_s \nonumber \\
-& \qquad - \left[ \left( \pdiff{z}{t} \right)_s - w \right] \left[ \vb{k} \times (\nabla \times \vb{u}_h) - (\nabla_s z) \left( \pdiff{s}{z} \right) \pdiff{w}{s} \right]. \label{eq:CovariantVelocityUpdateS}
-\end{align}  Again, observe that this equation simplifies significantly if $(\partial z / \partial t)_s = w$.
-
-
-%For a time-dependent $s$ coordinate,
-%\begin{align}
-%\pdiff{}{t} (\nabla_s z) =& \pdiff{}{t} \left[ - (\nabla_z s) \left( \pdiff{s}{z} \right)^{-1} \right] \\
-%=& - \left( \nabla_z \pdiff{s}{t} \right) \left( \pdiff{s}{z} \right)^{-1} + (\nabla_z s) \left( \pdiff{s}{z} \right)^{-2} \pdiff{}{z} \pdiff{s}{t} \\
-%=& - \left( \pdiff{s}{z} \right)^{-1} \nabla_s \left( \pdiff{s}{t} \right)
-%\end{align}
-%For a time-dependent $s$ coordinate,
-%\begin{align}
-%\left[ \pdiff{}{t} (\nabla_s z) \right]_s =& - \left( \nabla_z \pdiff{s}{t} \right) \left( \pdiff{s}{z} \right)^{-1} + (\nabla_z s) \left( \pdiff{s}{z} \right)^{-2} \pdiff{}{z} \pdiff{s}{t} + \left( \pdiff{z}{t} \right)_s (\vb{k} \cdot \nabla) (\nabla_s z) \\
-%=& - \left( \nabla_z \pdiff{s}{t} \right) \left( \pdiff{s}{z} \right)^{-1} + (\nabla_z s) \left( \pdiff{s}{z} \right)^{-2} \pdiff{}{z} \pdiff{s}{t} + \left( \pdiff{z}{t} \right)_s (\vb{k} \cdot \nabla) \left[ - (\nabla_z s) \left( \pdiff{s}{z} \right)^{-1} \right] \\
-%=& - \left( \pdiff{s}{z} \right)^{-1} \nabla_s \left( \pdiff{s}{t} \right) - \left( \pdiff{z}{t} \right)_s \left( \pdiff{s}{z} \right)^{-1} \nabla_z \left( \pdiff{s}{z} \right) + \left( \pdiff{z}{t} \right)_s \left( \pdiff{s}{z} \right)^{-2} (\nabla_z s) \pdiff{}{z} \pdiff{s}{z} \\
-%=& \left( \pdiff{s}{z} \right)^{-1} \left[ - \nabla_s \left( \pdiff{s}{t} \right) - \left( \pdiff{z}{t} \right)_s \nabla_s \left( \pdiff{s}{z} \right)  \right] \\
-%=& \nabla_s \left( \pdiff{z}{t} \right)_s
-%\end{align}
-
-%In the case of an Eulerian formulation with $(\partial z / \partial t)_s = 0$, we can use
-%\begin{align}
-%0 = \nabla (\vb{k} \cdot \vb{u}_h) = (\vb{k} \cdot \nabla \vb{u}_h) + (\vb{u}_h \cdot \nabla \vb{k}) + \vb{k} \times (\nabla \times \vb{u}_h)
-%\end{align} to obtain
-%\begin{align}
-%\left( \pdiff{\vb{v}_h}{t} \right)_s =& - \frac{1}{\rho} \nabla_s p - \nabla_s (K + \Phi) - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right]_s - w \left( \pdiff{s}{z} \right)^{-1} \nabla_s \left( \pdiff{s}{t} \right) - \left( \pdiff{z}{t} \right)_s (\vb{k} \cdot \nabla \vb{v}_h) 
-%\end{align}
-
-%Although a time-dependent $s$ is admitted by this equation, its fully Eulerian nature makes it difficult to use in this case since degrees of freedom are not guaranteed to align with constant $s$ surfaces.
-
-%\subsection{Floating Lagrangian Formulation}
-
-%Under the floating Lagrangian formulation, the coordinate $s$ is chosen so as to satisfy $\dot{s} = 0$.  This can be accomplished by choosing $s$ to equal potential temperature, although this has issues with monotonicity, or an imaginary conservative tracer \citep{L2004MWR} (for instance, the altitude of the fluid parcel at its initial time).
-
-%A consequence of the use of floating Lagrangian coordinates is the need for vertical remapping to avoid severe deformation of coordinate surfaces.  Several options are available, with the piecewise-parabolic method being perhaps the most widely adopted \citep{colella1984piecewise, L2004MWR}. 
-
-%In the case of time-varying $s$ coordinates, degrees of freedom are usually stored on $s$ surfaces.  To track floating surfaces of constant $s$ we define the floating Lagrangian derivative,
-%\begin{align}
-%\frac{d_s}{dt} = \pdiff{}{t} + w \vb{k} \cdot \nabla,
-%\end{align} which is used to define the tendency in variables that are allowed to ``float'' vertically along surfaces that adjust with the advection velocity.  From (\ref{eq:VerticalVelocityOrthogonal}), the vertical velocity equation then takes the form
-%\begin{align}
-%\frac{d_s w}{d t} =& \pdiff{w}{t} + w \pdiff{w}{z} \\
-%=& - \frac{1}{\rho} \left( \pdiff{s}{z} \right) \pdiff{p}{s} - \left( \pdiff{s}{z} \right) \pdiff{}{s} (K_2 + \Phi) - [ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} ] \cdot \vb{k}.
-%\end{align}  From (\ref{eq:PrognosticUhEquationK2}), the horizontal velocity equation takes the form
-%\begin{align}
-%\frac{d_s \vb{u}_h}{d t} =& \pdiff{\vb{u}_h}{t} + w \vb{k} \cdot \nabla \vb{u}_h \\
-%=& - \frac{1}{\rho} \nabla_z p - \nabla_z (K_2 + \Phi) - \zeta_h \vb{k} \times \vb{u}_h - [2 \vg{\Omega} \times \vb{u}]_z - w (\vb{u}_h \cdot \nabla \vb{k}),
-%\end{align} where we have also used
-%\begin{align}
-%w \vb{k} \cdot \nabla \vb{u}_h = - w \vb{u}_h \cdot \nabla \vb{k} - (w \vb{k}) \times (\nabla \times \vb{u}_h).
-%\end{align}  Note that under the shallow atmosphere approximation, the $(\vb{u}_h \cdot \nabla \vb{k})$ term is typically dropped.
-
-%\begin{align}
-%=& \pdiff{\vb{u}}{t} + \vb{u}_h \cdot \nabla \vb{u}_h + \vb{u}_h \cdot \nabla (w \vb{k}) \\
-%=& \pdiff{\vb{u}}{t} + \vb{u}_h \cdot \nabla \vb{u}_h + w (\vb{u}_h \cdot \nabla \vb{k}) + (\vb{u}_h \cdot \nabla w) \vb{k}.
-%\end{align}
-
-%Using (\ref{eq:CovariantProjection}), the material derivative along $s$ surfaces takes the form
-%\begin{align} \label{eq:MaterialDerivative}
-%\diff{}{t} = \pdiff{}{t} + \vb{u} \cdot \nabla = \pdiff{}{t} + \vb{v}_h \cdot \nabla + \left( \dot{s} - \pdiff{s}{t} \right) \left( \pdiff{s}{z} \right)^{-1} \pdiff{}{z} = \pdiff{}{t} + \vb{v}_h \cdot \nabla + \left( \dot{s} - \pdiff{s}{t} \right) \pdiff{}{s}.
-%\end{align}  This equation is typically used to obtain a diagnostic relationship for $\dot{s}$, utilizing $w = dz/dt$,
-%\begin{align} \label{eq:DiagnosticSDot}
-%\dot{s} = \pdiff{s}{t} + \left( \pdiff{s}{z} \right) (w - \vb{v}_h \cdot \vb{k}).
-%\end{align}
-
-%The evolution equation for the covariant velocity vector can then be derived:
-%\begin{align} \label{eq:CovariantVelocityUpdate}
-%\pdiff{\vb{v}_h}{t} =& \pdiff{}{t} \left[ \vb{u} - \left( \frac{\vb{u} \cdot \nabla s}{\vb{k} \cdot \nabla s} \right) \vb{k} \right] = \left[ \pdiff{\vb{u}}{t} \right]_s - \left( \pdiff{s}{z} \right)^{-1} \left( \vb{v}_h \cdot \nabla \pdiff{s}{t} \right) \vb{k}.
-%\end{align}  Consequently, the evolution equation is simply the projection of the evolution equation for $\vb{u}$ onto surfaces of constant $s$ plus a vertical term associated with shifting $s$ surfaces.  In practice, only the horizontal components of $\vb{v}_h$ are treated prognostically, so this term does not appear in the evolution equations.
-%\begin{align}
-
-%=& \pdiff{\vb{u}}{t} - \left( \pdiff{\vb{u}}{t} \cdot \nabla s + \vb{u} \cdot \nabla \pdiff{s}{t} \right) \left( \vb{k} \cdot \nabla s \right)^{-1} \vb{k}  + (\vb{u} \cdot \nabla s) (\vb{k} \cdot \nabla s)^{-2} \left(\vb{k} \cdot \nabla \pdiff{s}{t} \right) \vb{k} \\
-%=& \left[ \pdiff{\vb{u}}{t} \right]_s - (\vb{k} \cdot \nabla s)^{-1} \left( \vb{u} - \frac{\vb{u} \cdot \nabla s}{\vb{k} \cdot \nabla s} \vb{k} \right) \cdot \nabla \pdiff{s}{t} \vb{k} \\
-%\end{align}  
+& \left( \pdiff{z}{t} \right)_s \left( \pdiff{s}{z} \right) \left[ \pdiff{\vb{u}_h}{s} + (\nabla_s z) \pdiff{w}{s} \right] + w \nabla_s \left( \pdiff{z}{t} \right)_s \nonumber \\
+& \qquad \qquad  = \left( \pdiff{s}{z} \right) \left( \pdiff{z}{t} \right)_s \left\{ \pdiff{\vb{v}_h}{s} - \nabla_s \left[ \left( \pdiff{s}{z} \right)^{-1} w \right] \right\} + \nabla_s \left[ \left( \pdiff{z}{t} \right)_s w \right]
+\end{align} gives
+\begin{align}
+\left( \pdiff{\vb{v}_h}{t} \right)_s =& - \nabla_s \left[ K - w \left( \pdiff{z}{t} \right)_s + \Phi \right] - \frac{1}{\rho} \nabla_s p - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right]_s \\
+& \qquad + \left( \pdiff{s}{z} \right) \left( \pdiff{z}{t} \right)_s \left\{ \pdiff{\vb{v}_h}{s} - \nabla_s \left[ \left( \pdiff{s}{z} \right)^{-1} w \right] \right\}.
+\end{align}  Finally, we can expand the vorticity term and hence obtain
+\begin{align} \label{eq:CovariantUpdateEquation}
+\left( \pdiff{\vb{v}_h}{t} \right)_s =& - \nabla_s \left[ K - w \left( \pdiff{z}{t} \right)_s + \Phi \right] - \frac{1}{\rho} \nabla_s p - \left[ 2 \vg{\Omega} \times \vb{u} \right]_s \nonumber \\
+& \qquad + \left[ \vb{k} \cdot \nabla_s \times \vb{v}_h \right] (\vb{u}_h \times \vb{k}) - \dot{s} \left\{ \pdiff{\vb{v}_h}{s} - \nabla_s \left[ \left( \pdiff{s}{z} \right)^{-1} w \right] \right\} - \left( \pdiff{z}{t} \right)_s \vb{u}_h \cdot \nabla \vb{k}.
+\end{align}
 
 \subsection{Vorticity-Divergence Form}
 
-The vorticity-divergence form of the dynamical equations in the height vertical coordinate predicts the (vertical component of) vorticity and (velocity) divergence given by
-\begin{align}
-\omega_z \equiv \vb{k} \cdot \nabla_s \times \vb{u}_h,
+The vorticity-divergence form of the dynamical equations in an arbitrary vertical coordinate predicts the absolute vorticity ($\zeta_h^\ast$) and velocity divergence ($D$) given by
+\begin{align} \label{eq:AbsoluteVorticityS}
+\zeta_h^\ast = (\nabla_s \times \vb{u}_h + 2 \vg{\Omega}) \cdot \vb{k},
 \end{align} and
-\begin{align}
+\begin{align} \label{eq:DivergenceS}
 D \equiv \nabla_s \cdot \vb{u}_h,
-\end{align} respectively, instead of the horizontal velocity.
+\end{align} respectively, instead of the horizontal velocity.  The horizontal velocity can be obtained from the streamfunction $\psi$ and the velocity potential $\chi$ following
+\begin{align} \label{eq:VelocityStreamfunctionPotentialRelationship}
+\vb{u}_h = \vb{k} \times \nabla_s \psi + \nabla_s \chi.
+\end{align}  By using (\ref{eq:VelocityStreamfunctionPotentialRelationship}) in (\ref{eq:AbsoluteVorticityS}) and (\ref{eq:DivergenceS}), we obtain the elliptic equations that diagnose the streamfunction and velocity potential from the predicted velocity and divergence as
+\begin{align} \label{eq:LaplacianStreamfunctionPotential}
+\nabla_s^2 = \zeta_h^\ast - 2 \vg{\Omega} \cdot \vb{k}, \quad \mbox{and} \quad \nabla_s^2 \chi = D,
+\end{align} respectively.
 
-The vorticity prediction equation is obtained by taking the curl ($\vb{k} \cdot \nabla_s \times$) of the horizontal momentum equation as
+By taking the material derivative (\ref{eq:MaterialDerivativeS}) of (\ref{eq:AbsoluteVorticityS}) and using the horizontal momentum equation (\ref{eq:HorizontalVelocityOrthogonalS}), (\ref{eq:VelocityStreamfunctionPotentialRelationship}) and (\ref{eq:LaplacianStreamfunctionPotential}), the absolute vorticity prediction equation emerges,
 \begin{align}
-\pdiff{\omega_z}{t} + \nabla_s \cdot (\omega_z^\ast \vb{u}_h) + \pdiff{}{z} (\omega_z^\ast w) - \omega_z \pdiff{w}{z} - \pdiff{}{z} (\vb{k} \times \vb{u}_h) \cdot \nabla_s w + J(c_p \theta_v, \pi) = 0.
-\end{align} The Jacobian   is a compact form for the curl of the pressure gradient force, where is the specific heat of air at constant pressure.
+\left( \pdiff{\zeta_h^\ast}{t} \right)_s - J_s(\zeta_h^\ast, \psi) + \nabla_s \cdot (\zeta_h^\ast \nabla_s \chi) + \nabla_s \cdot \left( \dot{s} \pdiff{}{s} \nabla_s \psi \right) + \vb{k} \cdot \nabla_s \times \left( \dot{s} \pdiff{}{s} \nabla_s \chi \right) + J_s(\rho^{-1}, p) = 0,
+\end{align} where $J_s(a,b) = \vb{k} \cdot \nabla_s \times (a \nabla_s b)$ is the Jacobian operator.  It can also be shown that $\dot{s}$ relates to the vertical velocity $w$ through
+\begin{align}
+\dot{s} = \left( \pdiff{s}{z} \right) (w - w_c),
+\end{align} where
+\begin{align}
+w_c \equiv \left( \pdiff{z}{t} \right)_s + \left( \vb{k} \times \nabla_s \psi + \nabla_s \chi \right) \cdot (\nabla_s z).
+\end{align}
+
+By taking the material derivative of (\ref{eq:DivergenceS}) and using (\ref{eq:HorizontalVelocityOrthogonalS}), (\ref{eq:VelocityStreamfunctionPotentialRelationship}) and (\ref{eq:LaplacianStreamfunctionPotential}), we can obtain the divergence prediction equation
+\begin{align}
+\left( \pdiff{D}{t} \right)_s - J_s(\zeta_h^\ast, \chi) - \nabla_s \cdot (\zeta_h^\ast \nabla_s \psi) + \nabla_s \cdot \left( \dot{s} \pdiff{}{s} \nabla_s \chi \right) + \left( \vb{k} \times \pdiff{}{s} \nabla_s \psi \right) \cdot \nabla_s \dot{s} & \\
++ \nabla_s \cdot (\nabla_s K_2 + g \nabla_s z) + \nabla_s \cdot \left( \frac{1}{\rho} \nabla_s p \right) &= 0,
+\end{align}  where $K_2$ can be reformulated in terms of streamfunction and velocity potential as
+\begin{align}
+K_2 = \frac{1}{2} \left[ \nabla_s \cdot (\psi \nabla_s \psi) - \psi \nabla_s^2 \psi + \nabla_s \cdot (\chi \nabla_s \chi) - \chi \nabla_s^2 \chi \right] + J_s(\psi, \chi).
+\end{align}
+
+
 
 \subsection{Conservation Laws in Arbitrary Vertical Coordinates}
 
@@ -840,20 +835,21 @@ w = \left( \pdiff{z}{t} \right)_s + \vb{u}_h \cdot \nabla_s z + \dot{s} \left( \
 \begin{align}
 \rho_s = \alpha \left( \pdiff{s}{z} \right)^{-1} \rho,
 \end{align} and using (\ref{eq:MaterialDerivativeS}) in the form
-\begin{align} \label{eq:PrognosticPseudoDensity}
-\diff{\rho_s}{t} = \left( \diff{\rho_s}{t} \right)_s + \vb{u}_h \cdot \nabla_s \rho_s + \dot{s} \pdiff{\rho_s}{s},
-\end{align} along with (\ref{eq:DivergenceS}) leads to
 \begin{align}
-\left( \diff{\rho_s}{t} \right)_s + \nabla_s \cdot (\rho_s \vb{u}_h) + \pdiff{}{s} (\rho_s \dot{s}) = 0.
+\diff{\rho_s}{t} = \left( \pdiff{\rho_s}{t} \right)_s + \vb{u}_h \cdot \nabla_s \rho_s + \dot{s} \pdiff{\rho_s}{s},
+\end{align} along with (\ref{eq:DivergenceS}) leads to
+\begin{align} \label{eq:PrognosticPseudoDensity}
+\left( \pdiff{\rho_s}{t} \right)_s + \nabla_s \cdot (\rho_s \vb{u}_h) + \pdiff{}{s} (\rho_s \dot{s}) = 0.
 \end{align}
 
 Hence for any quantity that is conserved following a fluid parcel (\textit{i.e.}, $dq/dt = 0$),
 \begin{align}
-\pdiff{\rho_s q}{t} + \nabla_s \cdot (\rho_s q \vb{u}_h) + \pdiff{}{s} (\rho_s q \dot{s}) = 0.
+\left( \pdiff{\rho_s q}{t} \right)_s + \nabla_s \cdot (\rho_s q \vb{u}_h) + \pdiff{}{s} (\rho_s q \dot{s}) = 0.
 \end{align}  In particular, the prognostic equation for virtual potential temperature (or equivalently for potential temperature) reads
 \begin{align} \label{eq:PrognosticPseudoDensityTheta}
-\pdiff{\rho_s \theta_v}{t} + \nabla_s \cdot (\rho_s \theta_v \vb{u}_h) + \pdiff{}{s} (\rho_s \theta_v \dot{s}) = \frac{J \rho_s \theta_v}{c_p^\ast}.
+\left( \pdiff{\rho_s \theta_v}{t} \right)_s + \nabla_s \cdot (\rho_s \theta_v \vb{u}_h) + \pdiff{}{s} (\rho_s \theta_v \dot{s}) = \frac{J \rho_s \theta_v}{c_p^\ast}.
 \end{align}
+
 
 \subsection{Examples of vertical coordinates}
 
@@ -888,10 +884,6 @@ Horizontal velocity $\vb{v}_h$, geopotential $\Phi$ and $q = \log(p/\pi_h)$ are 
 Temperature $T$, vertical velocity $w$,
 generalized vertical velocity $\dot{s}$ and tracers are on thermodynamic levels. 
 
-\subsection{Vertical staggering}
-
-{\color{blue}Define Unstaggered, Lorenz and Charney-Phillips staggering here with figure}
-
 %----------------------------------------------------
 \begin{figure}[]
 \includegraphics[height=6cm]{gem_charney-phillips.png}
@@ -900,17 +892,21 @@ generalized vertical velocity $\dot{s}$ and tracers are on thermodynamic levels.
 \end{figure}
 %----------------------------------------------------
 
+\subsection{Vertical staggering}
+
+Along with the choice of prognostic variables, the vertical discretization of the equations of motion also allows for the staggered placement of prognostic variables.  As with hydrostatic models, certain discretizations give rise to spurious computational modes that can contaminate the solution \citep{tokioka1978some,arakawa1988baroclinic}.  These issues are also present in non-hydrostatic models \citep{thuburn2005vertical}, suggesting care should be taken when selecting the discretization.
+
 \subsection{Model Implementations}
 
 \subsubsection{DYNAMICO} \label{sec:DYNAMICOEquations}
 
-DYNAMICO is a shallow-atmosphere fully-compressible model based on a mass-based vertical coordinate and a Hamiltonian formulation (Dubos and Tort, 2014). Prognostic variables are pseudo-density ?s, mass-weighted tracers (potential temperature, water species), geopotential $\Phi$, ``horizontal'' covariant components of momentum and mass-weighted vertical momentum $W = \rho_s g^{-2} d\Phi/dt = \rho_s g^{-1} w$. Prognostic equations are in flux-form for mass, tracers and $W$, in advective form for $\Phi$ and in vector-invariant form for ``horizontal'' momentum.
+DYNAMICO is a shallow-atmosphere fully-compressible model based on a mass-based vertical coordinate and a Hamiltonian formulation (Dubos and Tort, 2014). Prognostic variables are pseudo-density $\rho_s$, mass-weighted tracers (potential temperature, water species), geopotential $\Phi$, ``horizontal'' covariant components of momentum and mass-weighted vertical momentum $W = \rho_s g^{-2} d\Phi/dt = \rho_s g^{-1} w$. Prognostic equations are in flux-form for mass, tracers and $W$, in advective form for $\Phi$ and in vector-invariant form for ``horizontal'' momentum.
 
 \subsubsection{FV$^3$} \label{sec:FV3Equations}
 
-The hydrostatic FV$^3$ model uses a mass-based floating Lagrangian coordinate along with the shallow-atmosphere approximation \citep{L2004MWR}.  Prognostic equations include horizontal momentum (\ref{eq:CovariantVelocityUpdate}) in 2D vector-invariant form (\ref{eq:PrognosticUhEquationK2}), pseudo-density (\ref{eq:PrognosticPseudoDensity}), and virtual potential temperature (\ref{eq:PrognosticPseudoDensityTheta}).  The non-hydrostatic model further incorporates prognostic geopotential (\ref{eq:PrognosticShallowGeopotential}) and vertical momentum (\ref{eq:PrognosticWEquationK2}).
+The hydrostatic FV$^3$ model uses a mass-based floating Lagrangian coordinate along with the shallow-atmosphere approximation \citep{L2004MWR}.  Prognostic equations include horizontal velocity in 2D vector-invariant form (\ref{eq:PrognosticUhEquationK2}), pseudo-density (\ref{eq:PrognosticPseudoDensity}), and virtual potential temperature (\ref{eq:PrognosticPseudoDensityTheta}).  The non-hydrostatic model further incorporates prognostic geopotential (\ref{eq:PrognosticShallowGeopotential}) and vertical momentum (\ref{eq:PrognosticWEquationK2}).
 
-\subsection{FVM} \label{sec:FVMEquations}
+\subsubsection{FVM} \label{sec:FVMEquations}
 
 The fully compressible Euler equations solved in FVM are given as
 \begin{subequations} \label{fvm:compressible}
@@ -1010,7 +1006,7 @@ In addition to the primitive equation model, HOMME also hosts an experimental no
 
 \subsubsection{ICON} \label{sec:ICONEquations}
 
-ICON is a shallow-atmosphere Eulerian model based on \cite{gassmann2008} with terrain-following $z$-coordinates with prognostic density (\ref{eq:PrognosticPseudoDensity}), virtual potential temperature (\ref{eq:PrognosticPseudoDensityTheta}), and vector-invariant form for horizontal momentum in vector-invariant form (\ref{eq:HorizontalVelocityOrthogonal}) and vertical momentum (\ref{eq:VerticalVelocityOrthogonal}).  As with tempest, specific heat capacities and ideal gas constant are approximated by their dry values.  The model also uses a prognostic equation for Exner pressure to simplify vertical sound wave propagation, given by
+ICON is a shallow-atmosphere Eulerian model based on \cite{gassmann2008} with terrain-following $z$-coordinates with prognostic density (\ref{eq:EulerianContinuityEquation}), virtual potential temperature (\ref{eq:PrognosticPseudoDensityTheta}), and vector-invariant form for horizontal momentum in vector-invariant form (\ref{eq:HorizontalVelocityOrthogonal}) and vertical momentum (\ref{eq:VerticalVelocityOrthogonal}).  As with tempest, specific heat capacities and ideal gas constant are approximated by their dry values.  The model also uses a prognostic equation for Exner pressure to simplify vertical sound wave propagation, given by
 \begin{align}
 \pdiff{\pi}{t} + \frac{R_d}{c_{vd}} \frac{\pi}{\rho \theta_v} \nabla \cdot (\vb{u}_h \rho \theta_v) = \hat{Q},
 \end{align} where $\hat{Q}$ is an appropriately formulated diabatic heat term.
@@ -1019,7 +1015,7 @@ The horizontal uses a Arakawa C-grid formulation on the triangular grid to progn
 
 \subsubsection{Tempest} \label{sec:TempestEquations}
 
-Tempest is a shallow-atmosphere Eulerian model with terrain-following $z$-coordinates with prognostic density (\ref{eq:PrognosticPseudoDensity}), virtual potential temperature (\ref{eq:PrognosticPseudoDensityTheta}), and vector-invariant form for horizontal momentum with $(\partial z / \partial t)_s = 0$ (\ref{{eq:CovariantVelocityUpdateS}}) and vertical momentum (\ref{eq:VerticalVelocityOrthogonal}).  The specific heat capacities and ideal gas constant are approximated to be equal to their dry values $R^\ast \approx R_d$, $c^\ast_p \approx c_{pd}$ and $c^\ast_v \approx c_{vd}$.
+Tempest is a shallow-atmosphere Eulerian model with terrain-following $z$-coordinates with prognostic density (\ref{eq:PrognosticPseudoDensity}), virtual potential temperature (\ref{eq:PrognosticPseudoDensityTheta}), and vector-invariant form for covariant horizontal velocity (\ref{eq:CovariantUpdateEquation}) and vertical momentum (\ref{eq:VerticalVelocityOrthogonal}).  The specific heat capacities and ideal gas constant are approximated to be equal to their dry values $R^\ast \approx R_d$, $c^\ast_p \approx c_{pd}$ and $c^\ast_v \approx c_{vd}$.
 
 %In the horizontal, Tempest utilizes a spectral-element formulation.
 
@@ -1027,7 +1023,11 @@ Tempest is a shallow-atmosphere Eulerian model with terrain-following $z$-coordi
 
 \section{Diffusion, Stabilization, Filters and Fixers} \label{sec:DiffusionStabilization}
 
-Most dynamical cores implement specialized techniques for diffusion or stabilization.  Diffusion is a numerical technique that removes spurious numerical noise from the simulation, where the numerical noise typically arises because of inaccuracies in the treatment of waves with wavelengths near the grid scale.  Stabilization is a numerical technique that prevents energy growth and allows the model to be run over long periods.  Diffusion or stabilization options include physically-motivated turbulence parameterizations, added viscosity or hyperviscosity terms with tunable coefficients, or wave-mode filters.  Since the discretization can also lead to an unphysical loss of mass or energy, mass or energy fixers are also employed to replace lost mass or energy to the system.  A comprehensive overview of schemes for diffusion and stabilization schemes can be found in \cite{jablonowski2011pros}.  In this section we discuss some of the diffusion and stabilization strategies employed by the DCMIP suite of dynamical cores.
+Most dynamical cores implement specialized techniques for diffusion or stabilization.  Diffusion is a numerical technique that removes spurious numerical noise from the simulation, where the numerical noise typically arises because of inaccuracies in the treatment of waves with wavelengths near the grid scale.  Stabilization is a numerical technique that prevents energy growth and allows the model to be run over long periods.  Diffusion or stabilization options include physically-motivated turbulence parameterizations, added viscosity or hyperviscosity terms with tunable coefficients, off-centering, or wave-mode filters.  Since the discretization can also lead to an unphysical loss of mass or energy, mass or energy fixers are also employed to replace lost mass or energy to the system.  A comprehensive overview of schemes for diffusion and stabilization schemes can be found in \cite{jablonowski2011pros}.  In this section we discuss some of the diffusion and stabilization strategies employed by the DCMIP suite of dynamical cores.
+
+\subsection{HOMME / Tempest}
+
+In both HOMME and Tempest, scalar hyperviscosity is employed for $\rho$, $\theta$ and tracer variables via repeated application of a scalar Laplacian \citep{ullrich2014global}.  Vector hyperviscosity is also applied by decomposing the horizontal vector Laplacian into divergence damping (\ref{eq:divergence_damping}) and vorticity damping (\ref{eq:vorticity_damping}) terms.  Both viscosity operations are applied after the completion of all Runge-Kutta sub-cycles.
 
 \subsection{ICON}
 
@@ -1059,50 +1059,40 @@ A fourth-order computational diffusion is also available for vertical wind speed
 F_{D}(w) = - k_w a_c^2 \nabla^2 (\nabla^2(w)) 
 \end{align}
 
-\subsection{FV3}
+\subsection{FV$^3$}
 
 Explicit dissipation in FV$^3$ is applied separately to the divergence and to the horizontal fluxes in the governing equations. The D-grid discretization applies no direct implicit dissipation to the divergence, so divergence damping is an intrinsic part of the solver algorithm since otherwise there are no processes by which energy contained in the divergent modes is removed at the grid scale.  FV$^3$ has options for fourth-, sixth-, or eighth-order divergence damping; a second-order option is also available for use in idealized convergence tests, which can be applied in addition to the higher-order diffusion. The monotonicity constraint used in computing the fluxes in the  momentum, thermodynamic, and mass continuity equations is sufficient to damp and stabilize the non-divergent component of the flow. If additional damping is desired, or if the monotonicity constraint has been disabled, there is an option to apply hyperdiffusion to the fluxes in each of these equations, with the exception of the tracer transport, which always uses monotonic transport with no explicit diffusion. This dissipation is of the same order of accuracy as the divergence damping; however the nondimensional coefficient needed is much smaller, usually by at least 3--4 times, than the divergence damping. Both divergence damping and hyperdiffusion are applied along the Lagrangian surfaces and are re-computed every acoustic timestep; there is no explicit damping perpendicular to the Lagrangian surfaces. An option to convert kinetic energy lost to the hyperdiffusion to heat is available. FV$^3$ can also apply a horizontal Smagorinsky eddy diffusion if desired.
 
-A substantial amount of wave absorption is provided by the flexible-lid (constant-pressure) upper boundary;  FV$^3$ also applies second-order diffusion to all fields, except the tracers, to create a sponge layer, typically comprising the top two layers of the domain, to damp other signals reaching the top of the domain. An energy-conserving Rayleigh damping, applied consistently to all three components of the winds, is also available, which is strongest in the top layer of the domain and becomes weaker with distance until reaching a runtime-specified cut-off pressure. 
+Wave absorption at the model top is also provided by the flexible-lid (constant-pressure) upper boundary;  FV$^3$ also applies second-order diffusion to all fields, except the tracers, to create a sponge layer, typically comprising the top two layers of the domain, to damp other signals reaching the top of the domain. An energy-conserving Rayleigh damping, applied consistently to all three components of the winds, is also available, which is strongest in the top layer of the domain and becomes weaker with distance until reaching a runtime-specified cut-off pressure. 
 
 FV$^3$ has an option to restore lost energy by the adiabatic dynamics, in whole or a fraction thereof (decided by a namelist option at runtime), by globally adding a Exner-function weighted potential temperature increment. This is only done before the physics is called and is not used in idealized simulations. 
 
 \subsection{GEM}
 
-Via an application of (\ref{eq:scalar_viscosity_direct}),
-scalar viscosity is employed for wind components and tracers. 
-A vertical sponge layer, also via an application of (\ref{eq:scalar_viscosity_direct}),
-is employed on wind components and $T_v$ with a vertical modulation on the 6 top levels 
-and a maximum damping coefficient of $.380000 \times 10^{6}\ \mbox{m\textsuperscript{2}/s}$ at the top.
-For stabilization purpose, 
-the temporal discretization of GEM presented  
-in section \ref{sec:GEM_temporal} uses an off-centering parameter $b^{A} = 0.6$.
-
-In GEM model, shape-preserving solutions are computed for tracers by using the quasi-monotone semi-Lagrangian (QMSL) method \citep{Bermejo1992QMSL}. 
-
-
-\subsection{Tempest}
-
-{\color{blue}Repeated application of the scalar and vector viscosity operators}
+Diffusion in GEM is handled via application of a Laplacian, for both wind components and tracers. 
+A vertical sponge layer, which also uses the formulation (\ref{eq:scalar_viscosity_direct}), is employed on wind components and $T_v$ with a vertical modulation on the topmost levels.  For stabilization purpose, the temporal discretization of GEM also uses an off-centering parameter.  Shape-preserving solutions to the tracer advection equation are also computed for tracers by using the quasi-monotone semi-Lagrangian (QMSL) method \citep{Bermejo1992QMSL}. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Temporal Discretizations} \label{sec:TemporalDiscretizations}
 
-{\color{red}[ALL] Describe the time-stepping scheme / temporal discretization employed by your dynamical core here.}
+There is a wide diversity of temporal discretizations available among global atmospheric models
 
-\subsection{Ullrich-Kinnmark-Gray 5 step 3rd order scheme} \label{sec:UKG53Scheme}
+\subsection{Split-Explicit Methods}
 
-Explicit terms are evolved using a Runge-Kutta method which supports a large stability bound for spatial discretizations with purely imaginary eigenvalues. This particular scheme is based on \cite{kinnmark1984onestepA, kinnmark1984onestepB} and takes the form
-\begin{align}
-\psi^{(1)} &= \psi^{(0)} + \tfrac{\Delta t}{5} f(\psi^{(0)}), \nonumber \\
-\psi^{(2)} &= \psi^{(0)} + \tfrac{\Delta t}{5} f(\psi^{(1)}), \nonumber \\
-\psi^{(3)} &= \psi^{(0)} + \tfrac{\Delta t}{3} f(\psi^{(2)}), \\
-\psi^{(4)} &= \psi^{(0)} + \tfrac{2 \Delta t}{3} f(\psi^{(3)}), \nonumber \\
-\psi^{(5)} &= -\tfrac{1}{4} \psi^{(0)} + \tfrac{5}{4} \psi^{(1)} + \tfrac{3 \Delta t}{4} f(\psi^{(4)}). \nonumber
-\end{align}
+\subsection{Mixed Implicit-Explicit, Forward-Backward, Semi-Implicit and Additive Runge-Kutta Schemes}
 
-\subsection{Semi-implicit time integration of the fully compressible Euler equations in FVM}
+Implicit-explicit schemes are a broad category of time integration schemes that divide the terms of the prognostic equations into a set of explicitly integrated terms and implicitly integrated terms.  At the very least, terms associated with vertically propagating sound waves are included among the implicit terms.  For the remaining terms, there is some freedom in choosing how to integrate terms associated with vertical advection and horizontally propagating sound waves.  Semi-implicit schemes are one such class of schemes that typically incorporate horizontally propagating sound waves into the implicit solve, and so rely on a global Helmholtz-type solve.  Additive Runge-Kutta schemes are another mechanism to ensure high-order temporal accuracy, and many such schemes have been described throughout the literature (see, for example, \cite{weller2013runge, ullrich2012operator}).  Several examples of these schemes can be found among the DCMIP models:  
+
+FV$^3$ and its predecessors are integrated using a forward-backwards integration for the Lagrangian dynamics. With the exception of the pressure-gradient force, all of the terms in the momentum, energy, and mass equations are expressable as fluxes, and so can be integrated using the explicit forward-in-time algorithm described by \citet{LR1997QJR}. The horizontal component of the pressure-gradient force is evaluated backwards-in-time using the algorithm of \citet{L1997QJR}; the non-hydrostatic component of the vertical pressure gradient force is evaluated using a semi-implicit solver. This forward-backward timestep is referred to as the ``acoustic'' timestep, although the full solver is advanced on each of these acoustic timesteps. Physics tendencies are applied impulsively at prescribed intervals, consistent with the forward-in-time discretization; the physics timestep is typically much longer than the acoustic timestep. 
+
+DYNAMICO uses an additive Runge-Kutta time scheme with two Butcher tableaus, one explicit and one implicit. A Hamiltonian splitting decides which terms of the equations of motion are treated explicitly or implicitly (Dubos and Dubey, in preparation). As a result the implicit terms couple the vertical acceleration due to the pressure gradient and the adiabatic pressure change due to vertical displacements of fluid parcels. The resulting implicit problem reduces to independent, scalar, purely vertical, nonlinear problems which are solved to machine precision in two Newton iterations involving one tridiagonal solve each. The overall time scheme has a HEVI (horizontally explicit, vertically implicit) structure. Currently the second-order 3-stage scheme ARK(2,3,2) is used \citep{giraldo2013implicit}.
+
+ICON consists of a two-time-level predictor corrector scheme, which is explicit for all terms except for those describing the vertical propagation of sound waves. No time splitting is used with respect to sound waves, because the ratio of the maximum wind speed in the mesosphere, which is in part covered by the vertical domain, can be close to one. Instead time splitting is employed to dynamics on the one hand and horizontal diffusion, tracer transport, fast physics on the other hand. Typically a full time step consists of 4 or 5 dynamical sub-steps in which a constant forcing originating from the slow physics is applied. Mass-consistent transport is achieved by passing time-averaged air-mass fluxes from the dynamical sub-steps to the transport scheme.The details of the predictor corrector scheme, including measures to increase the numerical efficiency and to optimize the accuracy, are described in section 2.4 of \cite{zangl2014}. 
+
+Tempest uses the ARS(2,3,2) scheme described in \cite{ascher1997implicit}, with all horizontal and vertical advection terms treated explicitly and the remaining vertical terms, associated with sound wave propagation, treated implicitly.
+
+\subsection{Semi-Implicit methods}
 
 In the following we provide an outline of the semi-implicit time stepping scheme for the fully 
 compressible Euler equations in FVM (Section~\ref{sec:FVM}). 
@@ -1119,9 +1109,9 @@ The generic two-time-level second-order template algorithm employed in the integ
 In \eqref{fvm:solscalar}, $\psi$ represents the solution variable, $R^{\psi}$ is the respective rhs,
 and $\mathcal{A}$ symbolises an advective transport operator assumed here to be the non-oscillatory 
 finite-volume MPDATA (Multidimensional Positive Definite Advection Transport Algorithm) scheme 
-\citep{smolarkiewiczszmelter2005,kuehnleinJCP2016}~\footnote{Furthermore, 
+\citep{smolarkiewiczszmelter2005,kuehnleinJCP2016}.  Furthermore, 
 in \eqref{fvm:solscalar} the vector index $\mathbf{i}$ denotes the spatial position 
-on the computational grid, $\Delta t$ is the time step size between levels $n$ and $n+1$.}. 
+on the computational grid, $\Delta t$ is the time step size between levels $n$ and $n+1$.
 
 The integration of the system \eqref{fvm:compressible} can basically be divided into three steps. First, the homogenous
 mass continuity equation is integrated with $\psi \equiv \rho_d$, $\mathbf{V} \equiv \mathbf{v}\mathcal{G} $,
@@ -1156,23 +1146,8 @@ executed in an outer iteration.
 %\Psi_{\mbf{i}}^{n+1}= \mathcal{A}_{\mbf{i}}(\widetilde{\Psi}^{n},(\rho \mathcal{G} v^{\perp})^{n+1/2}, (\rho\mathcal{G})^{n}, (\rho\mathcal{G})^{n+1})
 %+0.5\,\delta t\,R^{\Psi}|
 
-\subsection{Forward-backward vertically-Lagrangian dynamics}
-
-%%%GFDL start
-
-FV$^3$ and its predecessors are integrated using a forward-backwards integration for the Lagrangian dynamics. With the exception of the pressure-gradient force, all of the terms in the momentum, energy, and mass equations are expressable as fluxes, and so can be integrated using the explicit forward-in-time algorithm described by \citet{LR1997QJR}. The horizontal component of the pressure-gradient force is evaluated backwards-in-time using the algorithm of \citet{L1997QJR}; the non-hydrostatic component of the vertical pressure gradient force is evaluated using a semi-implicit solver. This forward-backward timestep is referred to as the ``acoustic'' timestep, although the full solver is advanced on each of these acoustic timesteps. Physics tendencies are applied ``impulsively'' at prescribed intervals, consistent with the forward-in-time discretization; the physics timestep is typically much longer than the acoustic timestep. 
-%%%GFDL end
-
-\subsection{DYNAMICO}
-
-DYNAMICO uses an additive Runge-Kutta time scheme with two Butcher tableaus, one explicit and one implicit. A Hamiltonian splitting decides which terms of the equations of motion are treated explicitly or implicitly (Dubos and Dubey, in preparation). As a result the implicit terms couple the vertical acceleration due to the pressure gradient and the adiabatic pressure change due to vertical displacements of fluid parcels. The resulting implicit problem reduces to independent, scalar, purely vertical, nonlinear problems which are solved to machine precision in two Newton iterations involving one tridiagonal solve each. The overall time scheme has a HEVI (horizontally explicit, vertically implicit) structure. Currently the second-order 3-stage scheme ARK(2,3,2) is used \citep{giraldo2013implicit}.
-
-\subsection{ICON}
-
-The time stepping scheme of ICON consists of a two-time-level predictor corrector scheme, which is explicit for all terms except for those describing the vertical propagation of sound waves. No time splitting is used with respect to sound waves, because the ration of the maximum wind speed in the mesosphere, which is in part covered by the vertical domain, can be close to one. Instead time splitting is employed to dynamics on the one hand and horizontal diffusion, tracer transport, fast physics on the other hand. Typically a full time step consists of 4 or 5 dynamical sub-steps in which a constant forcing originating from the slow physics is applied. Mass-consistent transport is achieved by passing time-averaged air-mass fluxes from the dynamical sub-steps to the transport scheme.The details of the predictor corrector scheme, including measures to increase the numerical efficiency and to optimize the accuracy, are described in section 2.4 of \cite{zangl2014}. 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection { The 2 time level semi-Lagrangian implicit time discretization in GEM model} \label{sec:GEM_temporal}
+\subsubsection { The 2 time level semi-Lagrangian implicit time discretization in GEM model} \label{sec:GEM_temporal}
 
 Consider a frictionless adiabatic prognostic equation of the form:
 \begin{equation} 
@@ -1232,7 +1207,7 @@ At each time step, the cubic Lagrange interpolation is used to update the static
 
 \section{Idealized Physical Parameterizations} \label{sec:IdealizedPhysics}
 
-{\color{red}[Perhaps move this to paper 2?]}
+{\color{red}[This will be moved to paper 2?]}
 
 \subsection{Kessler Physics} \label{sec:KesslerPhysics}
 

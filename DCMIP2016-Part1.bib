@@ -19,6 +19,37 @@
   publisher={Elsevier}
 }
 
+@article{weller2013runge,
+  title={Runge--Kutta IMEX schemes for the horizontally explicit/vertically implicit (HEVI) solution of wave equations},
+  author={Weller, Hilary and Lock, Sarah-Jane and Wood, Nigel},
+  journal={Journal of Computational Physics},
+  volume={252},
+  pages={365--381},
+  year={2013},
+  publisher={Elsevier}
+}
+
+@article{ullrich2012operator,
+  title={Operator-split Runge--Kutta--Rosenbrock methods for nonhydrostatic atmospheric models},
+  author={Ullrich, Paul and Jablonowski, Christiane},
+  journal={Monthly Weather Review},
+  volume={140},
+  number={4},
+  pages={1257--1284},
+  year={2012}
+}
+
+@article{ascher1997implicit,
+  title={Implicit-explicit Runge-Kutta methods for time-dependent partial differential equations},
+  author={Ascher, Uri M and Ruuth, Steven J and Spiteri, Raymond J},
+  journal={Applied Numerical Mathematics},
+  volume={25},
+  number={2-3},
+  pages={151--167},
+  year={1997},
+  publisher={Elsevier}
+}
+
 @article{schar2002new,
   title={A new terrain-following vertical coordinate formulation for atmospheric prediction models},
   author={Sch{\"a}r, Christoph and Leuenberger, Daniel and Fuhrer, Oliver and L{\"u}thi, Daniel and Girard, Claude},
@@ -68,6 +99,36 @@
   number={7},
   pages={509--522},
   year={1974}
+}
+
+@article{tokioka1978some,
+  title={Some considerations on vertical differencing},
+  author={Tokioka, Tatsushi},
+  journal={Meteorological Society of Japan Journal},
+  volume={56},
+  pages={98--111},
+  year={1978}
+}
+
+@article{arakawa1988baroclinic,
+  title={Baroclinic instability in vertically discrete systems},
+  author={Arakawa, Akio and Moorthi, Shrinivas},
+  journal={Journal of the atmospheric sciences},
+  volume={45},
+  number={11},
+  pages={1688--1708},
+  year={1988}
+}
+
+@article{thuburn2005vertical,
+  title={Vertical discretizations for compressible Euler equation atmospheric models giving optimal representation of normal modes},
+  author={Thuburn, J and Woollings, TJ},
+  journal={Journal of Computational Physics},
+  volume={203},
+  number={2},
+  pages={386--404},
+  year={2005},
+  publisher={Elsevier}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -147,53 +208,12 @@
     year = {2014}
 }
 
-@article{Thuburn2009Numerical,
-    abstract = {A C-grid staggering, in which the mass variable is stored at cell centers and the normal velocity component is stored at cell faces (or edges in two dimensions) is attractive for atmospheric modeling since it enables a relatively accurate representation of fast wave modes. However, the discretization of the Coriolis terms is non-trivial. For constant Coriolis parameter, the linearized shallow water equations support geostrophic modes: stationary solutions in geostrophic balance. A naive discretization of the Coriolis terms can cause geostrophic modes to become non-stationary, causing unphysical behaviour of numerical solutions. Recent work has shown how to discretize the Coriolis terms on a planar regular hexagonal grid to ensure that geostrophic modes are stationary while the Coriolis terms remain energy conserving. In this paper this result is extended to arbitrarily structured C-grids. An explicit formula is given for constructing an appropriate discretization of the Coriolis terms. The general formula is illustrated by showing that it recovers previously known results for the planar regular hexagonal C-grid and the spherical longitude–latitude C-grid. Numerical calculation confirms that the scheme does indeed give stationary geostrophic modes for the hexagonal–pentagonal and triangular geodesic C-grids on the sphere.},
-    author = {Thuburn, J. and Ringler, T. D. and Skamarock, W. C. and Klemp, J. B.},
-    citeulike-article-id = {5488215},
-    citeulike-linkout-0 = {http://dx.doi.org/10.1016/j.jcp.2009.08.006},
-    day = {01},
-    issn = {00219991},
-    journal = {Journal of Computational Physics},
-    junk = {10.1016/j.jcp.2009.08.006},
-    junk = {http://dx.doi.org/10.1016/j.jcp.2009.08.006},
-    keywords = {icosahedron},
-    month = dec,
-    number = {22},
-    pages = {8321--8335},
-    posted-at = {2010-09-03 10:46:05},
-    priority = {2},
-    title = {Numerical representation of geostrophic modes on arbitrarily structured C-grids},
-    volume = {228},
-    year = {2009}
-}
-
-@article{Ringler2010Unified,
-    abstract = {A numerical scheme applicable to arbitrarily-structured C-grids is presented for the nonlinear shallow-water equations. By discretizing the vector-invariant form of the momentum equation, the relationship between the nonlinear Coriolis force and the potential vorticity flux can be used to guarantee that mass, velocity and potential vorticity evolve in a consistent and compatible manner. Underpinning the consistency and compatibility of the discrete system is the construction of an auxiliary thickness equation that is staggered from the primary thickness equation and collocated with the vorticity field. The numerical scheme also exhibits conservation of total energy to within time-truncation error. Simulations of the standard shallow-water test cases confirm the analysis and show convergence rates between 1st - and 2nd -order accuracy when discretizing the system with quasi-uniform spherical Voronoi diagrams. The numerical method is applicable to a wide class of meshes, including latitude–longitude grids, Voronoi diagrams, Delaunay triangulations and conformally-mapped cubed-sphere meshes.},
-    author = {Ringler, T. D. and Thuburn, J. and Klemp, J. B. and Skamarock, W. C.},
-    citeulike-article-id = {6462581},
-    citeulike-linkout-0 = {http://dx.doi.org/10.1016/j.jcp.2009.12.007},
-    day = {01},
-    issn = {00219991},
-    journal = {Journal of Computational Physics},
-    junk = {10.1016/j.jcp.2009.12.007},
-    junk = {http://dx.doi.org/10.1016/j.jcp.2009.12.007},
-    month = may,
-    number = {9},
-    pages = {3065--3090},
-    posted-at = {2010-05-10 23:07:02},
-    priority = {2},
-    title = {A unified approach to energy conservation and potential vorticity dynamics for arbitrarily-structured C-grids},
-    volume = {229},
-    year = {2010}
-}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FV3
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 @article{lin2004vertically,
-  title={A ?vertically Lagrangian? finite-volume dynamical core for global models},
+  title={A ``vertically Lagrangian'' finite-volume dynamical core for global models},
   author={Lin, Shian-Jiann},
   journal={Monthly Weather Review},
   volume={132},
@@ -791,6 +811,62 @@ year = {1977}
   volume = 59,
   pages = {1109-1134},
   doi = {10.2478/s11600-011-0043-z}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MPAS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@article{skamarock2012multiscale,
+  title={A multiscale nonhydrostatic atmospheric model using centroidal Voronoi tesselations and C-grid staggering},
+  author={Skamarock, William C and Klemp, Joseph B and Duda, Michael G and Fowler, Laura D and Park, Sang-Hun and Ringler, Todd D},
+  journal={Monthly Weather Review},
+  volume={140},
+  number={9},
+  pages={3090--3105},
+  year={2012}
+}
+
+@article{thuburn2009numerical,
+  title={Numerical representation of geostrophic modes on arbitrarily structured C-grids},
+  author={Thuburn, John and Ringler, Todd D and Skamarock, William C and Klemp, Joseph B},
+  journal={Journal of Computational Physics},
+  volume={228},
+  number={22},
+  pages={8321--8335},
+  year={2009},
+  publisher={Elsevier}
+}
+
+@article{ringler2010unified,
+  title={A unified approach to energy conservation and potential vorticity dynamics for arbitrarily-structured C-grids},
+  author={Ringler, Todd D and Thuburn, John and Klemp, Joseph B and Skamarock, William C},
+  journal={Journal of Computational Physics},
+  volume={229},
+  number={9},
+  pages={3065--3090},
+  year={2010},
+  publisher={Elsevier}
+}
+
+@article{klemp2007conservative,
+  title={Conservative split-explicit time integration methods for the compressible nonhydrostatic equations},
+  author={Klemp, Joseph B and Skamarock, William C and Dudhia, Jimy},
+  journal={Monthly Weather Review},
+  volume={135},
+  number={8},
+  pages={2897--2913},
+  year={2007}
+}
+
+@article{skamarock2011conservative,
+  title={Conservative transport schemes for spherical geodesic grids: High-order flux operators for ODE-based time integration},
+  author={Skamarock, William C and Gassmann, Almut},
+  journal={Monthly Weather Review},
+  volume={139},
+  number={9},
+  pages={2962--2975},
+  year={2011}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
