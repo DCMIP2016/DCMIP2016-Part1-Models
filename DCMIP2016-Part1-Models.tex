@@ -122,7 +122,7 @@
 \Author[10]{Marco}{Giorgetta}
 \Author[11]{Daniel}{Reinert}
 
-\Author[12]{Christian}{Kuehnlein}
+\Author[12]{Christian}{K\"uhnlein}
 
 \Author[13]{Robert}{Walko}
 
@@ -155,7 +155,7 @@
 \affil[9]{Geophysical Fluid Dynamics Laboratory}
 \affil[10]{Max Planck Institute for Meteorology}
 \affil[11]{Deutscher Wetterdienst (DWD)}
-\affil[12]{European Center for Medium-Range Weather Forecasting}
+\affil[12]{European Centre for Medium-Range Weather Forecasts}
 \affil[13]{University of Miami}
 \affil[14]{Environment Canada}
 \affil[15]{University of Tokyo}
@@ -291,7 +291,7 @@ This section provide a short description of unique features or design specificat
 CSU & Colorado State University Model & Colorado State University \\
 DYNAMICO & DYNAMICO & Institut Pierre Simon Laplace (IPSL), France \\
 FV$^3$ & Finite Volume Cubed Model & Geophysical Fluid Dynamics Laboratory \\
-FVM & Finite Volume Module of the Integrated Forecast System & European Center for Medium-Range Weather Forecasting \\
+FVM & Finite Volume Module of the Integrated Forecasting System & European Centre for Medium-Range Weather Forecasts \\
 GEM & Global Environmental Multiscale model & Environment Canada \\
 HOMME & High-Order Method Modeling Environment & Sandia National Laboratories / University of Colorado, Boulder \\
 ICON & Icosahedral Non-hydrostatic model & Max-Planck-Institut f\"ur Meteorologie \\
@@ -339,7 +339,7 @@ of acoustic, buoyant, and rotational modes \citep{smolarkiewiczJCP2014}. The ass
 Helmholtz problem is solved iteratively using a bespoke preconditioned Generalised 
 Conjugate Residual approach. 
 The integration procedure uses the multidimensional flux-form Eulerian non-oscillatory MPDATA 
-advection scheme \citep{smolarkiewiczszmelter2005,kuehnleinJCP2016}. 
+advection scheme \citep{smolarkiewiczszmelter2005,kuehnleinJCP2017}. 
 The horizontal spatial discretization is fully unstructured finite-volume using the 
 median-dual approach. This is combined with a structured-grid finite-difference approach in the 
 vertical direction; see \cite{smolarkiewiczetalJCP2016} for an exposition. 
@@ -1109,7 +1109,7 @@ The generic two-time-level second-order template algorithm employed in the integ
 In \eqref{fvm:solscalar}, $\psi$ represents the solution variable, $R^{\psi}$ is the respective rhs,
 and $\mathcal{A}$ symbolises an advective transport operator assumed here to be the non-oscillatory 
 finite-volume MPDATA (Multidimensional Positive Definite Advection Transport Algorithm) scheme 
-\citep{smolarkiewiczszmelter2005,kuehnleinJCP2016}.  Furthermore, 
+\citep{smolarkiewiczszmelter2005,kuehnleinJCP2017}.  Furthermore, 
 in \eqref{fvm:solscalar} the vector index $\mathbf{i}$ denotes the spatial position 
 on the computational grid, $\Delta t$ is the time step size between levels $n$ and $n+1$.
 
