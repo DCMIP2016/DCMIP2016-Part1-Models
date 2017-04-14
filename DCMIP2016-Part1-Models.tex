@@ -254,9 +254,7 @@ $q_i$ & General tracer mixing ratio \\
 
 \section{Dynamical Cores} \label{sec:DynamicalCores}
 
-This section provide a brief overview of key discretization choices, along with unique features or design specifications from participating dynamical cores.  Further details on these choices can be found in subsequent sections.  Simulation results and model descriptions have been submitted from ten dynamical cores (see Table \ref{tab:Models}).  Although all models solve the Euler equations (or a close approximation of these equations), essentially every model employs a different formulation with a distinct set of prognostic variables.  {\color{red}[Maybe move to a separate paper?] The derivation of many of these formulations can be found in Appendix \ref{sec:EquationSets}.}  The particular choice of equation set,  that have been made by these models.
-
-A tabulation of the dynamical cores that have submitted simulation results and model descriptions can be found in Table \ref{tab:Models}.
+This section provide a brief overview of key discretization choices, along with unique features or design specifications from participating dynamical cores.  Further details on these choices can be found in subsequent sections.  Simulation results and model descriptions have been submitted from ten dynamical cores (see Table \ref{tab:Models}).  Although all models solve the Euler equations (or a close approximation of these equations), essentially every model employs a different formulation with a distinct set of prognostic variables.  {\color{red}[Maybe move to a separate paper?] The derivation of many of these formulations can be found in Appendix \ref{sec:EquationSets}.}  The prognostic variables employed and horizontal discretizations for these dynamical cores are summarized in Table \ref{tab:ModelsHorizontal}.  The vertical coordinate chosen by these models and vertical staggering of variables is summarized in Table \ref{tab:ModelsVertical}.  Standard options for diffusion, stabilization, filters, or fixers along with the temporal discretization for these models is summarized in Table \ref{tab:ModelsTemporalDiffusion}.  
 
 \begin{table}[h]
 \caption{Participating modeling centers and associated dynamical cores that have submitted simulation results.} \label{tab:Models}
@@ -286,11 +284,11 @@ Tempest & Tempest Non-hydrostatic Atmospheric Model & University of California, 
 \hline Acronym & Equation set & Prognostic Variables & Horizontal Grid & Numerical & Horizontal  \\
 & & & & method & staggering \\ \hline
 CSU & NH (Unified) & $\zeta$, $D$, $w$, $p_s$, $\theta_v$, $q$ & Geodesic (\S \ref{sec:grid_geo}) & FV & Z-grid \\
-DYNAMICO & H/NH {\color{red}(D)} & $\vb{v}_h$, $\rho_s w$, $\rho_s$, $\rho_s \theta_v$, $\Phi$, $\rho_s q$ & Geodesic (\S \ref{sec:grid_geo}) & FV & C-grid \\
+DYNAMICO & H/NH {\color{red}(D)?} & $\vb{v}_h$, $\rho_s w$, $\rho_s$, $\rho_s \theta_v$, $\Phi$, $\rho_s q$ & Geodesic (\S \ref{sec:grid_geo}) & FV & C-grid \\
 FV$^3$ & NH & $\vb{u}_h$, $w$, $\rho_s$, $\rho_s \theta_v$, $\Phi$, $\rho_s q$ & Cubed-sphere (\S \ref{sec:grid_cs}) & FV & D-grid \\
 FVM & NH (D) & $\rho_d$, $\rho_d \vb{u}_h$, $\rho_d w$, $\rho_d \theta$, ($\Phi$), $\rho_d q$ & Octahedral reduced (\S \ref{sec:grid_oct}) & FV & A-grid \\
-GEM & NH & $\vb{u}_h$, $w$, $\log \partial s / \partial \zeta$, $\log T_v$, $\Phi$, $q$ & Yin-yang (\S \ref{sec:grid_yinyang}) & FV & C-grid  \\
-HOMME & H & $u$, $v$, $\rho_s$, $T_v$, $\rho_s q$ & Cubed-sphere (\S \ref{sec:grid_cs}) & SE & A-grid \\
+GEM & NH & $\vb{u}_h$, $w$, {\color{red}$\log \partial s / \partial \zeta$}, $\log T_v$, $\Phi$, $q$ & Yin-yang (\S \ref{sec:grid_yinyang}) & FV & C-grid  \\
+HOMME & H & $\vb{u}_h$, $\rho_s$, $T_v$, $\rho_s q$ & Cubed-sphere (\S \ref{sec:grid_cs}) & SE & A-grid \\
 ICON & NH & $\vb{u}_h$, $w$, $\rho$, $\theta_v$, $\rho q$ & Icosahedral triangular (\S \ref{sec:grid_ico_tri}) & FV & C-grid \\
 MPAS & NH & $\rho_d \vb{u}_h$, $\rho_d w$, $\rho_d$, $\rho_d \theta_v$, $\rho_d q$ & CCVT (\S \ref{sec:grid_ccvt}) & FV & C-grid \\
 NICAM & NH & $\rho \vb{u}_h$, $\rho w$, $\rho$, $\rho e$, $\rho q$ & Geodesic (\S \ref{sec:grid_geo}) & FV & A-grid \\
@@ -321,7 +319,7 @@ Tempest & fixed height & Lorenz \\
 \end{table}
 
 \begin{table}[h]
-\caption{Standard options for diffusion, filters, or fixers in participating dynamical cores, detailed in section \ref{sec:DiffusionStabilization}, and temporal discretization, detailed in section \ref{sec:TemporalDiscretizations}.} \label{tab:ModelsTemporalDiffusion}
+\caption{Standard options for diffusion, stabilization, filters, or fixers in participating dynamical cores, detailed in section \ref{sec:DiffusionStabilization}, and temporal discretization, detailed in section \ref{sec:TemporalDiscretizations}.} \label{tab:ModelsTemporalDiffusion}
 \begin{center}
 \begin{tabular}{cccccc}
 \hline Acronym & Standard options for diffusion, & Temporal discretization \\
@@ -439,7 +437,7 @@ NICAM uses the finite-volume discretization of the fully compressible non-hydros
 
 \subsection{Tempest}
 
-The Tempest model \citep{ullrich2014global, guerra2016high} uses a horizontal spectral element discretization and vertical nodal finite volume method with Lorenz staggering based on the cubed-sphere grid with terrain-following height-based coordinate.  These continuous equations are given in section \ref{sec:TempestEquations}.  The implementation includes both fully explicit time integration, and a horizontally-explicit vertically-implicit formulation that is solved with a third-order implicit-explicit additive Runge-Kutta scheme from \cite{ascher1997implicit}.
+The Tempest model \citep{ullrich2014global, guerra2016high} is an experimental testbed for high-performance numerical methods that uses a horizontal spectral element discretization and vertical nodal finite volume method with Lorenz staggering based on the cubed-sphere grid with terrain-following height-based coordinate.  The implementation includes both fully explicit time integration, and a horizontally-explicit vertically-implicit formulation that is solved with a third-order implicit-explicit additive Runge-Kutta scheme from \cite{ascher1997implicit}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -543,9 +541,13 @@ $ \delta_{\theta}=2 $ degrees and $ \delta_{\lambda}=3 \delta_{\theta}$.  The Ya
 
 \section{Variable staggering and vertical coordinates}
 
+In this section we discuss the placement of prognostic variables on the grid and the choice of vertical coordinate.
+
 \subsection{Horizontal staggering} \label{sec:HorizontalStaggering}
 
-More information on horizontal staggerings can be found in \cite{arakawa1977computational}.  An analysis of the dispersion properties of each staggering in the context of geophysical flows can be found in \cite{randall1994geostrophic}.
+The horizontal placement of variables impacts a number of properties of the numerical method, including the ability of the model to conserve invariant such as energy and enstrophy, any computational modes that might arise due to differencing, and the dispersion properties of the method \citep{randall1994geostrophic}, and the maximum stable timestep size \citep{ullrich2014understanding}.  The original four Arakawa grids \citep{arakawa1977computational}, denoted with letters A- through D- were initially designed for rectilinear meshes, but were later adapted for a variety of unstructured grids.  Later other grid types were added, including the Z-grid, which used the vertical component of vorticity and the horizontal divergence in place of the velocity components \citep{randall1994geostrophic}, and the ZM-grid, which extends the B-grid to hexagons by placing the velocity at hexagonal nodes \citep{ringler2002zm}.  New staggerings are now being developed in the context of finite element methods, using mixed finite element methods \citep{cotter2012mixed}.  Among the models that participated in DCMIP, only four grids were represented:  The A-grid, which involves co-location of all velocity components; the C-grid, which places perpendicular velocity components on grid edges; the D-grid, which places parallel velocity components on grid edges; and the Z-grid (see Figure \ref{fig:horizontalstaggering}).
+
+There are arguments to be made for and against each of these grids:  the A-grid is relatively simple to implement and tends to support large time step sizes, but also supports a $2 \Delta x$ computational mode (even in the context of finite element methods); the C-grid has excellent dispersion properties, and does not support extraneous computational modes when the number of edges is equal to twice the number of volumes, but also has imposes a reduced maximum timestep size relative to the A-grid; the D-grid provides a better representation of vorticity, but suffers to similar computational modes as the A-grid; finally, the Z-grid yields optimal dispersion properties, but requires the inversion of a Helmholtz problem at each timestep to extract the velocity field from the divergence and vorticity.
 
 %----------------------------------------------------
 \begin{figure}[]
@@ -557,8 +559,19 @@ More information on horizontal staggerings can be found in \cite{arakawa1977comp
 
 \subsubsection{C-D-Grid in the FV$^3$ model} \label{sec:CDGrid}
 
-which acts as a simplified Riemann solver: the D-grid winds are interpolated to the C-grid and then advanced by half of an acoustic timestep, giving time-centered winds
-that can then be used to compute the fluxes and advance the flux terms by a full acoustic timestep
+Although velocities in the FV$^3$ model are stored in accordance with the D-grid arrangement, at the intermediate stages of the forward-backwards timestepping scheme, velocities are actually prognosed on the C-grid.  The intermediate velocities then act as a simplified Riemann solver:  the intermediate stage velocities are time-centered and can be used to compute the fluxes and advance the flux terms by a full acoustic timestep.  More details on this approach can be found in \cite{LR1997QJR}.
+
+\subsection{Vertical staggering} \label{sec:VerticalStaggering}
+
+Along with the choice of prognostic variables, the vertical discretization of the equations of motion also allows for the staggered placement of prognostic variables.  As with hydrostatic models, certain discretizations give rise to spurious computational modes that can contaminate the solution \citep{tokioka1978some,arakawa1988baroclinic}.  The choice of vertical staggering may also impact many physically-relevant properties of the model near the grid scale, such as the phase speed of Rossby waves \citep{thuburn2005vertical}.  Finally, the choice of vertical staggering can have impacts on the physics-dynamics coupling \cite{holdaway2013comparison1,holdaway2013comparison2}.  Taken altogether, these issues suggest care should be taken when selecting the discretization.  For this reason, co-located discretizations, where all degrees of freedom are geometrically co-located, are not frequently adopted in global atmospheric models.  In particular, it is common to employ either: (a) a Lorenz-type staggering \citep{lorenz1960energy}, which places horizontal velocity, buoyancy, and thermodynamic variables on model levels, and vertical velocity on model interfaces; or (b) a Charney-Phillips-type staggering \citep{charney1953numerical}, which places horizontal velocity and buoyancy variables on model levels and vertical velocity and thermodynamic variables on model interfaces (see Figure \ref{fig:verticalstaggering}).  These approaches can be further augmented as needed, for instance by shifting the vertical velocity and thermodynamic variables from the bottom boundary to an intermediate level, as in the GEM model.  Note that, in general, tracer variables are co-located with the buoyancy variable.
+
+%----------------------------------------------------
+\begin{figure}[]
+\includegraphics[width=5in]{VerticalStaggering.pdf}
+\caption{(a) A Lorenz-type variable staggering for a model utilizing height coordinates, (b) a Charney-Phillips-type variable staggering for a model utilizing height coordinates, (c) a modified Charney-Phillips-type staggering used in the GEM model that introduces a new near-surface level for vertical velocity and temperature.}
+\label{fig:verticalstaggering}
+\end{figure}
+%----------------------------------------------------
 
 \subsection{Vertical coordinates}
 
@@ -606,18 +619,6 @@ s = \int^{\infty}_{z} \rho_0 g dz,
 \begin{align}
 \dot{s} = \frac{ds}{dt} = 0,
 \end{align} which greatly simplifies the associated prognostic velocity and continuity equations.  Floating Lagrangian coordinates are often paired with a vertical remapping operation that corrects for strong grid distortions that may occur after sufficiently long model integrations.
-
-\subsection{Vertical staggering} \label{sec:VerticalStaggering}
-
-Along with the choice of prognostic variables, the vertical discretization of the equations of motion also allows for the staggered placement of prognostic variables.  As with hydrostatic models, certain discretizations give rise to spurious computational modes that can contaminate the solution \citep{tokioka1978some,arakawa1988baroclinic}.  The choice of vertical staggering may also impact many physically-relevant properties of the model near the grid scale, such as the phase speed of Rossby waves \citep{thuburn2005vertical}.  Finally, the choice of vertical staggering can have impacts on the physics-dynamics coupling \cite{holdaway2013comparison1,holdaway2013comparison2}.  Taken altogether, these issues suggest care should be taken when selecting the discretization.  For this reason, co-located discretizations, where all degrees of freedom are geometrically co-located, are not frequently adopted in global atmospheric models.  In particular, it is common to employ either: (a) a Lorenz-type staggering \citep{lorenz1960energy}, which places horizontal velocity, buoyancy, and thermodynamic variables on model levels, and vertical velocity on model interfaces; or (b) a Charney-Phillips-type staggering \citep{charney1953numerical}, which places horizontal velocity and buoyancy variables on model levels and vertical velocity and thermodynamic variables on model interfaces (see Figure \ref{fig:verticalstaggering}).  These approaches can be further augmented as needed, for instance by shifting the vertical velocity and thermodynamic variables from the bottom boundary to an intermediate level, as in the GEM model.  Note that, in general, tracer variables are co-located with the buoyancy variable.
-
-%----------------------------------------------------
-\begin{figure}[]
-\includegraphics[width=5in]{VerticalStaggering.pdf}
-\caption{(a) A Lorenz-type variable staggering for a model utilizing height coordinates, (b) a Charney-Phillips-type variable staggering for a model utilizing height coordinates, (c) a modified Charney-Phillips-type staggering used in the GEM model that introduces a new near-surface level for vertical velocity and temperature.}
-\label{fig:verticalstaggering}
-\end{figure}
-%----------------------------------------------------
 
 \subsection{Model Implementations}
 
