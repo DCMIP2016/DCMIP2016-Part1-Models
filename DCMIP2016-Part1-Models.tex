@@ -285,7 +285,7 @@ Tempest & Tempest Non-hydrostatic Atmospheric Model & University of California, 
 CSU & NH (Unified) & $\zeta$, $D$, $w$, $p_s$, $\theta_v$, $q$ & Geodesic (\S \ref{sec:grid_geo}) & FV & Z-grid \\
 DYNAMICO & H/NH {\color{red}(D)?} & $\vb{v}_h$, $\rho_s w$, $\rho_s$, $\rho_s \theta_v$, $\Phi$, $\rho_s q$ & Geodesic (\S \ref{sec:grid_geo}) & FV & C-grid \\
 FV$^3$ & NH & $\vb{u}_h$, $w$, $\rho_s$, $\rho_s \theta_v$, $\Phi$, $\rho_s q$ & Cubed-sphere (\S \ref{sec:grid_cs}) & FV & D-grid \\
-FVM & NH (D) & $\rho_d$, $\rho_d \vb{u}_h$, $\rho_d w$, $\rho_d \theta$, ($\Phi$), $\rho_d q$ & Octahedral reduced (\S \ref{sec:grid_oct}) & FV & A-grid \\
+FVM & NH, D & $\rho_d$, $\vb{u}_h$, $w$, $\theta'$, $q$ & Octahedral reduced (\S \ref{sec:grid_oct}) & FV & A-grid \\
 GEM & NH & $\vb{u}_h$, $w$, {\color{red}$\log \partial s / \partial \zeta$}, $\log T_v$, $q$ & Yin-yang (\S \ref{sec:grid_yinyang}) & FV & C-grid  \\
 HOMME & H & $\vb{u}_h$, $\rho_s$, $T_v$, $\rho_s q$ & Cubed-sphere (\S \ref{sec:grid_cs}) & SE & A-grid \\
 ICON & NH & $\vb{u}_h$, $w$, $\rho$, $\theta_v$, $\rho q$ & Icosahedral triangular (\S \ref{sec:grid_ico_tri}) & FV & C-grid \\
@@ -306,7 +306,7 @@ Tempest & NH & $\vb{u}_h$, $w$, $\rho$, $\rho \theta_v$, $\rho q$ & Cubed-sphere
 CSU & Lorenz & fixed height \\
 DYNAMICO & Lorenz & floating mass (\S \ref{sec:FloatingLagrangian}) \\
 FV$^3$ & Lorenz & floating mass (\S \ref{sec:FloatingLagrangian}) \\
-FVM & Co-located & (floating) height \\
+FVM & Co-located & fixed height \\
 GEM & Modified Charney-Phillips (\S \ref{sec:VerticalStaggering}) & log pressure (\S \ref{sec:GEM_zeta})  \\
 HOMME & Co-located & floating mass (\S \ref{sec:FloatingLagrangian}) \\
 ICON & Lorenz & fixed height \\
@@ -328,7 +328,7 @@ Tempest & Lorenz & fixed height \\
 CSU & 4th-order horizontal hyperviscosity & 3rd-order Adams-Bashforth (AB3) \\
 DYNAMICO & {\color{red}?} & ARK232 \citep{giraldo2013implicit} \\
 FV$^3$ & Divergence damping, monotonic limiting, hyperviscosity & Forward-backwards \citep{LR1997QJR} \\
-FVM & Momentum dissipation, scalar diffusion, absorbing layer & Semi-implicit \citep{smolarkiewiczJCP2014} (\S \ref{sec:FVMSemiImplicit}) \\
+FVM & Monotonic limiting & Semi-implicit \citep{smolarkiewiczJCP2014} (\S \ref{sec:FVMSemiImplicit}) \\
 GEM & Hyperviscosity & Semi-implicit \citep{Girard2014} (\S \ref{sec:GEM_temporal}) \\
 HOMME & 4th-order horizontal hyperviscosity & KGU53 \citep{guerra2016high} \\
 ICON & Divergence damping, Smagorinsky, hyperdiffusion & Predictor-corrector \\
@@ -757,7 +757,8 @@ ICON is based on \cite{gassmann2008} using terrain-following $z$-coordinates wit
 
 OLAM solves the deep-atmosphere, fully-compressible equations in mass- and momentum-conserving finite-volume form using equations (\ref{eq:ContinuityEquation}), (\ref{eq:PrognosticVelocityFluxForm}), and 
 (\ref{eq:PotentialTemperatureFluxForm}). Prognostic variables are the 3 components of momentum, ice-liquid potential temperature $\theta_{il}$ \citep{walko2000efficient}, total density $\rho$, specific density of total water, and specific bulk density and/or bulk number concentration of various scalar quantities including liquid and ice hydrometeors, aerosols, and trace gases. For DCMIP, the latter are limited to cloud and rain specific bulk densities. Water vapor density $\rho q$ is diagnosed by subtracting bulk densities of all liquid and ice hydrometeors from the total water density, dry air density is diagnosed by subtracting total water density from total density, and pressure is diagnosed based on the equation of state and values of dry air density, water vapor density, and potential temperature $\theta$. The latter is in turn diagnosed from $\theta_{il}$ and from the latent heat required to convert any hydrometeors present to the vapor phase. Velocity components are diagnosed by dividing momentum components by total density.
-Momentum is C-staggered in the horizontal and vertical (Lorenz vertical staggering is used), meaning that prognosed components live on the grid cell faces and are each normal to the respective face and the pressure gradient force is evaluated and applied at those locations. However, evaluation of advective and turbulent momentum transport (as well as the Coriolis force) involves a diagnostic reconstruction of the total momentum vector at the centers of scalar grid cells \citep{perot2000conservation}, and cell-to-cell flux of momentum is computed from that reconstruction using the same A- grid control volumes as for scalars. This arrangement is particularly convenient for the cut-cell formulation at the topographic surface where reduced cell face areas and volumes regulate momentum and scalar fluxes in an identical manner.
+
+Momentum is C-staggered in the horizontal and vertical (Lorenz vertical staggering is used), meaning that prognosed components live on the grid cell faces and are each normal to the respective face and the pressure gradient force is evaluated and applied at those locations. However, evaluation of advective and turbulent momentum transport (as well as the Coriolis force) involves a diagnostic reconstruction of the total momentum vector at the centers of scalar grid cells \citep{perot2000conservation}, and cell-to-cell flux of momentum is computed from that reconstruction using the same A- grid control volumes as for scalars. This arrangement is particularly convenient for the cut-cell formulation at the topographic surface where reduced cell face areas and volumes regulate momentum and scalar fluxes in an identical manner.
 
 \subsubsection{Tempest} \label{sec:TempestEquations}
 
