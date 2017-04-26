@@ -93,7 +93,7 @@
 
 \begin{document}
 
-\title{DCMIP2016, Part 1: Models and Equation Sets}
+\title{DCMIP2016:  A Review of Nonhydrostatic Dynamical Core Design and Intercomparison of Participating Models}
 
 
 % \Author[affil]{given_name}{surname}
@@ -106,40 +106,40 @@
 \Author[5]{Kevin A.}{Reed}
 \Author[4]{Colin M.}{Zarzycki}
 
-\Author[6]{David A.}{Hall}
+\Author[6]{Don}{Dazlich}
+\Author[6]{Ross}{Heikes}
+\Author[6]{Celal}{Konor}
+\Author[6]{David}{Randall}
 
-\Author[7]{Alex}{Reinecke}
-\Author[7]{Kevin}{Viner}
+\Author[7]{Thomas}{Dubos}
+\Author[7]{Yann}{Meurdesoif}
 
-\Author[8]{Don}{Dazlich}
-\Author[8]{Ross}{Heikes}
-\Author[8]{Celal}{Konor}
-\Author[8]{David}{Randall}
+\Author[8]{Xi}{Chen}
+\Author[8]{Lucas}{Harris}
 
-\Author[9]{Xi}{Chen}
-\Author[9]{Lucas}{Harris}
+\Author[9]{Christian}{K\"uhnlein}
 
-\Author[10]{Marco}{Giorgetta}
-\Author[11]{Daniel}{Reinert}
+\Author[10]{Vivian}{Lee}
+\Author[10]{Abdessamad}{Qaddouri}
+\Author[10]{Claude}{Girard}
 
-\Author[12]{Christian}{K\"uhnlein}
+\Author[11]{David A.}{Hall}
 
-\Author[13]{Robert}{Walko}
-
-\Author[14]{Vivian}{Lee}
-\Author[14]{Abdessamad}{Qaddouri}
-\Author[14]{Claude}{Girard}
-
-\Author[15]{Hiroaki}{Miura}
-\Author[15]{Tomoki}{Ohno}
-\Author[16]{Ryuji}{Yoshida}
+\Author[12]{Marco}{Giorgetta}
+\Author[13]{Daniel}{Reinert}
 
 \Author[4]{Joseph}{Klemp}
 \Author[4]{Sang-Hun}{Park}
 \Author[4]{William}{Skamarock}
 
-\Author[17]{Thomas}{Dubos}
-\Author[17]{Yann}{Meurdesoif}
+\Author[14]{Hiroaki}{Miura}
+\Author[14]{Tomoki}{Ohno}
+\Author[15]{Ryuji}{Yoshida}
+
+\Author[16]{Robert}{Walko}
+
+\Author[17]{Alex}{Reinecke}
+\Author[17]{Kevin}{Viner}
 
 %\Author[18]{Elijah}{Goodfriend}
 %\Author[18]{Hans}{Johansen}
@@ -149,25 +149,24 @@
 \affil[3]{University of South Wales}
 \affil[4]{National Center for Atmospheric Research}
 \affil[5]{Stony Brook University}
-\affil[6]{University of Colorado, Boulder}
-\affil[7]{Naval Research Laboratory}
-\affil[8]{Colorado State University}
-\affil[9]{Geophysical Fluid Dynamics Laboratory}
-\affil[10]{Max Planck Institute for Meteorology}
-\affil[11]{Deutscher Wetterdienst (DWD)}
-\affil[12]{European Centre for Medium-Range Weather Forecasts}
-\affil[13]{University of Miami}
-\affil[14]{Environment and Climate Change Canada}
-\affil[15]{University of Tokyo}
-\affil[16]{RIKEN}
-\affil[17]{Institut Pierre-Simon Laplace (IPSL)}
-\affil[18]{Lawrence Berkeley National Laboratory}
+\affil[6]{Colorado State University}
+\affil[7]{Institut Pierre-Simon Laplace (IPSL)}
+\affil[8]{Geophysical Fluid Dynamics Laboratory (GFDL)}
+\affil[9]{European Centre for Medium-Range Weather Forecasts (ECMWF)}
+\affil[10]{Environment and Climate Change Canada}
+\affil[11]{University of Colorado, Boulder}
+\affil[12]{Max Planck Institute for Meteorology}
+\affil[13]{Deutscher Wetterdienst (DWD)}
+\affil[14]{University of Tokyo}
+\affil[15]{RIKEN}
+\affil[16]{University of Miami}
+\affil[17]{Naval Research Laboratory}
 
 %% The [] brackets identify the author with the corresponding affiliation. 1, 2, 3, etc. should be inserted.
 
 
 
-\runningtitle{DCMIP2016: Models and Equation Sets}
+\runningtitle{DCMIP2016: A Review of Nonhydrostatic Dynamical Core Design and Intercomparison}
 
 \runningauthor{Ullrich, et al.}
 
@@ -252,7 +251,7 @@ $q_i$ & General tracer mixing ratio \\
 
 \section{Dynamical Cores} \label{sec:DynamicalCores}
 
-This section provide a brief overview of key discretization choices, along with unique features or design specifications from participating dynamical cores.  Further details on these choices can be found in subsequent sections.  Simulation results and model descriptions have been submitted from ten dynamical cores (see Table \ref{tab:Models}).  Although all models solve the Euler equations (or a close approximation of these equations), essentially every model employs a different formulation with a distinct set of prognostic variables.  The derivation of many of these formulations can be found in Appendix \ref{sec:EquationSets}.  The prognostic variables employed and horizontal discretizations for these dynamical cores are summarized in Table \ref{tab:ModelsHorizontal}.  The vertical staggering of variables and vertical coordinate choice is summarized in Table \ref{tab:ModelsVertical}.  Standard options for diffusion, stabilization, filters, or fixers along with the temporal discretization for these models is summarized in Table \ref{tab:ModelsTemporalDiffusion}.  The participant models are briefly described through the remainder of this section.
+This section provide a brief overview of key discretization choices, along with unique features or design specifications from participating dynamical cores.  Further details on these choices can be found in subsequent sections.  Simulation results and model descriptions have been submitted from eleven dynamical cores (see Table \ref{tab:Models}).  Although all models solve the Euler equations (or a close approximation of these equations), essentially every model employs a different formulation with a distinct set of prognostic variables.  The derivation of many of these formulations can be found in Appendix \ref{sec:EquationSets}.  The prognostic variables employed and horizontal discretizations for these dynamical cores are summarized in Table \ref{tab:ModelsHorizontal}.  The vertical staggering of variables and vertical coordinate choice is summarized in Table \ref{tab:ModelsVertical}.  Standard options for diffusion, stabilization, filters, or fixers along with the temporal discretization for these models is summarized in Table \ref{tab:ModelsTemporalDiffusion}.  The participant models are briefly described through the remainder of this section.
 
 \begin{table}[p]
 \caption{Participating modeling centers and associated dynamical cores that have submitted simulation results.} \label{tab:Models}
@@ -277,21 +276,21 @@ Tempest & Tempest Non-hydrostatic Atmospheric Model & University of California, 
 
 
 \begin{table}[p]
-\caption{Details on the prognostic variables and horizontal discretization for participating dynamical cores.  Equation set indicates whether a model is hydrostatic (H) or non-hydrostatic (NH), and whether the model presently supports the deep-atmosphere formulation (D).  Only two numerical methods are represented among participating models, namely finite-volume (FV) and spectral-element (SE).  More details on horizontal staggering can be found in section \ref{sec:HorizontalStaggering}.} \label{tab:ModelsHorizontal}
+\caption{Details on the prognostic variables and horizontal discretization for participating dynamical cores.  Equation set indicates whether a model is hydrostatic (H) or non-hydrostatic (NH), and whether the model presently supports the deep-atmosphere formulation (D).  Only three numerical methods are represented among participating models, namely finite-difference (FD), finite-volume (FV), and spectral-element (SE).  More details on horizontal staggering can be found in section \ref{sec:HorizontalStaggering}.} \label{tab:ModelsHorizontal}
 \begin{center}
 \begin{tabular}{cccccc}
 \hline Acronym & Equation set & Prognostic Variables & Horizontal Grid & Numerical & Horizontal  \\
 & & & & method & staggering \\ \hline
 CSU & NH (Unified) & $\zeta$, $D$, $w$, $p_s$, $\theta_v$, $q$ & Geodesic (\S \ref{sec:grid_geo}) & FV & Z-grid \\
-DYNAMICO & H/NH {\color{red}(D)?} & $\vb{v}_h$, $\rho_s w$, $\rho_s$, $\rho_s \theta_v$, $\Phi$, $\rho_s q$ & Geodesic (\S \ref{sec:grid_geo}) & FV & C-grid \\
+DYNAMICO & H/NH & $\vb{v}_h$, $\rho_s w$, $\rho_s$, $\rho_s \theta_v$, $\Phi$, $\rho_s q$ & Geodesic (\S \ref{sec:grid_geo}) & FV & C-grid \\
 FV$^3$ & NH & $\vb{u}_h$, $w$, $\rho_s$, $\rho_s \theta_v$, $\delta \Phi$, $\rho_s q$ & Cubed-sphere (\S \ref{sec:grid_cs}) & FV & D-grid \\
 FVM & NH (D) & $\rho_d$, $\vb{u}_h$, $w$, $\theta'$, $q$ & Octahedral reduced (\S \ref{sec:grid_oct}) & FV & A-grid \\
-GEM & NH & $\vb{u}_h$, $w$, {\color{red}$\log \partial s / \partial \zeta$}, $\log T_v$, $q$ & Yin-yang (\S \ref{sec:grid_yinyang}) & FV & C-grid  \\
+GEM & NH & $\vb{u}_h$, $w$, $\dot{\zeta}$, $T_v$, $p$, $q$ & Yin-Yang (\S \ref{sec:grid_yinyang}) & FD & C-grid  \\
 HOMME & H & $\vb{u}_h$, $\rho_s$, $T_v$, $\rho_s q$ & Cubed-sphere (\S \ref{sec:grid_cs}) & SE & A-grid \\
 ICON & NH & $\vb{u}_h$, $w$, $\rho$, $\theta_v$, $\rho q$ & Icosahedral triangular (\S \ref{sec:grid_ico_tri}) & FV & C-grid \\
 MPAS & NH & $\rho_d \vb{u}_h$, $\rho_d w$, $\rho_d$, $\rho_d \theta_v$, $\rho_d q$ & CCVT (\S \ref{sec:grid_ccvt}) & FV & C-grid \\
 NICAM & NH & $\rho \vb{u}_h$, $\rho w$, $\rho$, $\rho e$, $\rho q$ & Geodesic (\S \ref{sec:grid_geo}) & FV & A-grid \\
-OLAM & NH & $\rho \vb{u}_h$, $\rho w$, $\rho$, $\theta_{il}$, {\color{red} $q$} & Geodesic (\S \ref{sec:grid_geo}) & FV & C-grid \\
+OLAM & NH (D) & $\rho \vb{u}_h$, $\rho w$, $\rho$, $\theta_{il}$, $\rho q$ & Geodesic (\S \ref{sec:grid_geo}) & FV & C-grid \\
 Tempest & NH & $\vb{u}_h$, $w$, $\rho$, $\rho \theta_v$, $\rho q$ & Cubed-sphere (\S \ref{sec:grid_cs}) & SE & A-grid \\
 \hline 
 \end{tabular}
@@ -326,9 +325,9 @@ Tempest & Lorenz & fixed height \\
 \hline Acronym & Standard options for diffusion, & Temporal discretization \\
 & stabilization, filters, or fixers & \\ \hline 
 CSU & 4th-order horizontal hyperviscosity & 3rd-order Adams-Bashforth (AB3) \\
-DYNAMICO & {\color{red}?} & ARK232 \citep{giraldo2013implicit} \\
+DYNAMICO & 4th-order horizontal hyperviscosity & ARK232 \citep{giraldo2013implicit} \\
 FV$^3$ & Divergence damping, hyperviscosity & Forward-backwards \citep{LR1997QJR} / semi-implicit \\
-FVM & Momentum dissipation, scalar diffusion, absorbing layer & Semi-implicit \citep{smolarkiewiczJCP2014} (\S \ref{sec:FVMSemiImplicit}) \\
+FVM & Monotonic limiting & Semi-implicit \citep{smolarkiewiczJCP2014} (\S \ref{sec:FVMSemiImplicit}) \\
 GEM & Hyperviscosity & Semi-implicit \citep{Girard2014} (\S \ref{sec:GEM_temporal}) \\
 HOMME & 4th-order horizontal hyperviscosity & KGU53 \citep{guerra2016high} \\
 ICON & Divergence damping, Smagorinsky, hyperdiffusion & Predictor-corrector \\
@@ -344,10 +343,8 @@ Tempest & 4th-order horizontal hyperviscosity & ARS232 \citep{ascher1997implicit
 %Do not include information on the physical parameterizations used by the modeling system.  Make reference to the model grid employed from section \ref{sec:ModelGrids}, the specific equation set being discretized by the model in section \ref{sec:EquationSets}, explicit numerical techniques for diffusion and stabilization in section \ref{sec:DiffusionStabilization}, filters and fixers in section \ref{sec:FiltersFixers} and the temporal discretization in section \ref{sec:TemporalDiscretizations}.}
 
 \subsection{Colorado State University Model (CSU)}
-
-{\color{red}[More references?]}
   
-The CSU model uses an optimized geodesic grid to discretize the sphere, with height as the vertical coordinate. The model is based on the non-hydrostatic Unified System of equations proposed by \cite{arakawa2009unification}, which filters vertically propagating sound waves but allows the Lamb wave and does not require a reference state. The horizontal wind field is determined by predicting the vertical component of the vorticity and the divergence of the horizontal wind, and then solving a pair of two-dimensional Poisson equations for a stream function and velocity potential. Horizontal diffusion is included in the form of a fourth-order Laplacian operator applied on constant height surfaces ($\nabla^4_z$) that acts on the vorticity, divergence, potential temperature, and tracer.  The CSU model supports both third-order and fifth-order upstream-weighted finite-volume advection schemes, with positivity preservation enforced via mass borrowing.
+The CSU model uses an optimized geodesic grid to discretize the sphere \citep{heikes1995numerical,heikes2013optimized}, with height as the vertical coordinate. The model is based on the non-hydrostatic Unified System of equations proposed by \cite{arakawa2009unification}, which filters vertically propagating sound waves but allows the Lamb wave and does not require a reference state. The horizontal wind field is determined by predicting the vertical component of the vorticity and the divergence of the horizontal wind, and then solving a pair of two-dimensional Poisson equations for a stream function and velocity potential. Horizontal diffusion is included in the form of a fourth-order Laplacian operator applied on constant height surfaces ($\nabla^4_z$) that acts on the vorticity, divergence, potential temperature, and tracer.  The CSU model supports both third-order and fifth-order upstream-weighted finite-volume advection schemes, with positivity preservation enforced via mass borrowing.
 \subsection{DYNAMICO}
 
 DYNAMICO is a mimetic finite-difference / finite-volume model, solving initially the hydrostatic primitive equations and recently extended to solve the shallow-atmosphere fully-compressible equations. DYNAMICO's design uniquely combines a representation of the prognostic and diagnostic fields following the ideas of discrete differential geometry, \citep{Dubos2015DYNAMICO10}.  It includes a novel Hamiltonian formulation of the equations of motion in non-Eulerian coordinates \citep{Dubos2014Equations} which is imitated at the discrete level using building blocks from the literature,\citep{thuburn2009numerical,ringler2010unified}, and (up to the addition of explicit diffusion) leads to an energy-conserving spatial discretization.  It also incorporates a novel explicit-implicit splitting which results in a simple, efficient and scalable implicit solver while allowing stable time steps close or identical to those of the hydrostatic solver (Dubos and Dubey, in preparation).  In addition, it features a conservative positive-definite transport scheme based on a slope-limited finite-volume approach \citep{Dubey2015Intercomparison}.
@@ -421,17 +418,15 @@ Viscosity operations are applied after the completion of the physics time step.
 
 \subsection{High-Order Method Modeling Environment (HOMME)}
 
-The High Order Method Modeling Environment (HOMME) \citep{taylor2010compatible, dennis2012cam} is currently used by both the Community Atmosphere Model Spectral Element (CAM-SE) dynamical core and Accelerated Climate Model for Energy Atmosphere (ACME-A) dynamical core.  As a general framework for several dynamical methods, HOMME includes a hydrostatic option and an experimental non-hydrostatic core, although only shallow-atmosphere mode is available at present. The model is designed to be mass and energy conserving, with nearly optimal parallel scalability at large core counts. The CAM-SE dynamical core is a hydrostatic model that partitions the globe horizontally using an unstructured grid of quadrilateral elements. These elements are arranged in a cubed-sphere structure, although arbitrary quadrilateral grids with conforming edges may also be employed.  The model employs a hybrid terrain-following pressure coordinate in the vertical. The fluid equations are discretized using dimension splitting, with a nodal 4th order spectral element discretization in the horizontal and the mimetic (mass and energy conserving) 2nd order finite difference discretization of \cite{simmons1981energy} in the vertical. Fields are co-located in the horizontal in the sense that they share the same 4th order basis functions. Lorenz staggering is employed in the vertical with (u,v,T$_v$,p) placed on layer midpoints and diagnostic vertical fluxes $m \dot \eta$ are computed on layer interfaces.
+The High Order Method Modeling Environment (HOMME) \citep{taylor2010compatible, dennis2012cam} is currently used by both the Community Atmosphere Model Spectral Element (CAM-SE) dynamical core and Accelerated Climate Model for Energy Atmosphere (ACME-A) dynamical core.  As a general framework for several dynamical methods, HOMME includes a hydrostatic option and an experimental non-hydrostatic core, although only shallow-atmosphere mode is available at present. The model is designed to be mass and energy conserving, with nearly optimal parallel scalability at large core counts. The CAM-SE dynamical core is a hydrostatic model that partitions the globe horizontally using an unstructured grid of quadrilateral elements. These elements are arranged in a cubed-sphere structure, although arbitrary quadrilateral grids with conforming edges may also be employed.  The model employs a hybrid terrain-following pressure coordinate in the vertical. The fluid equations are discretized using dimension splitting, with a nodal 4th-order spectral element discretization in the horizontal and the mimetic (mass and energy conserving) 2nd order finite difference discretization of \cite{simmons1981energy} in the vertical. Fields are co-located in the horizontal in the sense that they share the same 4th-order basis functions. Lorenz staggering is employed in the vertical with (u,v,T$_v$,p) placed on layer midpoints and diagnostic vertical fluxes $m \dot \eta$ are computed on layer interfaces.
 
 
-%A conventional vector-invariant form for the moist primitive equations is employed with prognostic zonal and meridional wind components $u,v$, temperature $T$, surface pressure $p_s$, and tracer mixing ratios $q_i$. The PDEs are discretized using a split approximation, with a nodal 4th order spectral element discretization in the horizontal and the mimetic (mass and energy conserving) 2nd order finite difference discretization of \cite{simmons1981energy} in the vertical. Fields are co-located in the horizontal in the sense that they share the same 4th order basis functions. Lorenz staggering is employed in the vertical with (u,v,T,p) placed on layer midpoints while vertical fluxes $m \dot \eta$ are placed on layer interfaces.
+%A conventional vector-invariant form for the moist primitive equations is employed with prognostic zonal and meridional wind components $u,v$, temperature $T$, surface pressure $p_s$, and tracer mixing ratios $q_i$. The PDEs are discretized using a split approximation, with a nodal 4th-order spectral element discretization in the horizontal and the mimetic (mass and energy conserving) 2nd order finite difference discretization of \cite{simmons1981energy} in the vertical. Fields are co-located in the horizontal in the sense that they share the same 4th-order basis functions. Lorenz staggering is employed in the vertical with (u,v,T,p) placed on layer midpoints while vertical fluxes $m \dot \eta$ are placed on layer interfaces.
 
 
 \subsection{Icosahedral Non-hydrostatic model (ICON)}
 
-{\color{red}[More references?]}
-
-The ICON model \citep{zangl2014icon} discretizes the compressible equations for a shallow atmosphere in vector invariant form for the horizontal wind on a triangular Arakawa C-grid and a smoothed terrain-following height-based Lorenz grid.  Prognostic horizontal velocities are stored as normal wind components $v_n$ at the edge mid-points of full levels.  Prognostic vertical wind $w$ is stored at the circumcenters of the triangles on half levels. The discretization in time employs a two time level predictor corrector scheme, which is explicit in all terms except for those describing the vertical propagation of sound waves. Time splitting is applied between the dynamics that is forced by slow physics on the one hand and horizontal diffusion, tracer transport, and fast physics. One complete time step typically includes 5 dynamical sub-steps. The average air mass flux of the dynamical  sub-steps is provided to the tracer transport to allow for a mass-consistent transport. For stabilization of the divergence term on the triangular C-grid the divergence in a triangle is computed from modified normal wind components resulting from a weighted average including normal winds on edges of adjacent cells. Further divergence damping is applied to the normal wind at every sub-step. Rayleigh damping is applied to the vertical wind in layers close to the model top in order to avoid the reflection of gravity waves. The horizontal diffusion, which is applied at full model time steps, combines a flow dependent Smagorinsky scheme with a background 4th order Laplacian diffusion operator. For tracer transport a flux form semi-Lagrangian scheme with monotone flux limiters is used, which grants local mass conservation and consistency with the air motion. The numerical methods have been chosen for high numerical efficiency, and they rely on next-neighbor communication only, thus allowing massive parallelization.
+The ICON model \citep{zangl2014icon} discretizes the compressible equations for a shallow atmosphere in vector invariant form for the horizontal wind on a triangular Arakawa C-grid and a smoothed terrain-following height-based Lorenz grid.  Prognostic horizontal velocities are stored as normal wind components $v_n$ at the edge mid-points of full levels.  Prognostic vertical wind $w$ is stored at the circumcenters of the triangles on half levels. The discretization in time employs a two time level predictor corrector scheme, which is explicit in all terms except for those describing the vertical propagation of sound waves. Time splitting is applied between the dynamics that is forced by slow physics on the one hand and horizontal diffusion, tracer transport, and fast physics. One complete time step typically includes 5 dynamical sub-steps. The average air mass flux of the dynamical  sub-steps is provided to the tracer transport to allow for a mass-consistent transport. For stabilization of the divergence term on the triangular C-grid the divergence in a triangle is computed from modified normal wind components resulting from a weighted average including normal winds on edges of adjacent cells. Further divergence damping is applied to the normal wind at every sub-step. Rayleigh damping is applied to the vertical wind in layers close to the model top in order to avoid the reflection of gravity waves. The horizontal diffusion, which is applied at full model time steps, combines a flow dependent Smagorinsky scheme with a background 4th-order Laplacian diffusion operator. For tracer transport a flux form semi-Lagrangian scheme with monotone flux limiters is used, which grants local mass conservation and consistency with the air motion. The numerical methods have been chosen for high numerical efficiency, and they rely on next-neighbor communication only, thus allowing massive parallelization.
 
 \subsection{Model for Prediction Across Scales (MPAS)}
 
@@ -1369,166 +1364,6 @@ The momentum form of the prognostic equations emerges by combining the prognosti
 \left( \pdiff{\tilde{\rho}_s \vb{u}_h}{t} \right)_s =& - \tilde{\rho}_s w (\vb{u}_h \cdot \nabla \vb{k}) - \tilde{\rho}_s \nabla_s K_2 - \zeta_s \vb{k} \times \tilde{\rho}_s \vb{u}_h - \vb{u}_h \nabla_s \cdot (\tilde{\rho}_s \vb{u}_h) - \pdiff{}{s} (\tilde{\rho}_s \dot{s} \vb{u}_h) - \tilde{\rho}_s \left( \nabla_z \Phi + \frac{1}{\rho} \nabla_z p \right) - [2 \vg{\Omega} \times \tilde{\rho}_s \vb{u}]_z,
 \end{align}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-{\color{blue}[Blue text to be moved to paper 2]
-\section{Idealized Physical Parameterizations} \label{sec:IdealizedPhysics}
-
-\subsection{Kessler Physics} \label{sec:KesslerPhysics}
-
-The cloud microphysics update according to the following equation set:
-\begin{alignat}{5}
-\frac{\Delta \theta}{\Delta t} = & - \frac{L}{c_p \pi} & \Big( \frac{\Delta q_{vs}}{\Delta t} & + E_r  \Big) & \\
-\frac{\Delta q_v}{\Delta t} = & & \frac{\Delta q_{vs}}{\Delta t} & + E_r \\
-\frac{\Delta q_c}{\Delta t} = & & - \frac{\Delta q_{vs}}{\Delta t} & & - A_r & - C_r \\
-\frac{\Delta q_r}{\Delta t} = & & & - E_r & + A_r & + C_r & - V_r \pdiff{q_r}{z},
-\end{alignat} where $L$ is the latent heat of condensation, $A_r$ is the autoconversion rate of cloud water to rain water, $C_r$ is the collection rate of rain water, $E_r$ is the rain water evaporation rate, and $V_r$ is the rain water terminal velocity.
-
-The pressure follows from the equation of state
-\begin{equation}
-p=\rho R_dT(1+0.61q_v)
-\end{equation} with $p$ the pressure, $\rho$ the density of moist air, $R_d$ the gas constant for dry air, $T$ the temperature and $q_v$ the mixing ratio of water vapor. The equation is rewritten as a nondimensional pressure $\Pi$ equation.
-\begin{equation}
-\pi = \left(\frac{p}{p_0}\right)^{\frac{R_dT}{cp}}
-\end{equation}
-
-To determine the saturation vapor mixing ratio the Teten's formula is used,
-\begin{equation}
-q_{vs}(p,T) = \left( \frac{380.0}{p} \right) \exp\left(17.27 \times \frac{T-273.0}{T-36.0}\right)
-\end {equation}
-
-The autoconvection rate ($A_r$) and collection rate ($C_r$) follow Kessler parametrization and are defined by:
-\begin{align}
-A_r &= k_1(q_c-a) \\
-C_r &= k_2q_cq_r^{0.875}
-\end{align} With $k_1=0.001 \text{s}^{-1}$, $a=0.001 \text{g}.\text{g}^{-1}$ and $k_2=2.2 \text{s}^{-1}$ 
-
-Deriving from \cite{klemp1978simulation} description of cloud water,rain water and water vapor mixing ratios. they are define as followed:
-\begin{equation}
-q_c^{n+1}=\mbox{max}(q_c^r-\Delta q_r,0)
-\end{equation}
-\begin{equation}
-q_r^{n+1}=\mbox{max}(q_r^r-\Delta q_r+S,0)
-\end{equation} where $S$ is the sedimentation term and $\Delta q_r$ is defined as
-\begin{equation}
-\Delta q_r=q_c^n-\frac{q_c^n-\Delta \text{t}\ \mbox{max}(A_r,0)}{1+\Delta \text{t} C_r}
-\end{equation}
-
-The Rain evaporation equation is defined similarly to \cite{ogura1971numerical} description:
-\begin{equation}
-E_r=\frac{1}{\rho}\frac{\left(1-\frac{q_v}{q_{vs}}\right)C(\rho q_r)^{0.525}}{5.4\times10^5+\frac{2.55\times10^6}{pq_{vs}}}
-\end{equation}  With ventilation factor C define as 
-\begin{equation}
-C_r=1.6+124.9(\rho q_r)^{0.2046}
-\label{venti}
-\end{equation}
-
-The liquid water terminal velocity is similar to \cite{soong1973comparison} description with a mean density adjustment as suggested by \cite{kessler1969distribution}:
-\begin{equation}
-V_r = 36349(\rho q_r)^{0.1346}\left(\frac{\rho}{\rho_0}\right)^{-\frac{1}{2}}
-\end{equation}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Surface Fluxes on an Aqua-Planet with Prescribed Sea Surface Temperatures} \label{sec:OceanSurfaceFluxes}
-
-The forcing by surface fluxes from an idealized ocean is described in \cite{reed2012idealized} and is partly reproduced here. We use a model configuration which corresponds to an aqua-planet setup with prescribed sea surface temperatures (SSTs). This forcing by the surface fluxes is applied to the state variables in the lowermost model level using a partially implicit formulation to avoid numerical instabilities.  Throughout this section we use the subscript $a$ to denote variables defined on the lowermost model level.
-
-The surface fluxes depend on the \textit{drag coefficient} $C_d$, defined as
-\begin{equation} \label{eq:DragCoefficient}
-\begin{array}{ll}
-C_d = C_{d0} + C_{d1} \vert \vec{v}_a \vert & \mbox{for $\vert \vec{v}_a \vert < 20$ m s$^{-1}$} \\ 
-C_d = 0.002 & \mbox{for $\vert \vec{v}_a \vert \geq 20$ m s$^{-1}$}, 
-\end{array}
-\end{equation}
-where $C_{d0}$ and $C_{d1}$ are $7.0 \times 10^{-4}$ (unitless) and $6.5 \times 10^{-5}$ s m$^{-1}$, respectively, and $\vert \vec{v}_a \vert$ is the magnitude of the horizontal wind at the lowermost model level.  In terms of the zonal wind $u_a$ and meridional wind $v_a$, it is defined as
-\begin{equation}
-\vert \vec{v}_a \vert = \sqrt{u_a^2 + v_a^2}.
-\end{equation}  For both evaporation and sensible heat the bulk coefficient is set to
-\begin{equation} \label{eq:BulkTransferCoefficient}
-C_E = C_H = 0.0011.
-\end{equation}
-
-The formulation of the surface fluxes makes use of the height of the lowermost full model level $z_a$ (in m).  For pressure-based models, $z_a$ can be expressed with the help of the hydrostatic equation in terms of pressure
-\begin{eqnarray} \label{eqn:za}
-z_a = \frac{R_d T_{\nu,a}}{g} \frac{(\ln p_s- \ln p_-)}{2},
-\end{eqnarray}
-where $T_{\nu,a} = T_a (1+0.608 q_a)$ is the virtual temperature at the lowermost full model level and $p_-$ is the edge pressure at the model level interface between the lowest and second lowest full model levels. This notation and all following equations assume that the temperature, horizontal wind components and the specific humidity in the physical parameterization package are co-located in both the vertical and horizontal directions, as is the case for the Lorenz grid. The height of the lowest full model level should ideally lie between 60-70m above the ground to make the results comparable to those in the literature.
-
-As described in \cite{reed2012idealized}, the surface fluxes can be written as
-\begin{eqnarray}
-\frac{\partial \vec{v}_a}{\partial t} &=& - \frac{C_d \vert \vec{v}_a \vert \vec{v}_a}{z_a} \label{sfu} \\
-\frac{\partial T_a}{\partial t} &=& \frac{C_H \vert \vec{v}_a \vert (T_s-T_a)}{z_a} \label{sft} \\
-\frac{\partial q_a}{\partial t} &=& \frac{C_E \vert \vec{v}_a \vert(q_{sat,s}-q_a)}{z_a}. \label{sfq}
-\end{eqnarray}
-We note that the wind at the surface is taken to be zero and therefore does not appear explicitly in (\ref{sfu}).  In these equations $T_s$  denotes the prescribed sea surface temperature (SST) and $q_{sat,s}$ is the saturation specific humidity defined by the Clausius-Clapeyron equation
-\begin{eqnarray} \label{qsatcalc}
-q_{sat}(p) \approx \varepsilon\frac{e_s(T_s)}{p} \approx \frac{\varepsilon}{p}e^{*}_{0}e^{-(L/R_\nu)[(1/T_s)-(1/T_0)]},
-\end{eqnarray}
-where $e^{*}_{0}$ ($=610.78$ Pa) is the saturation vapor pressure at $T_0=273.16$ K. 
-
-The final form of the surface fluxes will vary for models with other choices of prognostic variables. For example, if potential temperature $\Theta_a$ is used (\ref{sft}) takes the form
-\begin{eqnarray}
-\frac{\partial \Theta_a}{\partial t} &=& \frac{C_H \vert \vec{v}_a \vert (T_s-T_a)}{z_a} \left (\frac{p_0}{p_a} \right )^{R_d/c_p} \label{sftheta}
-\end{eqnarray}
-where $p_0 = 1000$ hPa is a reference pressure. This conversion uses the assumption that the pressure is time-invariant when individual physics parameterizations are applied. For other choices of prognostic variables like $(\rho u)_a$, $(\rho v)_a$, $(\rho \Theta)_a$ and $(\rho q)_a$ the right-hand-side of (\ref{sfu}), (\ref{sftheta}) and (\ref{sfq}) would need to be multiplied by the density of the air $\rho$.
-
-In order to ensure numerical stability, each of the aforementioned surface fluxes are applied via a semi-implicit operator.  We demonstrate this procedure on the temperature evolution equation (\ref{sft}).  First, the time derivative is expanded using a backward Euler operator,
-\begin{eqnarray}
-\frac{T_a^{n+1}-T_a^n}{\Delta t} &=& \frac{C_H \vert \vec{v}_a^n \vert (T_s-T_a^{n+1})}{z_a}.
-\end{eqnarray}
-The superscripts $n$ and $n+1$ represent the current time step (after the update from the large-scale condensation scheme) and the future time step, respectively. Note, that on the right-hand-side of the equation the only variable taken implicitly is $T_a$. $\vert \vec{v}_a^n \vert$ is evaluated at the current time step and $C_H$ is constant. The equation can now be solved for $T_a^{n+1}$
-\begin{eqnarray} \label{Tsurfflux}
-T_a^{n+1} &=& \frac{T_a^n + C_H \vert \vec{v}_a^n \vert T_s \frac{\Delta t}{z_a}}{1 + C_H \vert \vec{v}_a^n \vert\frac{\Delta t}{z_a}}.
-\end{eqnarray}
-Similar equations for $\vec{v}_a$ and $q_a$ can be calculated
-\begin{eqnarray}
-\vec{v}_a^{n+1} &=& \frac{\vec{v}_a^n}{1 + C_d^n \vert \vec{v}_a^n \vert\frac{\Delta t}{z_a}} \label{qusurfflux}\\
-q_a^{n+1} &=& \frac{q_a^n + C_E \vert \vec{v}_a^n \vert q_{sat,s}^n \frac{\Delta t}{z_a}}{1 + C_E \vert \vec{v}_a^n \vert\frac{\Delta t}{z_a}}, \label{qsurfflux}
-\end{eqnarray} 
-with the time-level dependent coefficient $C_d^n$. Notice that the second term in the numerator of (\ref{qusurfflux}) is absent in the case of the zonal and merdional wind. This is because the wind is set to zero at the surface.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Simplified Mixing in the Planetary Boundary Layer} \label{sec:PlanetaryBoundaryLayer}
-
-The forcing by the planetary boundary layer is described in \cite{reed2012idealized} and is partly reproduced here.  To parameterize the surface fluxes that impact the zonal velocity $u$, the meridional velocity $v$ and moisture $q$ we start with the time rate of change equations
-\begin{eqnarray}
-\frac{\partial u}{\partial t} &=& - \frac{1}{\rho} \frac{\partial \rho \ \overline{w'u'}}{\partial z} \label{eqturb}  \\
-\frac{\partial v}{\partial t} &=& - \frac{1}{\rho} \frac{\partial \rho \ \overline{w'v'}}{\partial z}  \label{eqturb_v} \\
-\frac{\partial q}{\partial t} &=& - \frac{1}{\rho} \frac{\partial \rho \ \overline{w'q'}}{\partial z}.  \label{eqturb_last}
-\end{eqnarray}  Potential temperature, as opposed to temperature, is used in the boundary layer parameterization because the vertical profile of the potential temperature is a suitable indicator of static stability.  This adds the time rate of change equation
-\begin{eqnarray}
-\frac{\partial \Theta}{\partial t} &=& - \frac{1}{\rho} \frac{\partial \rho \ \overline{w'\Theta'}}{\partial z}.
-\end{eqnarray}  Here $u'$, $v'$, $w'$, $\Theta'$ and $q'$ symbolize the deviations of the zonal velocity, meridional velocity, vertical velocity, potential temperature and specific humidity from their averages, respectively. The average is indicated by an overbar.  Note, assuming pressure is held constant (which is a common assumption in physical parameterizations), the potential temperature time tendency can be converted back to a temperature tendency of the following form
-\begin{eqnarray}
-\frac{\partial T}{\partial t} &=& - \frac{1}{\rho} \left (\frac{p}{p_0} \right )^{\kappa} \frac{\partial \rho \ \overline{w'\Theta'}}{\partial z}.
-\end{eqnarray}
-with the reference pressure $p_0 = 1000$ hPa.
-
-The turbulent mixing is characterized by a constant vertical eddy diffusivity to represent Ekman-like profiles of boundary layers
-\begin{eqnarray}\label{ktheory}
-\overline{w'u'} = -K_m \frac{\partial u}{\partial z} \\
-\overline{w'v'} = -K_m \frac{\partial v}{\partial z} \\
-\overline{w'\Theta'} = -K_E \frac{\partial \Theta}{\partial z} \\
-\overline{w'q'} = -K_E \frac{\partial q}{\partial z}. 
-\end{eqnarray}
-Here, $K_m$ is the eddy diffusivity coefficient for momentum and $K_E$ is the eddy diffusivity coefficient for energy and set equal to that for water vapor. In order to calculate the eddy diffusivity coefficients, the eddy diffusivity is matched to that for the surface flux calculated in Appendix~\ref{sec:OceanSurfaceFluxes} at the lowermost model level.  To allow for a smooth transition above the boundary layer ($p_{top} = 850$ hPa)  the diffusivity coefficients for momentum taper to zero as
-\begin{equation} \label{Kmtaper}
-\begin{array}{ll}
-K_m = C_d \vert \vec{v}_{a} \vert z_a & \mbox{for} \; p > p_{top} \\
-K_m = C_d \vert \vec{v}_{a} \vert z_a \exp \left ( -\left [ \frac{p_{top} - p}{p_{strato}} \right ]^2 \right ) & \mbox{for} \; p \leq p_{top}.
-\end{array}
-\end{equation}
-Here the constant $p_{strato}$ determines the rate of decrease and is set to 100 hPa. $K_E$ is defined by
-\begin{equation}
-\begin{array}{ll}\label{KEtaper}
-K_E = C_E \vert \vec{v}_{a} \vert z_a & \mbox{for} \; p > p_{top} \\
-K_E = C_E \vert \vec{v}_{a} \vert z_a \exp \left ( -\left [ \frac{p_{top} - p}{p_{strato}} \right ]^2 \right ) & \mbox{for} \; p \leq p_{top}.
-\end{array}
-\end{equation}
-We suggest implementing the boundary layer scheme with an implicit temporal discretization to avoid numerical instabilities. The details of this discretization are somewhat complicated, and so we refer to implementation details in Appendix D of \cite{reed2012idealized}. In addition, we supply the DCMIP modeling groups with the complete ``simple-physics'' package as used in the model CAM which can serve as a template routine.}
 
 
 
