@@ -358,35 +358,55 @@ The prognostic horizontal winds are stored in the native Gnomonic local coordina
 \subsection{Finite-Volume Module (FVM) of the Integrated Forecasting System}
 \label{sec:FVM}
 
-The finite-volume module (FVM) of the Integrated Forecasting System (IFS) is presently under development at 
-ECMWF \citep{smolarkiewiczetalJCP2016}. FVM solves the fully compressible Euler 
-equations in geospherical coordinates. Both deep-atmosphere and shallow-atmosphere equations 
-are available by means of simple switches. The formulation incorporates 
-a generalized, optionally time-dependent, terrain-following vertical coordinate based on height. 
-A centered two-time-level semi-implicit integration scheme is employed with 3D implicit treatment 
-of acoustic, buoyant, and rotational modes \citep{smolarkiewiczJCP2014} (see section \ref{sec:FVMSemiImplicit}). The associated 3D 
-Helmholtz problem is solved iteratively using a bespoke preconditioned Generalised 
-Conjugate Residual approach. The dynamics time step is adapted 
-at every time step according to a given maximum advective CFL number (typically somewhat smaller 
-than 1). The physics time step is identical to the dynamics time step. 
- 
-The integration procedure uses the multidimensional flux-form Eulerian non-oscillatory MPDATA 
+The Finite-Volume Module (FVM) of the Integrated Forecasting System (IFS) is currently under development at 
+ECMWF \citep{smolarkiewiczetalJCP2016,kuehnleinJCP2017,smolarkiewiczetalJCP2017}. FVM solves the 
+compressible Euler equations in a geospherical framework \citep{szmelter2010,smolarkiewiczetalJCP2016}. 
+A centered two-time-level semi-implicit 
+integration scheme is employed with 3D implicit treatment of acoustic, buoyant, and rotational modes 
+\citep{smolarkiewiczJCP2014}. The associated 3D Helmholtz problem is solved iteratively using a bespoke 
+preconditioned Generalised Conjugate Residual approach. The integration procedure uses the 
+non-oscillatory MPDATA (Multidimensional Positive Definite Advection Transport Algorithm) 
 advection scheme \citep{smolarkiewiczszmelter2005,kuehnleinJCP2017}. 
-The horizontal spatial discretization is fully unstructured finite-volume using the 
-median-dual approach. This is combined with a structured-grid finite-difference approach in the 
-vertical direction; see \cite{smolarkiewiczetalJCP2016} for an exposition. 
-In both the horizontal and the vertical discretization, all prognostic variables are 
-co-located. The median-dual finite-volume mesh in the horizontal is developed about the points/nodes 
-of the octahedral reduced Gaussian grid (see section \ref{sec:grid_oct}). The octahedral 
-reduced Gaussian grid is also employed in the spectral dynamical core of the current operational 
-IFS at ECMWF, which facilitates interoperability of the two formulations. However, we note that FVM is 
-not restricted to this grid and offers capabilities towards a broad classes of meshes including adaptivity. 
+The horizontal spatial discretization is fully unstructured finite-volume using the median-dual approach. This is 
+combined with a structured-grid finite-difference discretization in the vertical direction. In both the horizontal and 
+the vertical discretization all variables are co-located. 
+The median-dual finite-volume mesh in the horizontal is developed about the nodes of the octahedral reduced 
+Gaussian grid (Section~\ref{subsection:octahedralreducedgaussiangrid}). The octahedral reduced Gaussian 
+grid is also employed in the spectral-transform dynamical core of the presently operational IFS at ECMWF, which facilitates 
+interoperability of the two formulations. However, FVM is not restricted to this grid and offers capabilities towards 
+broad classes of meshes including adaptivity, e.g.~\cite{szmelter2010,kuehnleinJCP2012}.
+%No explicit diffusion or filtering is applied in FVM for DCMIP, unless it is required for particular test cases. 
 
-No explicit diffusion is applied in FVM for DCMIP, apart from the momentum dissipation and scalar 
-diffusion required for some of the test cases, which is the vertical dissipation/diffusion in the planetary
-boundary layer parametrization and the constant-coefficient second-order dissipation/diffusion in 
-the supercell test. An absorbing layer in the first latitude ring around the poles is optionally used in 
-the form of a Rayleigh-type forcing to the prognostic variables. 
+
+%The finite-volume module (FVM) of the Integrated Forecasting System (IFS) is presently under development at 
+%ECMWF \citep{smolarkiewiczetalJCP2016}. FVM solves the fully compressible Euler 
+%equations in geospherical coordinates. Both deep-atmosphere and shallow-atmosphere equations 
+%are available by means of simple switches. The formulation incorporates 
+%a generalized, optionally time-dependent, terrain-following vertical coordinate based on height. 
+%A centered two-time-level semi-implicit integration scheme is employed with 3D implicit treatment 
+%of acoustic, buoyant, and rotational modes \citep{smolarkiewiczJCP2014} (see section \ref{sec:FVMSemiImplicit}). The associated 3D 
+%Helmholtz problem is solved iteratively using a bespoke preconditioned Generalised 
+%Conjugate Residual approach. The dynamics time step is adapted 
+%at every time step according to a given maximum advective CFL number (typically somewhat smaller 
+%than 1). The physics time step is identical to the dynamics time step. 
+% 
+%The integration procedure uses the multidimensional flux-form Eulerian non-oscillatory MPDATA 
+%advection scheme \citep{smolarkiewiczszmelter2005,kuehnleinJCP2017}. 
+%The horizontal spatial discretization is fully unstructured finite-volume using the 
+%median-dual approach. This is combined with a structured-grid finite-difference approach in the 
+%vertical direction; see \cite{smolarkiewiczetalJCP2016} for an exposition. 
+%In both the horizontal and the vertical discretization, all prognostic variables are 
+%co-located. The median-dual finite-volume mesh in the horizontal is developed about the points/nodes 
+%of the octahedral reduced Gaussian grid (see section \ref{sec:grid_oct}). The octahedral 
+%reduced Gaussian grid is also employed in the spectral dynamical core of the current operational 
+%IFS at ECMWF, which facilitates interoperability of the two formulations. However, we note that FVM is 
+%not restricted to this grid and offers capabilities towards a broad classes of meshes including adaptivity. 
+%
+%No explicit diffusion is applied in FVM for DCMIP, apart from the momentum dissipation and scalar 
+%diffusion required for some of the test cases, which is the vertical dissipation/diffusion in the planetary
+%boundary layer parametrization and the constant-coefficient second-order dissipation/diffusion in 
+%the supercell test. An absorbing layer in the first latitude ring around the poles is optionally used in 
+%the form of a Rayleigh-type forcing to the prognostic variables. 
 
 %The first row of the table below refers to the size of the octahedral reduced Gaussian grid, where 
 %the number following "O" (for octahedral) denotes the number of latitudes between pole and equator.
@@ -512,7 +532,7 @@ rule for the octahedral grid: starting with 20 points on the first latitude arou
 are added with every latitude towards the equator, whereby the spacing between points along the 
 latitudes is uniform and there are no points at the equator. The octahedral reduced Gaussian grid 
 is suitable for transformations involving spherical harmonics, and has been introduced for global 
-medium-range numerical weather prediction with the spectral dynamical core of the IFS at ECMWF in 2016. 
+numerical weather prediction with the spectral dynamical core of the IFS at ECMWF in 2016. 
 Figure~\ref{fig:octahedralgrid} depicts the octahedral reduced Gaussian grid nodes together with
 the edges of the primary mesh as applied in the context of the finite-volume discretisation of FVM (Section~\ref{sec:FVM}). 
 
@@ -528,8 +548,8 @@ the edges of the primary mesh as applied in the context of the finite-volume dis
   \includegraphics[width=5.4cm]{contributions/FVM/octahedral_RGG_white}
  \end{subfigure}
 \caption{Locations of the octahedral reduced Gaussian grid nodes (left), and the edges of the primary mesh 
-connecting the nodes as applied with the finite-volume discretisation in FVM (right). A coarse grid with only
-24 latitudes between pole and equator is used for illustration. The dual mesh resolution of the octahedral
+connecting the nodes as applied with the finite-volume discretisation in FVM (right). A coarse octahedral grid with only
+24 latitudes between pole and equator 'O24' is used for illustration. The dual mesh resolution of the octahedral
 reduced Gaussian grid is about a factor 2 finer at the poles than the equator; see \cite{smolarkiewiczetalJCP2016}.}
 \label{fig:octahedralgrid}
 \end{figure}
@@ -658,19 +678,18 @@ The hydrostatic FV$^3$ model uses a mass-based floating Lagrangian coordinate al
 
 \subsubsection{FVM} \label{sec:FVMEquations}
 
-FVM solves conservation laws for dry mass \eqref{fvm:mass}, momentum \eqref{fvm:momentum}, and dry 
-entropy \eqref{fvm:thermodynamic} in Eulerian flux-form,
+The FVM formulation is based on conservation laws for dry mass \eqref{fvm:mass}, momentum \eqref{fvm:momentum}, 
+and dry entropy \eqref{fvm:thermodynamic} in Eulerian flux-form,
 which are similar to \eqref{eq:ContinuityEquation} for $\rho_d$, \eqref{eq:PrognosticVelocityFluxForm}, and 
-\eqref{eq:PotentialTemperatureFluxForm} for $\theta$, respectively. Underlying the governing equations 
-in FVM is a perturbational form with respect to a balanced ambient state, and a generalized curvilinear 
-coordinate formulation in a geospherical framework. These governing equations can 
-concisely be written as
-\citep{smolarkiewiczetalJCP2017}
+\eqref{eq:PotentialTemperatureFluxForm} for $\theta$, respectively. Moreover, underlying the conservation laws 
+in FVM is a perturbational form with respect to a balanced ambient state and a generalized curvilinear 
+coordinate formulation in a geospherical framework. Following \cite{smolarkiewiczetalJCP2017}, the
+governing equations can concisely be written as
 \begin{subequations} \label{fvm:compressible}
 \begin{align}
  & \pdiff{\mathcal{G}\rho_d}{t} + \overline{\nabla} \cdot \left(\mathbf{v} \mathcal{G} \rho_d\right) = 0~,
 \label{fvm:mass}  \\
-& \pdiff{\mathcal{G} \rho_d \mathbf{u}}{t} + \overline{\nabla} \cdot \left[\mathbf{v} \mathcal{G} \rho_d \mathbf{u} \right) = 
+& \pdiff{\mathcal{G} \rho_d \mathbf{u}}{t} + \overline{\nabla} \cdot \left(\mathbf{v} \mathcal{G} \rho_d \mathbf{u} \right) = 
 \mathcal{G}\rho_d\left( - \theta_{\rho} \mathbf{\widetilde{G}} \overline{\nabla} \phi' 
 - \mathbf{k} \frac{g}{\theta_{a}} \left(\theta'+\theta_a \left(\frac{q'_v}{\varepsilon} - q'_v - q_c - q_r \right) \right)
 - 2\mathbf{\Omega} \times \left( \mathbf{u} - \frac{\theta_{\rho}}{\theta_{\rho\,a}} \mathbf{u}_{a} \right) 
@@ -692,13 +711,14 @@ physical velocity vector $\mathbf{u}$, potential temperature perturbation $\thet
 Exner pressure perturbation $\phi'$, 
 with the thermodynamic variables related by the gas law 
 \eqref{fvm:gaslaw}. Primes indicate perturbations with respect to the prescribed ambient state denoted by
-subscript `a' (see also \cite{prusa2008eulag,smolarkiewiczJCP2014}).   As far as geometric aspects are concerned, the nabla operator $\overline{\nabla}$ represents
+subscript `a', see \cite{prusa2008eulag,smolarkiewiczJCP2014} for discussion. As far as geometric aspects 
+are concerned, the nabla operator $\overline{\nabla}$ represents
 the 3D vector of partial derivatives with respect to the curvilinear coordinates, along with the Jacobian $\mathcal{G}$, 
 a matrix of metric coefficients $\mathbf{\widetilde{G}}$, its transpose $\widetilde{\mathbf{G}}^{T}$, and 
-the contravariant velocity $\mathbf{v} = \mathbf{\widetilde{G}}^{T}\mathbf{u}$; see also \cite{prusa2003all} 
-and \cite{kuehnleinJCP2012}.
-The symbol $\mathcal{M}'(\mathbf{u}, \mathbf{u}_a, \theta_{\rho}/\theta_{\rho\,a})$ in \eqref{fvm:momentum} 
-subsumes the spherical Christoffel symbols \citep[][]{smolarkiewiczetalJCP2017}.
+the contravariant velocity $\mathbf{v} = \mathbf{\widetilde{G}}^{T}\mathbf{u}$ where a contribution from
+optional time-dependency of the curvilinear coordinates is neglected for simplicity \citep{kuehnleinJCP2017}.
+The symbol $\mathcal{M}' = \mathcal{M}'(\mathbf{u}, \mathbf{u}_a, \theta_{\rho}/\theta_{\rho\,a})$ in \eqref{fvm:momentum} 
+subsumes the metric forces in the spherical domain, see \cite{smolarkiewiczetalJCP2017}.
 
 \subsubsection{GEM} \label{sec:GEM_equations}
 
@@ -854,14 +874,13 @@ Tempest uses the ARS(2,3,2) scheme described in \cite{ascher1997implicit}, with 
 
 A characteristic feature of the FVM (Section~\ref{sec:FVM}) time-stepping scheme is the 3D implicit treatment 
 of the fast buoyant and acoustic modes, and the slow rotational modes. Therefore, the model time step is 
-identical for all processes and selected according to the stability of the advective transport scheme---i.e.~%
+identical for all processes and typically selected with regard to the stability of the advective transport scheme---i.e.~%
 the time step is continuously adapted according to a given maximum advective Courant number 
 permitted by the MPDATA scheme.
 A comprehensive discussion of the integration scheme can be found in \cite{smolarkiewiczJCP2014,smolarkiewiczetalJCP2016,kuehnleinJCP2017} for dry dynamics, 
-and in \cite{kurowskiJAS2014,smolarkiewiczetalJCP2017} for moist-precipitating dynamics. Here,
-we provide an outline of the basic integration scheme for the compressible Euler equations
-\eqref{fvm:compressible}. The scheme employs the two-time-level second-order-accurate template 
-algorithm given as
+and in \cite{kurowskiJAS2014,smolarkiewiczetalJCP2017} for extension to moist-precipitating dynamics.  
+Here, we provide a short outline of the solution procedure for the compressible Euler 
+equations \eqref{fvm:compressible}. It employs the two-time-level second-order-accurate template algorithm given as
 \begin{equation}
 \psi_{\mbf{i}}^{n+1}= \mathcal{A}_{\mbf{i}}(\widetilde{\psi}^{n},\mathbf{V}^{n+1/2}, (\mathcal{G}\rho_d)^{n}, (\mathcal{G}\rho_d)^{n+1})
 +0.5\,\Delta t\,R^{\psi}|_{\mbf{i}}^{\scs n+1}~,
@@ -869,26 +888,27 @@ algorithm given as
 \label{fvm:solscalar}
 \end{equation}
 where $\psi$ represents the solution variable, $R^{\psi}$ is the respective rhs,
-$\mathcal{A}$ symbolises the advective transport operator---the non-oscillatory 
-finite-volume MPDATA bespoke for the compressible dynamics on the hybrid horizontally-unstructured
-vertically-structured mesh \citep{kuehnleinJCP2017}---and the vector index $\mathbf{i} \equiv (k,i)$ denotes the 
-spatial position on the computational mesh.
+$\mathcal{A}$ symbolises the advective transport operator given by the non-oscillatory finite-volume 
+MPDATA  scheme \citep{smolarkiewiczszmelter2005,kuehnleinJCP2017}, and the spatial mesh vector 
+index $\mathbf{i} \equiv (k,i)$ denotes the position on the hybrid horizontally-unstructured 
+vertically-structured computational mesh.
 
-The integration of the system \eqref{fvm:compressible} can basically be divided into three steps. First, the homogenous
-mass continuity equation is integrated with $\psi \equiv \rho_d$, $\mathbf{V} \equiv \mathbf{v}\mathcal{G} $,
-and $R^{\rho_d} \equiv 0$ in \eqref{fvm:solscalar}. Second, the thermodynamic \eqref{fvm:thermodynamic}, 
-momentum \eqref{fvm:momentum}, and moisture equations enter
-\eqref{fvm:solscalar} with $\psi = u, v, w, \theta',...$, $\mathbf{V} \equiv \mathbf{v}\mathcal{G}\rho_d$, and the rhs $R^{\psi}$ 
-which is generally depending on all prognostic variables. The high degree of implicitness in the representation of the rhs forcings
+The solution procedure of the system \eqref{fvm:compressible} can then basically be divided into three steps. First, the homogenous
+mass continuity equation \eqref{fvm:mass} is integrated with $\psi \equiv \rho_d$, $\mathbf{V} \equiv \mathbf{v}\mathcal{G} $,
+and $R^{\rho_d} \equiv 0$ in \eqref{fvm:solscalar}. Second, given already updated moisture variables 
+\citep{smolarkiewiczetalJCP2017}, the thermodynamic \eqref{fvm:thermodynamic} and momentum \eqref{fvm:momentum} equations enter
+\eqref{fvm:solscalar} with $\psi = u, v, w, \theta'$, $\mathbf{V} \equiv \mathbf{v}\mathcal{G}\rho_d$, and the rhs $R^{\psi}$ 
+which is generally depending on all these prognostic variables. The high degree of implicitness in the representation of the rhs forcings
 is achieved by inverting the overall discrete system \eqref{fvm:solscalar} to obtain closed-form expressions for the
-velocity updates---the procedure is facilitated by the co-located arrangement of all variables on the computational mesh.
+velocity updates---this procedure is facilitated by the co-located arrangement of all variables on the computational mesh.
 Retained on the rhs of the derived closed-form velocity expressions is the pressure gradient term.
 The subsequent third step in the solution procedure is to formulate an implicit boundary value problem for the pressure variable $\phi'$ using 
 an advective form of the equation of state \eqref{fvm:gaslaw}. An $\mathcal{O}(\Delta t^2)$ integration of this 
 equation with a Euler backward scheme, in the spirit of \eqref{fvm:solscalar}, leads a Helmholtz equation
 \citep{smolarkiewiczJCP2014}.
 The associated 3D elliptic boundary value problem is solved iteratively using a preconditioned Generalised Conjugate 
-Residual approach; see \cite{smolarkiewiczAG2011} and references therein. Nonlinear terms in $R^{\psi}|^{\scs n+1}$ and the 
+Residual approach; see \cite{smolarkiewiczAG2011} for a recent overview and comprehensive list of references.
+Nonlinear terms in $R^{\psi}|^{\scs n+1}$ and the 
 solution-dependent coefficients of the Helmholtz equation are lagged behind and executed in an outer iteration.
 
 
