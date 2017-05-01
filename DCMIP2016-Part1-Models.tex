@@ -1168,7 +1168,7 @@ In coordinate-invariant form the prognostic velocity equations may be written in
 The equations above still provide some flexibility with regards to the choice of $\Phi$ and $\vg{\Omega}$.  For \textit{deep atmosphere} models, one typically chooses
 \begin{align} \label{eq:DeepAtmosphereGeopotential}
 \Phi = g_c a^2 \left[\frac{1}{a} - \frac{1}{a+z}\right], \quad \mbox{and} \quad \vg{\Omega} = \Omega ( \vb{k} \sin \varphi + \vb{j} \cos \varphi),
-\end{align} where $g$ is gravitational acceleration at the surface, $a$ is the radius of the planet, $\Omega$ is the rotation rate (in s$^{-1}$), $\varphi$ is the latitude, $\vb{j}$ is the unit vector oriented in the meridional direction, and $\vb{k}$ is the unit vector oriented in the vertical direction.  For models that don't utilize a height-based vertical coordinate, the geopotential is generally treated as a prognostic variable, with an evolution equation that emerges from the definition $w = dz/dt$,
+\end{align} where $g_c$ is gravitational acceleration at the surface, $a$ is the radius of the planet, $\Omega$ is the rotation rate (in s$^{-1}$), $\varphi$ is the latitude, $\vb{j}$ is the unit vector oriented in the meridional direction, and $\vb{k}$ is the unit vector oriented in the vertical direction.  For models that don't utilize a height-based vertical coordinate, the geopotential is generally treated as a prognostic variable, with an evolution equation that emerges from the definition $w = dz/dt$,
 \begin{align}
 \diff{\Phi}{t} = \frac{a^2 g_c w}{(a + z)^2}.
 \end{align}  For \textit{shallow atmosphere} models, the geopotential takes the simpler form
