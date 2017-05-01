@@ -286,7 +286,7 @@ Tempest & Tempest Non-hydrostatic Atmospheric Model & University of California, 
 CSU & NH (Unified) & $\zeta$, $D$, $w$, $p_s$, $\theta_v$, $q$ & Geodesic (\S \ref{sec:grid_geo}) & FV & Z-grid \\
 DYNAMICO & H/NH & $\vb{v}_h$, $\rho_s w$, $\rho_s$, $\rho_s \theta_v$, $\Phi$, $\rho_s q$ & Geodesic (\S \ref{sec:grid_geo}) & FV & C-grid \\
 FV$^3$ & NH & $\vb{u}_h$, $w$, $\rho_s$, $\rho_s \theta_v$, $\delta \Phi$, $\rho_s q$ & Cubed-sphere (\S \ref{sec:grid_cs}) & FV & D-grid \\
-FVM & NH (D) & $\rho_d$, $\vb{u}_h$, $w$, $\theta'$, $q$ & Octahedral reduced (\S \ref{sec:grid_oct}) & FV & A-grid \\
+FVM & NH (D) & $\rho_d$, $\vb{u}_h$, $w$, $\theta'$, $q_v$ & Octahedral (\S \ref{sec:grid_oct}) & FV & A-grid \\
 GEM & NH & $\vb{u}_h$, $w$, $\dot{\zeta}$, $T_v$, $p$, $q$ & Yin-Yang (\S \ref{sec:grid_yinyang}) & FD & C-grid  \\
 ACME--A & H/NH & $\vb{u}_h$, $w$, $\rho_s$, $\rho_s \theta$, $\Phi$, $\rho_s q$ & Cubed-sphere (\S \ref{sec:grid_cs}) & SE & A-grid \\
 ICON & NH (D) & $\vb{u}_h$, $w$, $\rho$, $\theta_v$, $\rho q$ & Icosahedral triangular (\S \ref{sec:grid_ico_tri}) & FV & C-grid \\
@@ -376,7 +376,7 @@ The median-dual finite-volume mesh in the horizontal is developed about the node
 Gaussian grid (Section~\ref{subsection:octahedralreducedgaussiangrid}). The octahedral reduced Gaussian 
 grid is also employed in the spectral-transform dynamical core of the presently operational IFS at ECMWF, which facilitates 
 interoperability of the two formulations. However, FVM is not restricted to this grid and offers capabilities towards 
-broad classes of meshes including adaptivity, e.g.~\cite{szmelter2010,kuehnleinJCP2012}.
+broad classes of meshes including adaptivity \citep[e.g.][]{szmelter2010,kuehnleinJCP2012}.
 %No explicit diffusion or filtering is applied in FVM for DCMIP, unless it is required for particular test cases. 
 
 
@@ -533,8 +533,8 @@ The two grids differ in the arrangement of the points along the latitudes, which
 rule for the octahedral grid: starting with 20 points on the first latitude around the poles, four points 
 are added with every latitude towards the equator, whereby the spacing between points along the 
 latitudes is uniform and there are no points at the equator. The octahedral reduced Gaussian grid 
-is suitable for transformations involving spherical harmonics, and has been introduced for global 
-numerical weather prediction with the spectral dynamical core of the IFS at ECMWF in 2016. 
+is suitable for transformations involving spherical harmonics, and has been introduced for operational 
+weather prediction with the spectral dynamical core of the IFS at ECMWF in 2016. 
 Figure~\ref{fig:octahedralgrid} depicts the octahedral reduced Gaussian grid nodes together with
 the edges of the primary mesh as applied in the context of the finite-volume discretisation of FVM (Section~\ref{sec:FVM}). 
 
@@ -552,7 +552,7 @@ the edges of the primary mesh as applied in the context of the finite-volume dis
 \caption{Locations of the octahedral reduced Gaussian grid nodes (left), and the edges of the primary mesh 
 connecting the nodes as applied with the finite-volume discretisation in FVM (right). A coarse octahedral grid with only
 24 latitudes between pole and equator 'O24' is used for illustration. The dual mesh resolution of the octahedral
-reduced Gaussian grid is about a factor 2 finer at the poles than the equator; see \cite{smolarkiewiczetalJCP2016}.}
+reduced Gaussian grid is about a factor 2 finer at the poles than the equator, see \cite{smolarkiewiczetalJCP2016}.}
 \label{fig:octahedralgrid}
 \end{figure}
 
@@ -686,14 +686,16 @@ which are similar to \eqref{eq:ContinuityEquation} for $\rho_d$, \eqref{eq:Progn
 \eqref{eq:PotentialTemperatureFluxForm} for $\theta$, respectively. Moreover, underlying the conservation laws 
 in FVM is a perturbational form with respect to a balanced ambient state and a generalized curvilinear 
 coordinate formulation in a geospherical framework. Following \cite{smolarkiewiczetalJCP2017}, the
-governing equations can concisely be written as
+FVM governing equations can concisely be written as
 \begin{subequations} \label{fvm:compressible}
 \begin{align}
  & \pdiff{\mathcal{G}\rho_d}{t} + \overline{\nabla} \cdot \left(\mathbf{v} \mathcal{G} \rho_d\right) = 0~,
 \label{fvm:mass}  \\
 & \pdiff{\mathcal{G} \rho_d \mathbf{u}}{t} + \overline{\nabla} \cdot \left(\mathbf{v} \mathcal{G} \rho_d \mathbf{u} \right) = 
 \mathcal{G}\rho_d\left( - \theta_{\rho} \mathbf{\widetilde{G}} \overline{\nabla} \phi' 
-- \mathbf{k} \frac{g_c}{\theta_{a}} \left(\theta'+\theta_a \left(\frac{q'_v}{\varepsilon} - q'_v - q_c - q_r \right) \right)
+%- \mathbf{k} \frac{g}{\theta_{a}} \left(\theta'+\theta_a \left(\frac{q'_v}{\varepsilon} - q'_v - q_c - q_r \right) \right)
+%- \mathbf{k}\,g \left(\frac{\theta'}{\theta_a}+\frac{q'_v}{\varepsilon} - q'_v - q_c - q_r \right)
+- \mathbf{k}\,g \left(\frac{\theta'}{\theta_a}+\varepsilon_b\,q'_v - q_c - q_r \right)
 - 2\mathbf{\Omega} \times \left( \mathbf{u} - \frac{\theta_{\rho}}{\theta_{\rho\,a}} \mathbf{u}_{a} \right) 
 + \mathcal{M}' \right]~,
 %+ \mathbf{M} \right)~,
@@ -713,14 +715,16 @@ physical velocity vector $\mathbf{u}$, potential temperature perturbation $\thet
 Exner pressure perturbation $\phi'$, 
 with the thermodynamic variables related by the gas law 
 \eqref{fvm:gaslaw}. Primes indicate perturbations with respect to the prescribed ambient state denoted by
-subscript `a', see \cite{prusa2008eulag,smolarkiewiczJCP2014} for discussion. As far as geometric aspects 
+subscript `a', see \cite{prusa2008eulag} and \cite{smolarkiewiczJCP2014} for discussions.
+The symbol $g$ in \eqref{fvm:momentum} denotes the gravitational acceleration 
+and $\varepsilon_b = 1/\varepsilon-1$. As far as geometric aspects 
 are concerned, the nabla operator $\overline{\nabla}$ represents
 the 3D vector of partial derivatives with respect to the curvilinear coordinates, along with the Jacobian $\mathcal{G}$, 
 a matrix of metric coefficients $\mathbf{\widetilde{G}}$, its transpose $\widetilde{\mathbf{G}}^{T}$, and 
 the contravariant velocity $\mathbf{v} = \mathbf{\widetilde{G}}^{T}\mathbf{u}$ where a contribution from
 optional time-dependency of the curvilinear coordinates is neglected for simplicity \citep{kuehnleinJCP2017}.
 The symbol $\mathcal{M}' = \mathcal{M}'(\mathbf{u}, \mathbf{u}_a, \theta_{\rho}/\theta_{\rho\,a})$ in \eqref{fvm:momentum} 
-subsumes the metric forces in the spherical domain, see \cite{smolarkiewiczetalJCP2017}.
+subsumes the metric forces in the spherical domain \citep{smolarkiewiczetalJCP2017}.
 
 \subsubsection{GEM} \label{sec:GEM_equations}
 
@@ -909,8 +913,9 @@ of the fast buoyant and acoustic modes, and the slow rotational modes. Therefore
 identical for all processes and typically selected with regard to the stability of the advective transport scheme---i.e.~%
 the time step is continuously adapted according to a given maximum advective Courant number 
 permitted by the MPDATA scheme.
-A comprehensive discussion of the integration scheme can be found in \cite{smolarkiewiczJCP2014,smolarkiewiczetalJCP2016,kuehnleinJCP2017} for dry dynamics, 
-and in \cite{kurowskiJAS2014,smolarkiewiczetalJCP2017} for extension to moist-precipitating dynamics.  
+A comprehensive discussion of the integration scheme can be found in \cite{smolarkiewiczJCP2014,smolarkiewiczetalJCP2016}
+and \cite{kuehnleinJCP2017} for dry dynamics, 
+whereas in \cite{kurowskiJAS2014} and \cite{smolarkiewiczetalJCP2017} for extension to moist-precipitating dynamics.  
 Here, we provide a short outline of the solution procedure for the compressible Euler 
 equations \eqref{fvm:compressible}. It employs the two-time-level second-order-accurate template algorithm given as
 \begin{equation}
@@ -939,7 +944,7 @@ an advective form of the equation of state \eqref{fvm:gaslaw}. An $\mathcal{O}(\
 equation with a Euler backward scheme, in the spirit of \eqref{fvm:solscalar}, leads a Helmholtz equation
 \citep{smolarkiewiczJCP2014}.
 The associated 3D elliptic boundary value problem is solved iteratively using a preconditioned Generalised Conjugate 
-Residual approach; see \cite{smolarkiewiczAG2011} for a recent overview and comprehensive list of references.
+Residual approach, see \cite{smolarkiewiczAG2011} for a recent overview and comprehensive list of references.
 Nonlinear terms in $R^{\psi}|^{\scs n+1}$ and the 
 solution-dependent coefficients of the Helmholtz equation are lagged behind and executed in an outer iteration.
 
