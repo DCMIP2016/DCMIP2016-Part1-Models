@@ -10,3 +10,9 @@
 *.swp
 
 DCMIP2016-Part1-Models.blg
+
+*.blg
+
+*.cb
+
+*.cb2

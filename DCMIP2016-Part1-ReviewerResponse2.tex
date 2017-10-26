@@ -1,0 +1,256 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{color}
+\usepackage{comment}
+
+\oddsidemargin 0cm
+\evensidemargin 0cm
+
+\textwidth 16.5cm
+\topmargin -2.0cm
+\parindent 0cm
+\textheight 24cm
+\parskip 0.5cm
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+%\fancyhead[L]{AOSS Reference Sheet}
+%\fancyhead[CH]{test}
+\fancyfoot[C]{Page \thepage}
+
+\newcommand{\vb}{\mathbf}
+\newcommand{\vg}{\boldsymbol}
+\newcommand{\mat}{\mathsf}
+\newcommand{\diff}[2]{\frac{d #1}{d #2}}
+\newcommand{\diffsq}[2]{\frac{d^2 #1}{{d #2}^2}}
+\newcommand{\pdiff}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pdiffsq}[2]{\frac{\partial^2 #1}{{\partial #2}^2}}
+\newcommand{\topic}{\textbf}
+\newcommand{\arccot}{\mathrm{arccot}}
+\newcommand{\arcsinh}{\mathrm{arcsinh}}
+\newcommand{\arccosh}{\mathrm{arccosh}}
+\newcommand{\arctanh}{\mathrm{arctanh}}
+
+\begin{document}
+
+\textbf{{This paper gives an overview of the models that participated in the DCMIP2016 workshop
+on dynamical core intercomparisons. By itself the paper provides a useful reference
+on the current state of the art in regards to dynamical core development, highlighting
+the wide range of choices that have been made by modeling groups across
+the globe as well as highlighting some of the choices, such as equation sets, used in
+dynamical core design. As noted by the authors this paper is the first of an envisioned
+sequence detailing the models and their performance on a number of idealized test
+cases and it will be interesting to observe how the sequence develops and what can
+be learned from the intercomparison.}}
+
+\textbf{{It is some achievement to condense the wealth of information needed to describe a
+range of modeling issues into one concise paper and the authors should be applauded
+for succeeding in such a difficult task. The paper is well written and provides a useful
+source of information to model developers and is therefore suitable for publication after
+a number of minor issues are dealt with.}}
+
+We thank the reviewer for his positive comments on the manuscript.  We agree that, in the interests of completeness, each section should feature descriptions from all models being assessed and so have added text to this effect to each of sections 3-7.  Further, the model descriptions in section 2 have been rewritten to maintain a more consistent structure.
+
+\textbf{{Main comments:}}
+
+\textbf{{1. The main issue that should be corrected in this paper is that not all of the models
+are covered in each of sections 3-7 describing aspects of the model formulations.
+This could be due a desire not to replicate information (if models share the same
+governing equations etc) but I think it would be useful if the reader could find the
+appropriate model description in each of sections 3-7. In detail I suggest:}}
+
+We agree with your assessment and have added the missing sections, as requested.
+
+\textbf{{Section 5 lists the equation sets used by each model but is missing the
+CSU, MPAS and NICAM models. It would be useful for the reader to add
+brief sections for these models, or if they are the same as some of the other
+models to combine them into the appropriate subsection.}}
+
+Text for CSU, MPAS and NICAM has been added to this section:
+
+\textbf{CSU:}  {\color{blue}The CSU model uses the vorticity-divergence form of the equations of motion, as described in section A10, discretized on the geodesic mesh with absolute vorticity and velocity divergence scalars stored at cell-centers.  The unified approximation of the equations of motion (Arakawa and Konor, 2009) is employed to avoid vertically propagating sound waves.}
+
+\textbf{MPAS:}  {\color{blue}The evolution equations used by MPAS are fully described in Skamarock et al. (2012), based on the formulation of Dutton (1986). The MPAS model uses the momentum form of the update equations, as described in section A11, with dry mass utilized for the density variable $\tilde{\rho}_s$. MPAS further evolves dry mass using a continuity equation of the form (A10) and moist potential temperature following (A13).}
+
+\textbf{NICAM:}  {\color{blue}NICAM prognoses horizontal and vertical momentum analogous to the approach described in section A11. It further evolves the density perturbation from the background reference state using (A10) and sensible heat part of internal energy. A detailed explanation of the evolution equations can be found in Satoh et al. (2008).}
+
+\textbf{{Section 6 describes the diffusion mechanisms in each model but omits the
+CSU, DYNAMICO, FVM, MPAS and NICAM models. Since table 5 indicates
+these models to have explicit diffusion mechanisms then it would be good
+to add subsections for the missing models, or where appropriate combine
+them, e.g. CSU and DYNAMICO both use 4th order hyperviscosity which
+is covered in subsection 6.1 on ACME-A and so these models could be
+combined into a single section.}}
+
+The following text has been added in section 6.
+
+\textbf{CSU:}  {\color{blue}The CSU model utilizes an explicit diffusion scheme that consists of fourth-order hyperdiffusion ($\nabla^4$) applied to the vorticity, divergence, and potential temperature. The model does not include any explicit diffusion in the vertical column. However, for the idealized DCMIP test cases explicit diffusion was disabled.}
+
+\textbf{DYNAMICO:}  {\color{blue}In DYNAMICO, (hyper-)diffusive filters are used to eliminate spurious noise due to the energy-conservative centered discretization. Filters are applied every $N_{\mbox{\textit{diff}}}$ Runge-Kutta time steps in a forward-Euler manner, with $N_{\mbox{\textit{diff}}}$ as large as allowed by stability. The scalar Laplacian is computed as div grad and the vector Laplacian is decomposed into its divergent (grad div) and rotational (curl curl) parts. The strength of filtering is controlled by dissipation time scales $\tau$:  Given $\tau$ the hyperviscous coefficient that multiplies operator $D^p$ is  $\delta^{2p} \tau^-1$ where $\delta^-2$ is the largest eigenvalue of operator $D$. For DCMIP, DYNAMICO uses $p=2$ (fourth-order hyperviscosity) for all filters.}
+
+\textbf{FVM:}  {\color{blue}Within the dynamical core, FVM does not apply any explicit diffusion.  For the DCMIP test cases, the implicit diffusion of the monotonic MPDATA provides the right amount of diffusion/dissipation needed to maintain model stability and remove excess energy from the finest scales.  An absorbing layer is also available in the model for damping vertically propagating waves near the model top.}
+
+\textbf{MPAS:}  {\color{blue}The MPAS model applies fourth-order hyperdiffusion and Smagorinsky diffusion (Smagorinsky, 1963), as described in Skamarock et al. (2012).  When applied to the momentum, the Laplacian is evaluated as
+\begin{align}
+\nabla^2 u_i = \pdiff{}{x_i} \nabla_s \cdot \vb{v} - \pdiff{\eta}{x_j},
+\end{align} where $u_i$ is the edge-normal velocity defined on cell edge $i$, $\eta$ is the vertical component of the relative vorticity, computed on vertices, and $\nabla_s \cdot \vb{v}$ is the horizontal divergence on $s$ surfaces, computed on edges.  The evaluation of divergence and vorticity in this expression is described in \cite{ringler2010unified}.  The fourth-order hyperdiffusion operator is then computed by twice applying the above Laplacian operator to the momentum.
+
+Smagorinsky diffusion, which is often applied in atmospheric models to parameterize turbulent processes, uses a second-order Laplacian and a physically-motivated eddy viscosity $K_h$, defined in terms of Cartesian velocities $(u,v)$,
+\begin{align}
+K_h = c_s^2 \ell^2 \sqrt{(u_x - v_y)^2 + (u_y + v_x)^2},
+\end{align} where $c_s$ is a constant parameter and $\ell$ is the grid scale.  The diffusion operator then takes the form $\nabla \cdot (K_h \nabla \psi)$ for a scalar field $\psi$.}
+
+\textbf{NICAM:}  {\color{blue}NICAM implements three types of diffusion: 3D divergence damping, fourth-order horizontal hyperdiffusion, and sixth-order vertical hyperdiffusion as described in Tomita and Satoh (2004). Specifically, the divergence damping term (Skamarock and Klemp, 1992) aims to suppress instabilities that arise due to the time splitting scheme, and is applied to both horizontal and vertical velocities. The hyperdiffusion operators are applied to all prognostic variables. For tracer advection, upwinding is used to remove spurious oscillations, as described in Miura (2007); Niwa et al. (2011).}
+
+\textbf{{Related to the previous point the methods of diffusion \& stabilization in table
+5 and section 6 are somewhat different, for example some model subsections describe
+using sponge layers (FV3, ICON) but these are not listed in
+table 5 and the same applies to monotonic limiting for some models. Is it
+the case that table 5 only lists the principle methods of stabilization and diffusion?
+In which case I suggest adding words to this effect in the caption.
+I appreciate that it is beyond the scope of this paper to list in detail all the
+methods of stabilization and diffusion applied in all the models, maybe some
+words in the introduction to section 6 indicating that this section only covers
+the principle diffusion methods used?}}
+
+The header of Table 5 has been changed to read ``Principal options for diffusion, stabilization, filters or fixers.''  Further, the following sentence has been added to the introduction of section 6:
+
+{\color{blue}Diffusion also includes mechanisms for damping vertically propagating internal gravity waves, such as model-top Rayleigh layers, which are fairly ubiquitous across models and hence not discussed in detail here.}
+
+\textbf{{Section 6 lists the temporal discretization methods used but omits the methods
+used by the ACME-A, CSU and NICAM models, it would be useful it the
+methods used by these models was indicated in this section.}}
+
+ACME-A uses the same method as Tempest, so these have been combined in the text.  NICAM uses the same method as MPAS, so these have also been combined in the text.
+
+The following text has been added for the CSU model:
+
+{\color{blue}CSU uses a semi-implicit time integration scheme with third-order Adams-Bashforth scheme for explicit integration of the continuity equation, potential temperature equation, and terms related to advection.  Since potential temperature is updated prior to the computation of the pressure-gradient force, this term can be thought of as implicit in time.  The horizontal wind field is then predicted through integration of the vorticity and divergence of the horizontal wind and a multigrid method applied to solve a pair of two-dimensional Poisson equations for the stream function and velocity potential, which are then differentiated to obtain the velocity field.  Horizontal diffusion is then applied forward in time.}
+
+\textbf{{2. Section 2 gives a brief description of each model and as noted in the author contributions
+these are provided by the modeling teams themselves, however this
+has led to a rather uneven section where the model descriptions provide differing
+levels of detail. I think this section could use some editorial input to unify the
+descriptions. Based upon the sections for the rest of the paper I would like to be
+able to ascertain the following properties for each model from this section: equation
+set, horizontal grid and discretization, vertical grid and discretization, temporal
+discretization, principal diffusion and stabilization mechanisms and transport
+scheme. Only a couple of words to a sentence are needed and much of this
+information can be found in tables 2-5 but i think it would help readability to unify
+this description section.}}
+
+Thank you for this suggestion.  Section 2 has been modified heavily in order to better align the wording for each model.  The changes are sufficiently extensive that they are not reproduced here.
+
+\textbf{{3. The paper does a very good job of describing the key features of a wide range of
+models, however I would have been interested in seeing a specific section detailing
+the transport schemes used by the models in a similar fashion to Sections 3-7
+(and including the information in table 2 if possible). However in order to avoid
+over lengthening the paper I suggest this could be covered to some extent by
+the descriptions in section 2. This would require details of the transport schemes
+used by ACME-A, OLAM and TEMPEST to be mentioned in the appropriate subsections
+of section 2.}}
+
+The following updates to the text have been made:
+
+\textbf{ACME-A:}  {\color{blue}By default, tracer transport is sub-cycled relative to the hydrodynamics, but also performed using the spectral element method using the tracer mass as a prognostic variable.}
+
+\textbf{OLAM:}  {\color{blue}Tracer transport is second-order in space and time using the scheme of Miura (2007), with consistent fluxes obtained by time averaging over the acoustic time steps.}
+
+\textbf{TEMPEST:}  {\color{blue}Tracer transport is performed using the spectral element method with the same timestep as the hydrodynamics and using the tracer mass density as a prognostic variable.  As with the hydrodynamics, tracer transport is updated explicitly in the horizontal and implicitly in the vertical.}
+
+\textbf{{Minor comments:}}
+
+\textbf{{Table 1: $\Phi$, $\delta \Phi$, $\dot{\zeta}$ and $\theta^\prime$ are missing entries but listed in the prognostic variables of table 3.}}
+
+Thank you for catching this.  Entries have been added for $\Phi$ and $\dot{\zeta}$ in Table 1.  In Table 3, $\delta \Phi$ has been changed to $\Phi$ and $\theta^\prime$ has been changed to $\theta$.
+
+\textbf{{The DCMIP2016 website lists HOMME, UZIM and NEPTUNE (NEP) as models
+taking part, I assume that HOMME is ACME-A, UZIM is CSU, if I'm mistaken then
+could these models be added? Is there a reason NEPTUNE is not included in
+this paper?}}
+
+HOMME was used at DCMIP2016 using a hydrostatic formulation.  This model has since been updated to include a nonhydrostatic formulation that was subsequently included in ACME-A.  Since it would be odd to include a model that was purely hydrostatic in a paper that focused on nonhydrostatic models, it was decided that HOMME would be substituted for ACME-A.
+
+You are correct that UZIM and CSU are the same model (although a new curl-curl form model is now under development at CSU).
+
+NEPTUNE participated in the DCMIP2016 workshop but did not submit text for this paper describing their model, and so are not included.  Since they did invest the considerable effort in participating in the workshop, we believed it would be appropriate to retain them as co-authors even though the model description was absent.
+
+\textbf{{Section 2.3: If Dubos and Dubery has been submitted this reference could be
+updated.}}
+
+Although there is not much remaining to be done, this paper has not been submitted as of the time of writing.
+
+\textbf{{Section 2.7 ``Icosahedral'' should be ``ICOsahedral'' in the subsection title to match
+the format of other model names.}}
+
+Corrected.
+
+\textbf{{Section 3.5, last line: Is it possible that the CCVT method produces polygons
+with less than 5 sides? If so this should be mentioned.}}
+
+Yes, although it's very unlikely.  The text has been updated as follows:
+
+{\color{blue}Although hexagons are, by far, the most common polygon on CCVT grids, CCVT grids on the sphere will also include at least 12 pentagons and sometimes other polygons with more than six sides.  Quadrilateral elements are theoretically possible, but are never found in practice on the final grid due to being a locally unstable solution of the underlying CCVT system of equations.}
+
+\textbf{{Section 3.7 last line. I don?t think it is entirely correct that GEM uses two regional
+climate models on the patches of the YinYang grid. Qaddouri 2011 States that the
+numerics come from the original GEM latlong model which is used for medium
+range weather forecasts. I suggest changing this to ``utilizing a pair of local area
+models based with the numerics from the GEM latitude-longitude model''. If the
+GEM modeling team feel the current description is accurate then I am happy for
+it to be left as is.}}
+
+We agree with the suggested change.  The modified text has been incorporated in the manuscript.
+
+\textbf{{Page 16, Line 8. The A-grid collocates all scalar and velocity components. To
+avoid confusion with the B- and E-grid (which only collocate velocity components)
+I suggest changing ``co-location of all velocity components'' to ``co-location of all
+velocity components and scalar fields''.}}
+
+Agreed and changed accordingly.
+
+\textbf{{Page 16 Line 9: To be consistent with the descriptions of the other grids I would
+add ``which co-locates the vorticity, divergence and buoyancy variable.'' after ``and
+the Z-grid''.}}
+
+Agreed and changed accordingly.
+
+\textbf{{Page 16 Line 14: There is a mix up of dimensionality of the mesh objects here,
+for a 3D mesh the C-grid stores velocities on faces not edges. I would suggest
+saying ``as long as the number of horizontal faces is twice the number of volumes''.}}
+
+Agreed and changed accordingly.
+
+\textbf{{Page 16 Lines 1 and 14-15: The maximum stable timestep size (if it exists) is
+given by a combination of factors such as the time scheme, horizontal and vertical
+discretization, grid staggering and waves supported in the equation set. The
+comments in this section give the reader the impression that staggering is the
+most important (or only) factor. I suggest that ``for explicit timestepping schemes''
+is added after ``timestep size'' on line 1 and that the text on lines 14-15 from ``but
+also'' to the semi-colon is removed since I believe this statement is only true for
+a given choice of horizontal discretization (2nd order fd?) and defined explicit
+timestepping schemes.}}
+
+Agreed.  Line 1 has been changed accordingly.  The text on lines 14-15 has been changed to 
+
+{\color{blue}...the C-grid better represents short wave modes, does not support extraneous computational modes (as long as the number of horizontal faces is equal to twice the number of volumes), but typically has a more restrictive timestep with explicit timestepping schemes than the A-grid...}
+
+\textbf{{Page 16 Line 18: In general I think it is a Poisson problem that needs to be solved
+for the z-grid rather than the more general Helmholtz problem.}}
+
+Agreed.  ``Helmholtz'' has been replaced with ``Poisson''.
+
+\textbf{{Page 28 Line 14: Could a citation (at least title and authors) be given for this
+paper if it is under review.}}
+
+A citation has been added.
+
+\textbf{{Typos}}
+
+Thank you for catching these.  All have been corrected
+
+\end{document}

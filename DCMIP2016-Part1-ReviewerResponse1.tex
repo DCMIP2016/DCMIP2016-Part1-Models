@@ -1,0 +1,81 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{color}
+\usepackage{comment}
+
+\oddsidemargin 0cm
+\evensidemargin 0cm
+
+\textwidth 16.5cm
+\topmargin -2.0cm
+\parindent 0cm
+\textheight 24cm
+\parskip 0.5cm
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+%\fancyhead[L]{AOSS Reference Sheet}
+%\fancyhead[CH]{test}
+\fancyfoot[C]{Page \thepage}
+
+\newcommand{\vb}{\mathbf}
+\newcommand{\vg}{\boldsymbol}
+\newcommand{\mat}{\mathsf}
+\newcommand{\diff}[2]{\frac{d #1}{d #2}}
+\newcommand{\diffsq}[2]{\frac{d^2 #1}{{d #2}^2}}
+\newcommand{\pdiff}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pdiffsq}[2]{\frac{\partial^2 #1}{{\partial #2}^2}}
+\newcommand{\topic}{\textbf}
+\newcommand{\arccot}{\mathrm{arccot}}
+\newcommand{\arcsinh}{\mathrm{arcsinh}}
+\newcommand{\arccosh}{\mathrm{arccosh}}
+\newcommand{\arctanh}{\mathrm{arctanh}}
+
+\begin{document}
+
+\textbf{{This is an exceptionally well written paper leading to the most minor review that I have
+every written. The paper describes the 11 models which took part in DCMIP 2016 with
+clarity, consistency and the kind of insight that very few people have. This will be an
+extremely useful resource for those seeking to understand how any of the models work
+and how they compare to other models. I have a very few minor comments.}}
+
+We would like to thank the reviewer for this very kind comment.  We are very hopeful that this manuscript will be a valuable resource for future model developers and students of model development.
+
+\textbf{{1. OLAM uses cut cells to represent smooth topography - how is the small cell problem solved.}}
+
+To address this question, the following text has been added to section 4.2.4:
+
+{\color{blue}One or more methods are used to avoid the so-called small cell problem where volume to area ratios of cut cells are much less than for full cells and therefore can lead to instability. The smallest cells are eliminated by adjusting topography slightly, which is usually justified by noting that local topographic sampling is approximate. In larger cut cells, volumes can be increased (without changing surface areas) which stabilizes the cell at the expense of slowing its response to advected transients. When either of the above adjustments is unacceptable for a particular application, a flux-balance method based partly on Berger and Helzel (2012) is used to stabilize small cut cells.}
+
+\textbf{{2. Perhaps mention the advantages of the lat-lon grid.}}
+
+Agreed.  We have added the following text to the description of the latitude-longitude grid:
+
+{\color{blue}The latitude-longitude grid has the benefits of being globally rectilinear, which simplifies data access and subdivision of computation across processors, and yields a vector basis that is locally orthogonal nearly everywhere.  This structure accurately maintains purely zonal flows and simplifies data post-processing for visualization.}
+
+\textbf{{3. In section 6.5, give a citation describing the hexagonal C-grid computational mode
+and either give a citation or describe the filter.}}
+
+Agreed.  In the revised manuscript we have included citations to Weller, H.: Controlling the computational modes of the arbitrarily structured C grid, Mon. Weather Rev., 140, 3220--3234, 2012 and Weller, H., Thuburn, J., and Cotter, C. J.: Computational modes and grid imprinting on five quasi-uniform spherical C grids, Mon. Weather Rev., 140, 2734--2755, 2012.
+
+\textbf{{4. In section 7, you say that fully compressible non-hydrostatic models need a temporal
+discretisation for dealing with vertically propagating sound waves. You give the
+impression that using some form of approximation that filters sound waves implies that
+the problem goes away. It doesn't, it makes the problem elliptic rather than hyperbolic
+and so requires the solution of a Poisson equation rather than a Helmholtz equation.
+It is a common misconception that these approximations somehow make solving the
+equations easier. Please help to dispel this misconception.}}
+
+Thank you for pointing this out.  The text has been modified to read:
+
+{\color{blue}This diversity is in part because of the demands of non-hydrostatic models: unlike their hydrostatic counterparts, non-hydrostatic atmospheric models must include a mechanism for dealing with vertically propagating sound waves.  These waves are meteorologically insignificant, but with a vertical grid spacing of 100 meters, a purely explicit temporal discretization of the unmodified fluid equations would require a time step size on the order of one second or less.  Consequently, sound waves are either filtered explicitly through the use of an alternative equation set, or artificially slowed through the use of implicit temporal discretizations.  Some commonly employed alternative equation sets include the anelastic (Ogura and Phillips, 1962), quasi-hydrostatic (Orlanski, 1981), pseudo-incompressible (Durran, 1989), or unified approximation (Arakawa and Konor, 2009).  These filtered equation sets generally require that a global elliptic solve be performed as prognostic variables are updated.}
+
+\textbf{{5. Line 29 of page 28. Remove the word ``basically''.}}
+
+Removed.
+
+\end{document}

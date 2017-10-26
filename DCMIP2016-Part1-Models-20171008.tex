@@ -1,0 +1,1676 @@
+%% Copernicus Publications Manuscript Preparation Template for LaTeX Submissions
+%% ---------------------------------
+%% This template should be used for copernicus.cls
+%% The class file and some style files are bundled in the Copernicus Latex Package which can be downloaded from the different journal webpages.
+%% For further assistance please contact the Copernicus Publications at: publications@copernicus.org
+%% http://publications.copernicus.org
+
+
+%% Please use the following documentclass and Journal Abbreviations for Discussion Papers and Final Revised Papers.
+
+
+%% 2-Column Papers and Discussion Papers
+\documentclass[gmd, manuscript]{copernicus}
+
+%% Journal Abbreviations (Please use the same for Discussion Papers and Final Revised Papers)
+
+% Archives Animal Breeding (aab)
+% Atmospheric Chemistry and Physics (acp)
+% Advances in Geosciences (adgeo)
+% Advances in Statistical Climatology, Meteorology and Oceanography (ascmo)
+% Annales Geophysicae (angeo)
+% ASTRA Proceedings (ap)
+% Atmospheric Measurement Techniques (amt)
+% Advances in Radio Science (ars)
+% Advances in Science and Research (asr)
+% Biogeosciences (bg)
+% Climate of the Past (cp)
+% Drinking Water Engineering and Science (dwes)
+% Earth System Dynamics (esd)
+% Earth Surface Dynamics (esurf)
+% Earth System Science Data (essd)
+% Fossil Record (fr)
+% Geographica Helvetica (gh)
+% Geoscientific Instrumentation, Methods and Data Systems (gi)
+% Geoscientific Model Development (gmd)
+% Geothermal Energy Science (gtes)
+% Hydrology and Earth System Sciences (hess)
+% History of Geo- and Space Sciences (hgss)
+% Journal of Sensors and Sensor Systems (jsss)
+% Mechanical Sciences (ms)
+% Natural Hazards and Earth System Sciences (nhess)
+% Nonlinear Processes in Geophysics (npg)
+% Ocean Science (os)
+% Proceedings of the International Association of Hydrological Sciences (piahs)
+% Primate Biology (pb)
+% Scientific Drilling (sd)
+% SOIL (soil)
+% Solid Earth (se)
+% The Cryosphere (tc)
+% Web Ecology (we)
+% Wind Energy Science (wes)
+
+
+%% \usepackage commands included in the copernicus.cls:
+%\usepackage[german, english]{babel}
+%\usepackage{tabularx}
+%\usepackage{cancel}
+%\usepackage{multirow}
+%\usepackage{supertabular}
+%\usepackage{algorithmic}
+%\usepackage{algorithm}
+%\usepackage{amsthm}
+%\usepackage{float}
+%\usepackage{subfig}
+%\usepackage{rotating}
+
+\usepackage{subcaption}
+
+% Custom commands
+\newcommand{\vb}{\mathbf}
+\newcommand{\vg}{\boldsymbol}
+\newcommand{\mat}{\mathsf}
+\newcommand{\diff}[2]{\frac{d #1}{d #2}}
+\newcommand{\diffsq}[2]{\frac{d^2 #1}{{d #2}^2}}
+\newcommand{\pdiff}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pdiffsq}[2]{\frac{\partial^2 #1}{{\partial #2}^2}}
+
+% User-defined mathematical symbols
+\renewcommand{\emph}[1]{{\color{red}\textbf{#1}}}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\p}[1]{\partial #1}
+%Then, writing a partial is as simple as $\pd{J}{x}$.
+\newcommand{\ol}[1]{{\overline #1}}
+\newcommand{\mbf}[1]{{\mathbf #1}}
+\newcommand{\mbfol}[1]{\overline{{\mathbf #1}}}
+\newcommand{\wdh}[1]{{\widehat #1}}
+\newcommand{\wdt}[1]{{\widetilde #1}}
+\newcommand{\sss}[1]{{\scriptscriptstyle #1}}
+\newcommand{\scs}[1]{{\scriptstyle #1}}
+
+\begin{document}
+
+\title{DCMIP2016:  A Review of Non-hydrostatic Dynamical Core Design and Intercomparison of Participating Models}
+
+
+% \Author[affil]{given_name}{surname}
+
+\Author[1]{Paul A.}{Ullrich}
+\Author[2]{Christiane}{Jablonowski}
+\Author[3]{James}{Kent}
+\Author[4]{Peter H.}{Lauritzen}
+\Author[4]{Ramachandran}{Nair}
+\Author[5]{Kevin A.}{Reed}
+\Author[4]{Colin M.}{Zarzycki}
+
+\Author[6]{David M.}{Hall}
+
+\Author[7]{Don}{Dazlich}
+\Author[7]{Ross}{Heikes}
+\Author[7]{Celal}{Konor}
+\Author[7]{David}{Randall}
+
+\Author[8]{Thomas}{Dubos}
+\Author[8]{Yann}{Meurdesoif}
+
+\Author[9]{Xi}{Chen}
+\Author[9]{Lucas}{Harris}
+
+\Author[10]{Christian}{K\"uhnlein}
+
+\Author[11]{Vivian}{Lee}
+\Author[11]{Abdessamad}{Qaddouri}
+\Author[11]{Claude}{Girard}
+
+\Author[12]{Marco}{Giorgetta}
+\Author[13]{Daniel}{Reinert}
+
+\Author[4]{Joseph}{Klemp}
+\Author[14]{Sang-Hun}{Park}
+\Author[4]{William}{Skamarock}
+
+\Author[15]{Hiroaki}{Miura}
+\Author[15]{Tomoki}{Ohno}
+\Author[16]{Ryuji}{Yoshida}
+
+\Author[17]{Robert}{Walko}
+
+\Author[18]{Alex}{Reinecke}
+\Author[18]{Kevin}{Viner}
+
+%\Author[18]{Elijah}{Goodfriend}
+%\Author[18]{Hans}{Johansen}
+
+\affil[1]{University of California, Davis}
+\affil[2]{University of Michigan}
+\affil[3]{University of South Wales}
+\affil[4]{National Center for Atmospheric Research}
+\affil[5]{Stony Brook University}
+\affil[6]{University of Colorado, Boulder}
+\affil[7]{Colorado State University}
+\affil[8]{Institut Pierre-Simon Laplace (IPSL)}
+\affil[9]{Geophysical Fluid Dynamics Laboratory (GFDL)}
+\affil[10]{European Centre for Medium-Range Weather Forecasts (ECMWF)}
+\affil[11]{Environment and Climate Change Canada}
+\affil[12]{Max Planck Institute for Meteorology}
+\affil[13]{Deutscher Wetterdienst (DWD)}
+\affil[14]{Yonsei University}
+\affil[15]{University of Tokyo}
+\affil[16]{RIKEN AICS / Kobe University}
+\affil[17]{University of Miami}
+\affil[18]{Naval Research Laboratory}
+
+%% The [] brackets identify the author with the corresponding affiliation. 1, 2, 3, etc. should be inserted.
+
+
+
+\runningtitle{DCMIP2016: A Review of Non-hydrostatic Dynamical Core Design and Intercomparison}
+
+\runningauthor{Ullrich, et al.}
+
+\correspondence{Paul A. Ullrich (paullrich@ucdavis.edu)}
+
+
+
+\received{}
+\pubdiscuss{} %% only important for two-stage journals
+\revised{}
+\accepted{}
+\published{}
+
+%% These dates will be inserted by Copernicus Publications during the typesetting process.
+
+
+\firstpage{1}
+
+\maketitle
+
+
+
+\begin{abstract}
+Atmospheric dynamical cores are a fundamental component of global atmospheric modeling systems, and are responsible for capturing the dynamical behavior of the Earth's atmosphere via numerical integration of the Navi\'er-Stokes equations.  These systems have existed in one form or another for over half of a century, with the earliest discretizations having now evolved into a complex ecosystem of algorithms and computational strategies.  In essence, no two dynamical cores are alike, and their individual successes suggest that no perfect model exists.  To better understand modern dynamical cores, this paper aims to provide a comprehensive review of eleven non-hydrostatic dynamical cores, drawn from modeling centers and groups that participated in the 2016 Dynamical Core Model Intercomparison Project (DCMIP) workshop and summer school.  This review includes choice of model grid, variable placement, vertical coordinate, prognostic equations, temporal discretization, and the diffusion, stabilization, filters and fixers employed by each system.
+\end{abstract}
+
+
+
+\introduction  %% \introduction[modified heading if necessary]
+
+The Dynamical Core Model Intercomparison Project (DCMIP) is an ongoing effort targeting the intercomparison of a fundamental component of global atmospheric modeling systems: the dynamical core.  Although this component's role is simply to solve the equations of fluid motion governing atmospheric dynamics (the Navi\'er-Stokes equations), there are numerous confounding factors and compromises that arise from making global simulations computationally feasible.  These factors include the choice of model grid, variable placement, vertical coordinate, prognostic equations, representation of topography, numerical method, temporal discretization, physics/dynamics coupling frequency, and the manner in which artificial diffusion, stabilization, filters and/or energy/mass fixers are applied.
+
+To advance the intercomparison project and provide a unique educational opportunity for students, DCMIP hosted a multidisciplinary two-week summer school and model intercomparison project, held at the National Center for Atmospheric Research (NCAR) in June 2016, that invited graduate students, postdocs, atmospheric modelers, expert lecturers and computer specialists to create a stimulating, unique and hands-on driven learning environment. The 2016 workshop and summer school followed from earlier DCMIP and dynamical core workshops (held in 2012 and 2008, respectively), and other model intercomparison efforts.  Its goals were to provide an international forum for discussing outstanding issues in global atmospheric models, and provide a unique training experience for the future generation of climate scientists. Special attention was paid to the role of simplified physical parameterizations, physics-dynamics coupling, non-hydrostatic atmospheric modeling, and variable-resolution global modeling. The summer school and model intercomparison project promoted active learning, innovation, discovery, mentorship and the integration of science and education.  Modeling groups were then invited to contribute model descriptions and results to the intercomparison effort for publication.
+
+The summer school directly benefited its participants by providing a unique educational experience and an opportunity to interact with modeling teams from around the world.  The workshop is expected to have further repercussions on the development of operational atmospheric modeling systems, by allowing modeling groups to assess their models in the context of the global dynamical core ecosystem.  Past and present intercomparison efforts have been leveraged by modeling groups to improve their own models, in turn leading to a positive impact on the quality of weather and climate simulations.  The workshop component of DCMIP has also advanced our knowledge of (1) the relative behaviors exhibited by atmospheric dynamical cores, (2) differences that arise among mechanisms for coupling the physical parameterizations and dynamical core, and (3) the impacts of variable-resolution refinement regions and transition zones in global atmospheric simulations.  Notably, the use of idealized test cases to isolate specific phenomena gave us a unique opportunity to assess specific differences that arise due to the choice of dynamical core.  Another important outcome of the workshop was the development of a standard test case suite and benchmark set of simulations that can be used for assessment of any future dynamical core.  The test cases introduced in the 2016 workshop build on the previous DCMIP test case suites \citep{jablonowski2008idealized, ullrich2012dynamical} with tests that now incorporate simplified moist physics.
+
+This paper is the first in a series of papers documenting the results of this workshop.  Its purpose is twofold:  First, to review the multitude of technologies and techniques that have been developed for non-hydrostatic global atmospheric modeling; and second, to provide a mechanism to understand the differences that arise in the test cases of later papers in this series.  For ease of reference, a list of mathematical symbols that are employed in this paper (and subsequent DCMIP papers) is given in Table \ref{tab:symbols}.  Section \ref{sec:DynamicalCores} then provides a brief overview of each of the participating models, along with a tabulation of relevant details about the dynamical core design.  The body of this paper is dedicated to an overview of techniques available for building the infrastructure of a global dynamical core:  section \ref{sec:HorizontalDiscretization} describes aspects of the horizontal discretization, including model grids and horizontal placement of prognostic variables; section \ref{sec:VerticalDiscretization} describes the vertical placement of model variables and choice of vertical coordinates; section \ref{sec:PrognosticEquations} describes aspects of variable placement and prognosis; section \ref{sec:DiffusionStabilization} describes diffusion, stabilization, filters and fixers employed by these models; and section \ref{sec:TemporalDiscretizations} describes temporal discretizations.  The summary and conclusions then follow in section \ref{sec:Conclusions}.  Finally, appendix \ref{sec:EquationSets} provides a comprehensive overview of the various forms the Navi\'er-Stokes equations take in dynamical cores, and has been included as a resource for dynamical core developers.
+
+\begin{table}[p]
+\caption{A standard list of symbols used throughout this paper and in the DCMIP.} \label{tab:symbols}
+\begin{center}
+\begin{tabular}{cl}
+\hline Symbol & Description \\ \hline 
+$\lambda$ & Longitude (in radians) \\
+$\varphi$ & Latitude (in radians) \\
+$z$ & Height with respect to mean sea level (set to zero) \\
+$s$ & Vertical model coordinate \\
+$p_s$ & Surface pressure ($p_s$ of moist air if $q>0$) \\
+$\Phi$ & Geopotential \\
+$\Phi_s$ & Surface geopotential \\
+$z_s$ & Surface elevation with respect to mean sea level (set to zero) \\
+$u$ & Zonal wind velocity \\
+$v$ & Meridional wind velocity \\
+$w$ & Vertical wind velocity \\
+$\dot{\zeta}$ & GEM vertical coordinate velocity \\
+$\vb{u}$ & 3D wind vector \\
+$\vb{u}_h$ & Horizontal wind vector \\
+$\vb{v}_h$ & Horizontal wind vector with covariant components \\
+$\omega$ & Vertical pressure velocity  \\
+$D$ & Divergence of the horizontal wind vector\\
+$\zeta$ & Vertical component of relative vorticity\\
+$p$ & Pressure (pressure of moist air if $q>0$) \\
+$e$ & Internal energy \\
+$\rho$ & Total air density \\
+$\rho_d$ & Dry air density \\
+$\rho_s$ & Pseudo-density \\
+$T$ &Temperature \\
+$T_v$ & Virtual temperature \\
+$\theta$ & Potential temperature \\
+$\theta_v$ & Virtual potential temperature \\
+$\theta_{il}$ & Ice-liquid potential temperature \\
+$\theta_\rho$ & Density potential temperature \\
+%$P_{ls}$ & Large-scale precipitation rate \\
+$q$ & Specific humidity \\
+$q_v$ & Water vapor mixing ratio \\
+$q_c$ & Cloud water mixing ratio \\
+$q_r$ & Rain water mixing ratio \\
+$q_i$ & General tracer mixing ratio \\
+\hline 
+\end{tabular}
+\end{center}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Dynamical cores} \label{sec:DynamicalCores}
+
+This section provides a brief overview of key discretization choices, along with unique features or design specifications from participating dynamical cores.  Further details on these choices can be found in subsequent sections.  In total, simulation results and model descriptions have been submitted from eleven dynamical cores (see Table \ref{tab:Models}).  The prognostic variables employed and horizontal discretizations for these dynamical cores are summarized in Table \ref{tab:ModelsHorizontal}.  The vertical staggering of variables and vertical coordinate choice is summarized in Table \ref{tab:ModelsVertical}.  Principal options for diffusion, stabilization, filters, or fixers along with the temporal discretization for these models is summarized in Table \ref{tab:ModelsTemporalDiffusion}.  A brief description of each participant model follows, focused on the unique features and decisions underlying the model design.
+
+%Although all models solve the Navi\'er-Stokes equations (or a close approximation of these equations), essentially every model employs a different formulation with a distinct set of prognostic variables.  The derivation of many of these formulations can be found in Appendix \ref{sec:EquationSets}. 
+
+\begin{table}[p]
+\caption{Participating modeling centers and associated dynamical cores that have submitted a model description and/or simulation results.} \label{tab:Models}
+\begin{center}
+\begin{tabular}{cll}
+\hline Short Name & Long Name & Modeling Center or Group \\ \hline 
+ACME--A & Atmosphere model of the Accelerated Climate Model for Energy & Sandia National Laboratories and \\
+& & University of Colorado, Boulder, USA \\
+CSU & Colorado State University Model & Colorado State University, USA \\
+DYNAMICO & DYNAMical core on the ICOsahedron & Institut Pierre Simon Laplace (IPSL), France \\
+FV$^3$ & GFDL Finite-Volume Cubed-Sphere Dynamical Core & Geophysical Fluid Dynamics Laboratory, USA \\
+FVM & Finite Volume Module of the Integrated Forecasting System & European Centre for Medium-Range Weather Forecasts \\
+GEM & Global Environmental Multiscale model & Environment and Climate Change Canada \\
+ICON & ICOsahedral Non-hydrostatic model & Max-Planck-Institut f\"ur Meteorologie, Germany \\
+MPAS & Model for Prediction Across Scales & National Center for Atmospheric Research, USA \\
+NICAM & Non-hydrostatic Icosahedral Atmospheric Model & AORI / JAMSTEC / AICS, Japan \\
+OLAM & Ocean Land Atmosphere Model & Duke University / University of Miami, USA \\
+TEMPEST & Tempest Non-hydrostatic Atmospheric Model & University of California, Davis, USA \\
+\hline 
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\begin{table}[p]
+\caption{Details on the prognostic variables and horizontal discretization for participating dynamical cores.  Equation set indicates whether a model is hydrostatic (H) or non-hydrostatic (NH), and whether the model presently supports the deep-atmosphere formulation (D).  Only three numerical methods are represented among participating models, namely finite-difference (FD), finite-volume (FV), and spectral-element (SE).  More details on horizontal staggering can be found in section \ref{sec:HorizontalStaggering}.} \label{tab:ModelsHorizontal}
+\begin{center}
+\begin{tabular}{cccccc}
+\hline Short Name & Equation Set & Prognostic Variables & Horizontal Grid & Numerical & Horizontal  \\
+& & & & method & staggering \\ \hline
+ACME--A & H/NH & $\vb{u}_h$, $w$, $\rho_s$, $\rho_s \theta$, $\Phi$, $\rho_s q_i$ & Cubed-sphere (\S \ref{sec:grid_cs}) & SE & A-grid \\
+CSU & NH (Unified) & $\zeta$, $D$, $w$, $p_s$, $\theta_v$, $q_i$ & Geodesic (\S \ref{sec:grid_geo}) & FV & Z-grid \\
+DYNAMICO & H/NH & $\vb{v}_h$, $\rho_s w$, $\rho_s$, $\rho_s \theta_v$, $\Phi$, $\rho_s q_i$ & Geodesic (\S \ref{sec:grid_geo}) & FV & C-grid \\
+FV$^3$ & NH & $\vb{u}_h$, $w$, $\rho_s$, $\rho_s \theta_v$, $\Phi$, $\rho_s q_i$ & Cubed-sphere (\S \ref{sec:grid_cs}) & FV & D-grid \\
+FVM & NH (D) & $\rho_d$, $\vb{u}_h$, $w$, $\theta'$, $q_i$ & Octahedral (\S \ref{sec:grid_oct}) & FV & A-grid \\
+GEM & NH & $\vb{u}_h$, $w$, $\dot{\zeta}$, $T_v$, $p$, $q_i$ & Yin-Yang (\S \ref{sec:grid_yinyang}) & FD & C-grid  \\
+ICON & NH (D) & $\vb{u}_h$, $w$, $\rho$, $\theta_v$, $\rho q_i$ & Icosahedral triangular (\S \ref{sec:grid_ico_tri}) & FV & C-grid \\
+MPAS & NH & $\rho_d \vb{u}_h$, $\rho_d w$, $\rho_d$, $\rho_d \theta_v$, $\rho_d q_i$ & CCVT (\S \ref{sec:grid_ccvt}) & FV & C-grid \\
+NICAM & NH & $\rho \vb{u}_h$, $\rho w$, $\rho$, $\rho e$, $\rho q_i$ & Geodesic (\S \ref{sec:grid_geo}) & FV & A-grid \\
+OLAM & NH (D) & $\rho \vb{u}_h$, $\rho w$, $\rho$, $\rho \theta_{il}$, $\rho q_i$ & Geodesic (\S \ref{sec:grid_geo}) & FV & C-grid \\
+TEMPEST & NH & $\vb{u}_h$, $w$, $\rho$, $\rho \theta_v$, $\rho q_i$ & Cubed-sphere (\S \ref{sec:grid_cs}) & SE & A-grid \\
+\hline 
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[p]
+\caption{Vertical staggering (detailed in section \ref{sec:VerticalStaggering}) and vertical coordinates (detailed in section \ref{sec:VerticalCoordinates}) for participating dynamical cores.} \label{tab:ModelsVertical}
+\begin{center}
+\begin{tabular}{cccccc}
+\hline Acronym & Vertical Staggering & Vertical Coordinate \\ \hline 
+ACME--A & Co-located & floating mass (\S \ref{sec:FloatingLagrangian}) \\
+CSU & Lorenz & fixed height \\
+DYNAMICO & Lorenz & floating mass (\S \ref{sec:FloatingLagrangian}) \\
+FV$^3$ & Co-located & floating mass (\S \ref{sec:FloatingLagrangian}) \\
+FVM & Co-located & fixed height \\
+GEM & Modified Charney-Phillips (\S \ref{sec:VerticalStaggering}) & log pressure (\S \ref{sec:GEM_zeta})  \\
+ICON & Lorenz & fixed height \\
+MPAS & Lorenz & fixed height \\
+NICAM & Lorenz & fixed height \\
+OLAM & Lorenz & fixed height with cut-cells (\S \ref{sec:CutCells}) \\
+TEMPEST & Lorenz & fixed height \\
+\hline 
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[p]
+\caption{Principal options for diffusion, stabilization, filters, or fixers in participating dynamical cores (detailed in section \ref{sec:DiffusionStabilization}) and temporal discretization (detailed in section \ref{sec:TemporalDiscretizations}).} \label{tab:ModelsTemporalDiffusion}
+\begin{center}
+\begin{tabular}{cccccc}
+\hline Acronym & Principal options for diffusion, & Temporal discretization \\
+& stabilization, filters, or fixers & \\ \hline 
+ACME--A & 4th-order horizontal hyperviscosity & KGU53 \citep{guerra2016high} \\
+CSU & 4th-order horizontal hyperviscosity & 3rd-order Adams-Bashforth (AB3) \\
+DYNAMICO & 4th-order horizontal hyperviscosity & ARK232 \citep{giraldo2013implicit} \\
+FV$^3$ & Divergence damping, hyperviscosity & Forward-backwards \citep{LR1997QJR} / semi-implicit \\
+FVM & Monotonic limiting & Semi-implicit \citep{smolarkiewiczJCP2014} (\S \ref{sec:FVMSemiImplicit}) \\
+GEM & Hyperviscosity & Semi-implicit \citep{Girard2014} (\S \ref{sec:GEM_temporal}) \\
+ICON & Divergence damping, Smagorinsky, hyperdiffusion & Predictor-corrector \\
+MPAS & Smagorinsky, hyperdiffusion & Split-explicit \citep{klemp2007conservative} \\
+NICAM & 3D divergence damping, Smagorinsky, hyperviscosity & Split-explicit \citep{klemp2007conservative} \\
+OLAM & Divergence/vorticity damping & 2nd-order Adams-Bashforth, Lax-Wendroff (for tracers) \\
+TEMPEST & 4th-order horizontal hyperviscosity & ARS232 \citep{ascher1997implicit} \\
+\hline 
+\end{tabular}
+\end{center}
+\end{table}
+
+%Do not include information on the physical parameterizations used by the modeling system.  Make reference to the model grid employed from section \ref{sec:ModelGrids}, the specific equation set being discretized by the model in section \ref{sec:EquationSets}, explicit numerical techniques for diffusion and stabilization in section \ref{sec:DiffusionStabilization}, filters and fixers in section \ref{sec:FiltersFixers} and the temporal discretization in section \ref{sec:TemporalDiscretizations}.}
+
+\subsection{Accelerated Climate Model for Energy--Atmosphere (ACME--A)}
+
+The ACME--A model has much in common with the Community Atmosphere Spectral Element Model (CAM-SE) \citep{dennis2012cam} as both share a common origin in the High Order Method Modeling Environment (HOMME) \citep{taylor2010compatible}. ACME-A employs both a hydrostatic model and an experimental non-hydrostatic compressible shallow-atmosphere model. Both variants are designed to be mass and energy conserving, with nearly optimal parallel scalability at large core counts. ACME-A is built upon an unstructured grid of quadrilateral elements arranged in a cubed-sphere configuration, although unstructured regionally-refined meshes with conforming edges may also be employed. The fluid equations are discretized using dimensional splitting, with a nodal 4th-order spectral element discretization in the horizontal and vertical floating Lagrangian levels in hybrid terrain-following pressure coordinates.
+Vertical operators are based on the mimetic (mass and energy conserving) 2nd order finite difference discretization of \cite{simmons1981energy}. All fields are co-located in the horizontal, in the sense that they share the same 4th-order basis functions.  Tracer transport is sub-cycled relative to the hydrodynamics, using the spectral element method, with tracer mass as the prognostic variable.
+
+
+
+%Prognostic variables (u, v, w, $\rho_s$, $\rho_s \theta$, and $\Phi$) are placed on layer midpoints and diagnostic vertical fluxes ($m \dot \eta$) computed on layer interfaces.
+
+%The High Order Method Modeling Environment (HOMME) \citep{taylor2010compatible, dennis2012cam} is currently used by both the Community Atmosphere Model Spectral Element (CAM-SE) dynamical core and Accelerated Climate Model for Energy Atmosphere (ACME--A) dynamical core.  As a general framework for several dynamical methods, HOMME includes a hydrostatic option and an experimental non-hydrostatic core, although only shallow-atmosphere mode is available at present. The model is designed to be mass and energy conserving, with nearly optimal parallel scalability at large core counts. The CAM-SE dynamical core is a hydrostatic model that partitions the globe horizontally using an unstructured grid of quadrilateral elements. These elements are arranged in a cubed-sphere structure, although arbitrary quadrilateral grids with conforming edges may also be employed.  The model employs a hybrid terrain-following pressure coordinate in the vertical. The fluid equations are discretized using dimension splitting, with a nodal 4th-order spectral element discretization in the horizontal and the mimetic (mass and energy conserving) 2nd order finite difference discretization of \cite{simmons1981energy} in the vertical. Fields are co-located in the horizontal in the sense that they share the same 4th-order basis functions. Lorenz staggering is employed in the vertical with (u,v,T$_v$,p) placed on layer midpoints and diagnostic vertical fluxes $m \dot \eta$ are computed on layer interfaces.
+
+\subsection{Colorado State University Model (CSU)}
+  
+The CSU model is a finite-volume model using an optimized geodesic grid \citep{heikes1995numerical,heikes2013optimized}, with height as the vertical coordinate. The model is based on the non-hydrostatic Unified System of equations proposed by \cite{arakawa2009unification}, which filters vertically propagating sound waves but allows the Lamb wave and does not require a reference state. The horizontal wind field is determined by predicting the vertical component of the vorticity and the divergence of the horizontal wind, and then solving a pair of two-dimensional Poisson equations for a stream function and velocity potential. Horizontal diffusion is included in the form of a fourth-order hyperviscosity operator applied on constant height surfaces ($\nabla^4_z$) that acts on the vorticity, divergence, potential temperature, and tracer.  The CSU model supports both third-order and fifth-order upstream-weighted finite-volume advection schemes, with positivity preservation enforced via mass borrowing.
+\subsection{DYNAMICO}
+
+DYNAMICO is a mimetic finite-difference / finite-volume model using a geodesic grid and a floating vertical mass coordinate.  Although originally a hydrostatic model, it has been recently extended to solve the shallow-atmosphere non-hydrostatic Euler equations. DYNAMICO's design uniquely combines a representation of the prognostic and diagnostic fields following the ideas of discrete differential geometry \citep{Dubos2015DYNAMICO10}.  It includes a novel Hamiltonian formulation of the equations of motion in non-Eulerian coordinates \citep{Dubos2014Equations} which is imitated at the discrete level using building blocks from the literature \citep{thuburn2009numerical,ringler2010unified}, and (up to the addition of explicit diffusion) leads to an energy-conserving spatial discretization.  It also incorporates a novel explicit-implicit splitting which results in a simple, efficient and scalable implicit solver while allowing stable time steps close or identical to those of the hydrostatic solver (Dubos and Dubey, in preparation).  Horizontal diffusion is included via a fourth-order hyperviscosity operator.  In addition, it features a conservative positive-definite transport scheme based on a slope-limited finite-volume approach \citep{Dubey2015Intercomparison}.
+
+\subsection{FV Cubed (FV$^3$)}
+
+The GFDL Finite-Volume Cubed-Sphere Dynamical Core (FV$^3$, or sometimes written FV3) is a finite-volume model that solves the non-hydrostatic Euler equations on the equiangular gnomonic cubed-sphere grid with a floating Lagrangian vertical coordinate. The Lagrangian vertical coordinate deforms so that the flow is constrained to follow the Lagrangian surfaces, allowing vertical transport to be represented implicitly without additional advection terms (see section \ref{sec:FloatingLagrangian} below). The non-hydrostatic formulation extends the hydrostatic model described in  \cite{lin2004vertically} by adding a prognostic vertical velocity and geometric height of each grid cell, which can then be used to compute density.  The discretization is on the C-D grid as described by \citet{LR1997QJR} (also see section \ref{sec:HorizontalStaggering}), although the prognostic horizontal winds are stored in the native Gnomonic local coordinate.  All variables are 3D cell-mean values, except for the horizontal winds, which are 2D face-mean values on their respective staggerings; as a result, diagnostic vorticity is a 3D cell-mean value.  Fluxes are computed using the Piecewise-Parabolic Method of \citet{CW1984JCP} with an optional monotonicity constraint; in non-hydrostatic applications the monotonicity constraint is used primarily for tracer transport. Since divergence is effectively invisible to the solver, a 2D divergence damping is applied to control numerical noise as divergent modes cascade to the grid scale.  Implicit viscosity is applied through the monotonicity constraint; if non-monotonic advection is used for the momentum and total air mass a weak explicit hyperviscosity is applied for stability and to alleviate numerical noise. Explicit viscosity is applied every acoustic timestep. 
+  
+\subsection{Finite-Volume Module (FVM) of the Integrated Forecasting System}
+\label{sec:FVM}
+
+The Finite-Volume Module (FVM) of the Integrated Forecasting System (IFS) is currently under development at 
+ECMWF \citep{smolarkiewiczetalJCP2016,kuehnleinJCP2017,smolarkiewiczetalJCP2017}. FVM solves the non-hydrostatic Euler equations on an octahedral reduced Gaussian grid with a height-based terrain-following vertical coordinate \citep{szmelter2010,smolarkiewiczetalJCP2016}. The horizontal spatial discretization uses the median-dual finite-volume approach, combined with a structured-grid finite-difference method in the vertical. In both the horizontal and 
+the vertical discretization all variables are co-located. A centered two-time-level semi-implicit 
+integration scheme is employed with 3D implicit treatment of acoustic, buoyant, and rotational modes 
+\citep{smolarkiewiczJCP2014}. The associated 3D Helmholtz problem is solved iteratively using a bespoke 
+preconditioned Generalised Conjugate Residual approach. The integration procedure uses the 
+non-oscillatory finite-volume MPDATA (Multidimensional Positive Definite Advection Transport Algorithm) 
+advection scheme \citep{smolarkiewiczszmelter2005,kuehnleinJCP2017}.  The non-oscillatory (i.e.~monotonic) MPDATA 
+also provides sufficient dissipation/diffusion to stabilize the model, so no other explicit filtering mechanism is required. 
+Note that the octahedral reduced Gaussian 
+grid is also employed in the spectral-transform dynamical core of the presently operational IFS at ECMWF, which facilitates 
+interoperability of the two formulations. However, FVM is not restricted to this grid and offers capabilities towards 
+broad classes of meshes \citep[][]{szmelter2010,kuehnleinJCP2012,deconinck2017atlas}.
+
+\subsection{Global Environmental Multiscale (GEM) model} \label{sec:GEM_core}
+
+The GEM model \citep{Girard2014} is used for operational forecasting at Environment and Climate Change Canada.  GEM solves the non-hydrostatic Euler equations on the Yin-Yang grid \citep{kageama2004yinyang} with Arakawa C-grid staggering of prognostic variables.
+The vertical coordinate is a unique hybrid terrain-following coordinate of a log-hydrostatic-pressure type
+and the vertical discretization is based on the Charney-Phillips grid (see section \ref{sec:VerticalStaggering}).
+A two time level semi-Lagrangian implicit time discretization is implemented as described in section \ref{sec:GEM_temporal}.
+It gives rise to an {\it{iterative}} process where each step requires the solution of a
+linear system of equations that is reduced to a Helmholtz problem for one composite variable.
+For this problem, a direct solver is involved, using the Schwarz-type domain decomposition method \citep{Qaddouri2008schwarz}.  Semi-Lagrangian advection is also used for tracer transport.
+To eliminate numerical noise, an explicit hyperviscosity is employed for wind components and tracers
+via applications of the Laplacian operator, applied after the completion of the physics time step.
+
+\subsection{ICOsahedral Non-hydrostatic model (ICON)}
+
+The ICON model \citep{zangl2015icon} is a finite-volume model that solves the non-hydrostatic Euler equations in 2D vector invariant form on an icosahedral (triangular) Arakawa C-grid, utilizing a smoothed terrain-following height-based Lorenz vertical discretization.  Prognostic horizontal velocities are stored as normal wind components at the edge mid-points of full levels.  Prognostic vertical velocity is stored at the circumcenters of the triangles on half levels. The discretization employs a two time-level predictor corrector scheme, which is explicit in all terms except for those describing the vertical propagation of sound waves.  For stabilization of the divergence term on the triangular C-grid the divergence in a triangle is computed from modified normal wind components resulting from a weighted average including normal winds on edges of adjacent cells. Further divergence damping is applied to the normal wind at every sub-step. Rayleigh damping is applied to the vertical wind in layers close to the model top in order to avoid the reflection of gravity waves. The horizontal diffusion, which is applied at full model time steps, combines a flow-dependent Smagorinsky scheme with a background 4th-order Laplacian diffusion operator. For tracer transport a flux form semi-Lagrangian scheme with monotone flux limiters is used, which leads to local mass conservation and consistency with the air motion. Specifically, the average air mass flux of the dynamical  sub-steps is provided to the tracer transport to allow for a mass-consistent transport. These numerical methods have been chosen for high numerical efficiency, and they rely on next-neighbor communication only, thus allowing massive parallelization.
+
+%Time splitting is applied between the dynamics that is forced by slow physics on the one hand and horizontal diffusion, tracer transport, and fast physics. One complete time step typically includes 5 dynamical sub-steps.
+
+\subsection{Model for Prediction Across Scales (MPAS)}
+
+The Model for Prediction Across Scales (MPAS) \citep{skamarock2012multiscale} is a finite-volume model that solves the non-hydrostatic Euler equations using an Arakawa C-grid staggering on a centroidal Voronoi tessellation mesh (see section \ref{sec:grid_ccvt}), and the mimetic TRiSK discretization \citep{thuburn2009numerical,ringler2010unified}.  In the vertical, MPAS employs a Lorenz-type second-order nodal finite volume method with a smoothed terrain-following height coordinate.  Advection is nominally third- to fourth-order and are handled in accordance with \cite{skamarock2011conservative}.  The prognostic variables are dry air pseudodensity $\tilde{\rho}_d$, dry momentum $\tilde{\rho}_d \vb{u}$, and a modified moist potential temperature.  Integration in time is handled via the split-explicit method of \cite{klemp2007conservative}.  Various filters are available for controlling spurious oscillations, including Smagorinsky-type eddy viscosity, fourth-order hyperdiffusion, and 2D and 3D divergence damping operators.
+
+\subsection{Non-hydrostatic ICosahedral Atmospheric Model (NICAM)}
+
+NICAM is a finite-volume model that solves the non-hydrostatic Euler equations using an optimized geodesic grid optimized by the spring dynamics using the method proposed by \cite{tomita2002optimization}. A terrain-following height coordinate system is used in the vertical \citep{tomita2004new} with Lorenz staggering. Instead of temperature or potential temperature, total energy is prognosed following the method of \citep{satoh2002conservative, satoh2003conservative}. All prognostic variables are collocated horizontally at the mass centroid of each hexagonal/pentagonal cell to mitigate accuracy reduction under cell averaging, which is required in converting cell-integrated quantities to point values at cell centroids. The use of cell centroids ensures quasi second-order accuracy of the gradient and divergence operators of NICAM \citep{tomita2001shallow}. For integration in time, a two-stage Runge-Kutta scheme is usually employed because of low computational cost, although a three-stage Runge-Kutta scheme \citep{wicker2002time} is available and recommended. The split-explicit time discretization is used for the horizontally propagating sound waves with the 3D divergence damping term \citep{skamarock1992stability}. An implicit time discretization is adopted for the vertically propagating wave modes. A variant of the piecewise linear transport scheme \citep{miura2007upwind, niwa2011three} is used with a flux limiter of \cite{thuburn1997pv} for passive tracer transports.
+
+\subsection{Ocean-Land-Atmosphere Model (OLAM)}
+
+OLAM \citep{walko2008ocean, walko2008ocean2, walko2011direct} is a finite-volume model that solves the deep-atmosphere non-hydrostatic Euler equations in momentum conservation form on a hexagonal Voronoi mesh with Arakawa C-grid staggering.  The model supports optional local mesh refinement, which introduces some pentagons and heptagons to the grid.  Height is the vertical coordinate, and a Lorenz vertical grid staggering is used.  A unique feature of OLAM is that grid levels are horizontal and intersect topography. This avoids a number of well-documented errors associated with terrain-following grids and also eliminates the need for evaluation of coordinate transformation terms. Topography is represented as a smooth (non-stepped) surface by means of cut cells whose surfaces and volume are reduced according to the portion of each cell that is below ground. The OLAM cut-cell formulation conserves mass and momentum.  Acoustic modes are solved explicitly in the horizontal using time splitting and a second-order Lax Wendroff method, and implicitly in the vertical.  Tracer transport is second-order in space and time using the scheme of \cite{miura2007upwind}, with consistent fluxes obtained by time averaging over the acoustic time steps.
+
+%Acoustic modes are solved explicitly in the horizontal using a 2nd-order Adams-Bashforth method and implicitly in the vertical by means of time splitting.  Tracer transport is 2nd-order in space and time, using the scheme of \cite{crowley1968numerical} for obtaining consistent numerical fluxes, and Lax-Wendroff for time integration.
+
+%, fully-compressible model that solves the equations of motion in finite-volume momentum conservation form.  Equations are discretized with a C-grid formulation on a hexagonal Voronoi mesh with optional local mesh refinement (which introduces some pentagons and heptagons). 
+
+\subsection{TEMPEST}
+
+%Based upon the sections for the rest of the paper I would like to be
+%able to ascertain the following properties for each model from this section: equation
+%set, horizontal grid and discretization, vertical grid and discretization, temporal
+%discretization, principal diffusion and stabilization mechanisms and transport
+%scheme.
+
+%The GFDL Finite-Volume Cubed-Sphere Dynamical Core (FV$^3$, or sometimes written FV3) is a finite-volume model that solves the fully-compressible non-hydrostatic Euler equations on the equiangular gnomonic cubed-sphere grid with a floating Lagrangian vertical coordinate.
+
+The Tempest model \citep{ullrich2014global, guerra2016high} is an experimental testbed for high-performance numerical methods that solves the non-hydrostatic Euler equations on a cubed-sphere grid using a horizontally co-located spectral element discretization.  In the vertical Tempest uses an Eulerian finite-volume discretization with Lorenz staggering and terrain-following height coordinate.  The implementation includes both fully explicit time integration, and a horizontally-explicit vertically-implicit formulation that is solved with a third-order implicit-explicit additive Runge-Kutta scheme from \cite{ascher1997implicit}.  Fourth-order hyperviscosity is used in the horizontal to prevent a buildup of energy at the grid scale.  The model further provides an optional upwind-biased transport scheme in the vertical column.  Tracer transport is performed using the spectral element method with the same timestep as the hydrodynamics and using the tracer mass density as a prognostic variable.  As with the hydrodynamics, tracer transport is performed explicitly in the horizontal and implicitly in the vertical.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Horizontal discretization and model grids} \label{sec:HorizontalDiscretization}
+
+The horizontal discretization determines how the atmosphere, which consists of a set of approximately continuous fields, is mapped into a very limited and discrete computational space.  The horizontal discretization essentially consists of two major choices:  the model grid, which determines the density and connectivity of discrete regions \citep{staniforth2012horizontal}, and the arrangement of prognostic and diagnostic variables around each grid region \citep{arakawa1977computational}.  In order to meet demands for high computational efficiency and equal partitioning of computation across large parallel systems, modern dynamical cores have explored a number of options for model grids.  The choice of model grid can be motivated by simplicity, as in the case of the latitude-longitude grid, by a desire to maintain a local Cartesian structure, as with the cubed-sphere grid, or to support grid isotropy and homogeneity, as with many of the hexagonal or Voronoi grids that have been employed.  The choice of grid may be further decided by the numerical method -- for instance, finite element models that use tensor products to define basis functions require grids consisting entirely of quadrilaterals.  Inevitably a choice must be made, and the pros and cons of that choice will impact other decisions related to the model.  To better understand the options that are available to dynamical core developers, we begin by reviewing many of the model grids that have been employed in global dynamical cores around the world.  Then, in section \ref{sec:HorizontalStaggering}, we discuss the ``staggering'' of model variables, referring to the distribution of variables within and around each grid cell.
+
+\subsection{Latitude-longitude grid} \label{sec:grid_rll}
+
+The classic latitude-longitude grid is produced by subdividing the sphere along lines of constant latitude and longitude.  The latitude-longitude grid has the benefits of being globally rectilinear, which simplifies data access and subdivision of computation across processors, and yields a vector basis that is locally orthogonal nearly everywhere.  This structure accurately maintains purely zonal flows and simplifies data post-processing for visualization.  Because of the convergence of grid lines near the poles, the operational use of this grid requires that the associated numerical scheme be resilient to arbitrarily small Courant number, or that polar filtering be employed to remove unstable computational modes \citep{lin2004vertically}.  This grid is employed by the UK Met Office \citep{davies2005new, wood2014inherently}.
+
+\subsection{Cubed-sphere grid} \label{sec:grid_cs}
+
+The equiangular gnomonic cubed-sphere grid \citep{sadourny1972conservative, ronchi1996cubed, PL2007JCP} consists of six Cartesian patches arranged along the faces of a cube which is then inflated onto a spherical shell.  More information on this choice of grid can be found in \cite{ullrich2014global}.  On the equiangular cubed-sphere grid, coordinates are given as $(\alpha, \beta, p)$, with central angles $\alpha, \beta \in [- \frac{\pi}{4}, \frac{\pi}{4}]$ and panel index $p$.  The structure of this grid supports refinement through stretching \citep{Schmidt1977,harris2016high} or nesting \citep{harris2013two}.  The Cartesian structure of cubed-sphere grid panels is advantageous for numerical methods that are formulated in Cartesian coordinates, or that utilize dimension splitting.  Nonetheless, special treatment of the panel boundaries is often necessary since they represent coordinate discontinuities.  This grid is depicted in Figure \ref{fig:CubedSphereGeodesicMesh} (left).
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=2in,trim={0cm 4.7cm 0cm 4cm},clip]{CubedSphereMesh.pdf} \quad \includegraphics[width=2.2in, trim={4cm 8.2cm 4cm 8.2cm},clip]{ICON_grid_nested_schematic.pdf} \quad \includegraphics[width=2.2in, trim={4cm 8.2cm 4cm 8.2cm},clip]{ICON_grid_dual_R2B3_noWorldMap.pdf}
+\end{center}
+\caption{(Left) A cubed-sphere grid.  (Center) An icosahedral (triangular) grid with additional refinement over Europe, as indicated in red.  (Right) An icosahedral (hexagonal) grid.} \label{fig:CubedSphereGeodesicMesh}
+\end{figure}
+
+
+
+%FV$^3$ is discretized on the equiangular gnomonic cubed-sphere grid as described in \citet{PL2007JCP}. The gnomonic cubed sphere was found to yield the best balance of uniformity and simplicity for use with the FV algorithm. The structure of this grid supports refinement through stretching \citep{Schmidt1977,harris2016high} or nesting \citep{harris2013two}.  The convention for panel numbering used in FV$^3$ differs from that described above, so that odd-numbered panels are adjacent to the next-higher-numbered panel on their right-hand side, and even-numbered panels are adjacent to the next-higher numbered panel on their top side. 
+
+\subsection{Icosahedral (triangular) grid} \label{sec:grid_ico_tri}
+
+The icosahedral triangular grid is derived from the spherical icosahedron that consists of 20 equilateral spherical triangles, 30 great circle edges and 12 vertices.  These initial triangles are then subdivided repeatedly until the desired mean resolution is obtained. For a single subdivision each edge is divided in $n$ arcs of equal length, thus defining new vertices, which by proper connection to other new vertices result in $n^{2}$ triangles filling the original triangle. By construction the new vertices share 6 triangles, thus the refinement process brakes the initial isotropy of the icosahedron and results in non-equilateral triangles of different sizes.
+
+Several methods are available for subdividing the triangular regions.  One such approach is implemented by the ICON grid generator, which allows an ``arbitrary'' subdivision factor $n$ for the first refinement step only, the so-called root refinement. Typical choices are $n$ = 2, 3 or 5. All additional $m$ refinement steps use $n$ = 2, i.e. are bisection steps. A global grid resulting from a root division factor $n$ and $m$ bisections, denominated as \textit{RnBm} grid,  has $n_c = 20 \cdot n^2 \cdot 2^{2m}$ cells, $n_e = 3/2 \cdot n_c$ edges and $n_v = 10\cdot n^{2}\cdot 2^{2m}+2$ vertices. The anisotropy of global grids is reduced by the spring dynamics of \cite{tomita2001shallow}.  An example of such a grid is depicted in Figure \ref{fig:CubedSphereGeodesicMesh} (center).  A discussion of the effective resolution of such grids is given in \cite{dipankar2015large}.  The ICON grid generator further allows for inset regional grids, produced by additional refinement steps that are only applied over a limited region, or set of regions.  The dynamical core then allows for either one-way or two-way coupling of the refined region to the parent model. The current operational numerical weather prediction of the Deutscher Wetterdienst (German Weather Service, DWD) for instance uses a $R3B7$ global grid with 2949120 cells and 13 km mean resolution in combination with a refined region over Europe at 6.5 km resolution.
+
+\subsection{Icosahedral (hexagonal) grid / geodesic grid} \label{sec:grid_geo}
+
+The icosahedral (hexagonal) grid, also commonly referred to as the geodesic grid, is most directly obtained by taking the dual to the icosahedral (triangular grid) -- that is, by replacing grid nodes with spherical polygons.  The resulting grid's cells are hexagonal, except for twelve pentagonal cells.  Given an icosahedral-triangular mesh, vertices of the corresponding icosahedral-hexagonal mesh are then defined as either circumcenters or barycenters of triangles, leading to either a Voronoi mesh, used by DYNAMICO (see also section \ref{sec:grid_ccvt}), or a barycentric mesh, used by NICAM.  A Voronoi mesh has the property that triangular edges are perpendicular to edges of hexagons/pentagons, facilitating the formulation of certain finite-difference and finite-volume numerical schemes.  The resulting highly homogeneous and isotropic grid then appears analogous to the grid in Figure \ref{fig:CubedSphereGeodesicMesh} (right).  Unlike the cubed-sphere and icosahedral (triangular) grid, grid cells on this geodesic grid are guaranteed to be edge-neighbors (cells that share a given edge) if they are also node-neighbors (cells that share a given node).
+
+It is often useful to optimize icosahedral-hexagonal grids as well.  DYNAMICO applies a number of iterations of Lloyds algorithm \citep{lloyd1982least}, following by replacing the vertices of the original triangular mesh by the centroid of hexagons/pentagons, then re- generating the icosahedral-hexagonal mesh. This improves the homogeneity of the grid (e.g. ratio of largest cell area to smallest cell area) but several thousand iterations can be required for a significant improvement.
+
+OLAM optimizes by applying the spring dynamics method of \cite{tomita2001shallow} to the dual triangular mesh prior to its mapping to the Voronoi mesh. When local mesh refinement is applied, which OLAM achieves in a series of one or more resolution-doubling steps, each spanning a transition zone that is three grid rows wide (Figure \ref{fig:OLAMRefinement}), the equilibrium spring length is scaled to the target grid cell size in each refinement level and is varied incrementally across the transition zone. Spring dynamics is further modified by forcing angles on the dual triangular mesh in the transition zone in order to move the triangle edges closer to the centers of the hexagon edges they intersect.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=2.5in]{OLAM_Grid_Refinement.png}
+\end{center}
+\caption{Detail of one step of local mesh refinement used by OLAM Voronoi mesh. The transition zone is constructed by explicit topological reconnection of the grid lines, which produces pairings of heptagons (red dots) and pentagons (blue dots) along the refinement perimeter.} \label{fig:OLAMRefinement}
+\end{figure}
+
+\subsection{Constrained Centroidal Voronoi Tessellation (CCVT) meshes} \label{sec:grid_ccvt}
+
+Given a set of $N$ distinct points on the sphere $x_i$ (referred to as the generators, $1 \leq i \leq N$), the \textit{Voronoi tessellation} (or the \textit{Voronoi diagram}) associated with the generators is the set of polygons $\Omega_i$ consisting of all points that are closer (in the sense of great-circle distance) to $x_i$ than any other $x_j$ with $i \neq j$ \citep{okabe2009spatial}.  For a given set of generators, this tiling is unique and completely covers the sphere, and so can be employed in conjunction with many finite volume methods.  However, for an arbitrary set of generators it is easy to produce highly distorted polygons, particularly if the density of generators varies substantially.  This has led to the development of \textit{constrained centroidal Voronoi tessellation (CCVT)} \citep{du2003constrained}, which imposes the additional requirement that the set of generators be coincident with the centroids of each polygon.  Given a desired polygonal density function, several algorithms have been developed to generate CCVTs both in Cartesian and spherical geometry (i.e. for ocean basins or ice sheets) \citep{ringler2008multiresolution}.  Figure \ref{fig:CCVT} depicts one such CCVT grid that is compatible with the MPAS model.  CCVT grids are often confused with deformations of the icosahedral (hexagonal) grid described in section \ref{sec:grid_geo}, since both typically contain a large number of hexagonal elements; however, CCVT grids are fundamentally constructed using a very different technique.  Although hexagons are, by far, the most common polygon on CCVT grids, CCVT grids on the sphere will also include at least 12 pentagons and sometimes other polygons with more than six sides.  Quadrilateral elements are theoretically possible, but are never found in practice on the final grid due to being a locally unstable solution of the underlying CCVT system of equations.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=2in]{CentroidalVoronoiTessellation.png}
+\end{center}
+\caption{A constrained centroidal Voronoi tessellation mesh with localized grid density that could be employed in the MPAS model.} \label{fig:CCVT}
+\end{figure}
+
+\subsection{Octahedral reduced Gaussian grid} \label{sec:grid_oct}
+\label{subsection:octahedralreducedgaussiangrid}
+
+As with the classical reduced Gaussian grid of \cite{hortal1991use}, the octahedral 
+reduced Gaussian grid \citep{malardel2016new,smolarkiewiczetalJCP2016} specifies the latitudes according to the 
+roots of the Legendre polynomials. 
+The two grids differ in the arrangement of the points along the latitudes, which follows a simple
+rule for the octahedral grid: starting with 20 points on the first latitude around the poles, four points 
+are added with every latitude towards the equator, whereby the spacing between points along the 
+latitudes is uniform and there are no points at the equator. The octahedral reduced Gaussian grid 
+is suitable for transformations involving spherical harmonics, and has been introduced for operational 
+weather prediction with the spectral dynamical core of the IFS at ECMWF in 2016. 
+Figure~\ref{fig:octahedralgrid} depicts the octahedral reduced Gaussian grid nodes together with
+the edges of the primary mesh as applied in the context of the finite-volume discretization of FVM (Section~\ref{sec:FVM}). 
+
+
+\begin{figure}
+\centering
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[width=6cm]{contributions/FVM/octahedral_gauss_nodes}
+ \end{subfigure}%
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[width=5.4cm]{contributions/FVM/octahedral_RGG_white}
+ \end{subfigure}
+\caption{Locations of the octahedral reduced Gaussian grid nodes (left), and the edges of the primary mesh 
+connecting the nodes as applied with the finite-volume discretisation in FVM (right). A coarse octahedral grid with only
+24 latitudes between pole and equator 'O24' is used for illustration. The dual mesh resolution of the octahedral
+reduced Gaussian grid is about a factor 2 finer at the poles than the equator, see \cite{smolarkiewiczetalJCP2016}.}
+\label{fig:octahedralgrid}
+\end{figure}
+
+
+\subsection{Yin-Yang grid} \label{sec:grid_yinyang}
+
+The overset Yin-Yang grid \citep{kageama2004yinyang} has two Cartesian grid components (subsets of a latitude-longitude grid) which are geometrically identical (see Figure \ref{fig:gem_yinyang}).  These components are combined to cover a spherical surface with partial overlap along their borders.  The Yin component covers the latitude-longitude region
+\begin{equation}\label{eq:gem_yinyang}
+(-\frac{\pi}{4}-\delta_{\theta} \leq \theta \leq
+\frac{\pi}{4}+\delta_{\theta})  \cap
+(-\frac{3\pi}{4}-\delta_{\lambda} \leq \lambda \leq
+\frac{3\pi}{4}+\delta_{\lambda}),
+\end{equation} where $\delta_{\lambda}, \delta_{\theta}$ are small buffers that are proportional to the respective grid-spacings and are required to enforce a minimum overlap in the overset methodology.  For instance, a common configuration employed by the GEM model for DCMIP fixes
+$ \delta_{\theta}=2 $ degrees and $ \delta_{\lambda}=3 \delta_{\theta}$.  The Yang component covers an analogous area, but is rotated perpendicularly so as to cover the region of the sphere outside of the Yin grid.  This grid is employed by the GEM model, utilizing a pair of local area models based with the numerics from the GEM latitude-longitude model.
+
+\begin{figure}[]
+\includegraphics[height=6cm]{gem_yinyang.png}
+\caption{The Yin-Yang grid is a combination of two limited-domain latitude-longitude grids assembled to provide complete coverage of the sphere.}
+\label{fig:gem_yinyang}
+\end{figure}
+
+
+\subsection{Horizontal staggering} \label{sec:HorizontalStaggering}
+
+The horizontal placement of variables impacts a number of properties of the numerical method, including how energy and enstrophy conservation is managed, any computational modes that might arise due to differencing, dispersion properties, and the maximum stable timestep size for explicit timestepping schemes \citep{randall1994geostrophic, ullrich2014understanding}.  The original four Arakawa grids \citep{arakawa1977computational}, denoted with letters A- through D- were initially designed for rectilinear meshes, but were later adapted for a variety of unstructured grids.  Later, other grid types were added, including the Z-grid, which used the vertical component of vorticity and the horizontal divergence in place of the velocity components \citep{randall1994geostrophic}, and the ZM-grid, which extends the B-grid to hexagons by placing the velocity at hexagonal nodes \citep{ringler2002zm}.  By interpreting ``staggerings'' to be analogous to a choice of finite element basis, new staggerings are under development in the context of mixed finite element methods \citep{cotter2012mixed}.  Among the models that participated in DCMIP, only four grids were represented:  The A-grid, which involves simple co-location of all velocity components and scalar fields; the C-grid, which places perpendicular velocity components on grid edges; the D-grid, which places parallel velocity components on grid edges; and the Z-grid, which co-locates the vorticity, divergence and buoyancy variables (see Figure \ref{fig:horizontalstaggering}).
+
+Arguments in favor or against particular staggerings have generally emerged from linear analyses, and typically in the absence of either implicit or explicit diffusion.  In this context, the A-grid tends to support large time step sizes, but produces unphysical phase speeds and negative group velocities at high wavenumbers, including a stationary $2 \Delta x$ wavelength mode (even in the context of finite element methods); the C-grid better represents short wave modes, does not support extraneous computational modes (as long as the number of horizontal faces is equal to twice the number of volumes), but typically has a more restrictive timestep with explicit timestepping schemes than the A-grid; the D-grid provides a better representation of vorticity, but produces unphysical effects analogous to those on the A-grid at high wavenumbers that must be controlled with divergence damping; finally, the Z-grid yields optimal dispersion properties, but requires the inversion of a Poisson problem at each timestep to extract the velocity field from the divergence and vorticity.
+
+%----------------------------------------------------
+\begin{figure}[]
+\includegraphics[width=5in, clip, trim=0cm 2.0cm 0cm 0cm]{HorizontalStaggering.pdf}
+\caption{Horizontal staggering options represented among DCMIP models, in this case depicted on a rectilinear grid and geodesic grid.  Here $\eta$ denotes the buoyancy variable.}
+\label{fig:horizontalstaggering}
+\end{figure}
+%----------------------------------------------------
+
+%\subsubsection{C-D-Grid in the FV$^3$ model} \label{sec:CDGrid}
+
+Other specialized staggerings have been developed that couple horizontal staggering with the formulation of the time integrator.  In the FV$^3$ model, although velocities are stored in accordance with the D-grid arrangement, at the intermediate stages of the forward-backwards timestepping scheme, velocities are actually prognosed on the C-grid.  The intermediate velocities then act as a simplified Riemann solver:  the intermediate stage velocities are time-centered and can be used to compute the fluxes and advance the flux terms by a full acoustic timestep.  More details on this approach can be found in \cite{LR1997QJR}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Vertical discretization} \label{sec:VerticalDiscretization}
+
+%Although the horizontal grid determines the approximate density and distribution of grid points, the placement of prognostic (and diagnostic) variables within each grid volume is still free to be specified.  Hence, in this section we turn our attention to the placement of prognostic variables on the grid, the choice of vertical coordinate, and the choice of corresponding prognostic equations.
+
+Because of the vast differences between horizontal and vertical scales in global simulations, most atmospheric models use dimension splitting in order to separate the horizontal discretization from the vertical discretization.  In this section, design considerations related to the vertical column are discussed, including the staggering of prognostic and diagnostic variables, and the choice of vertical coordinate.
+
+\subsection{Vertical staggering} \label{sec:VerticalStaggering}
+
+Along with the choice of prognostic variables, the vertical discretization of the equations of motion also allows for the staggered placement of prognostic variables.  As with hydrostatic models, certain discretizations give rise to spurious computational modes that can contaminate the solution \citep{tokioka1978some,arakawa1988baroclinic}.  The choice of vertical staggering may also impact many physically-relevant properties of the model near the grid scale, such as the phase speed of Rossby waves \citep{thuburn2005vertical}.  Finally, the choice of vertical staggering can have impacts on the physics-dynamics coupling \cite{holdaway2013comparison1,holdaway2013comparison2}.  Taken altogether, these issues suggest care should be taken when selecting the discretization.  Since co-located discretizations of the non-hydrostatic equations generally require some additional effort to control spurious computational modes, it is more common to employ either: (a) a Lorenz-type staggering \citep{lorenz1960energy}, which places horizontal velocity, buoyancy, and thermodynamic variables on model levels, and vertical velocity on model interfaces; or (b) a Charney-Phillips-type staggering \citep{charney1953numerical}, which places horizontal velocity and buoyancy variables on model levels and vertical velocity and thermodynamic variables on model interfaces (see Figure \ref{fig:verticalstaggering}).  These approaches can be further augmented as needed, for instance by shifting the vertical velocity and thermodynamic variables from the bottom boundary to an intermediate level, as in the GEM model.  Note that, in general, tracer variables are co-located with the buoyancy variable.
+
+%----------------------------------------------------
+\begin{figure}[]
+\includegraphics[width=5in]{VerticalStaggering_v2.pdf}
+\caption{(a) A Lorenz-type variable staggering for a model utilizing height coordinates, (b) a Charney-Phillips-type variable staggering for a model utilizing height coordinates, (c) a modified Charney-Phillips-type staggering used in the GEM model that introduces a new near-surface level for vertical velocity and temperature.}
+\label{fig:verticalstaggering}
+\end{figure}
+%----------------------------------------------------
+
+\subsection{Vertical coordinates} \label{sec:VerticalCoordinates}
+
+In the context of dimension splitting, the ``horizontal'' typically refers to either the contravariant basis, which is perpendicular to the vertical, or the covariant basis, which is directed along coordinate (e.g. terrain-following) surfaces.  In contrast, the vertical dimension is strictly aligned with the radial vector pointing from the center of the Earth.  Vertical position is typically labelled using an arbitrary function $s(t,\vb{x},z)$ that is monotonic in $z$, so that model interfaces are equally spaced with respect to $s$.  Typically $s$ is chosen so that the Earth's surface (the bottom boundary of the atmosphere) is a coordinate surface, allowing for easy specification of boundary conditions for the prognostic equations -- this leads to the so-called ``terrain-following'' family of vertical coordinates.  Perhaps the most common terrain-following coordinate is from \cite{galchen1975}, which is in terms of the altitude $z$ and takes the form
+\begin{align}
+s(\vb{x},z) = z_{\footnotesize \mbox{top}} \left[ \frac{z - z_s(\vb{x})}{z_{\footnotesize \mbox{top}} - z_s(\vb{x})} \right],
+\end{align} where $\vb{x}$ denotes the horizontal position, $z_s(\vb{x})$ is the height of the topography at that position, and $z_{\footnotesize \mbox{top}}$ denotes the height of the model top (typically independent of position).  Analogous formulations are available for mass-based ($\sigma$-coordinates) and entropy-based vertical coordinates.  Because the sharp variations in the coordinate surfaces are preserved far above a rough lower-boundary, new coordinate formulations have been proposed that smooth coordinate surfaces, such as \cite{schar2002new} or \cite{klemp2011terrain}.  All models in this paper except for OLAM use some variant of terrain-following coordinates, although work on developing modern cut-cell, embedded boundary and immersed boundary representations is ongoing (e.g. \cite{lock2012demonstration}).  Note that time-dependent vertical coordinates are allowed and are typically referred to as ``floating'' coordinates.  Several examples of vertical coordinates are now given.
+
+\subsubsection{Mass-based coordinates}
+
+Mass-based coordinates \citep{laprise1992euler} are a generalization of pressure-based coordinates to non-hydrostatic models, with a vertical coordinate defined as the total gravity-weighted overhead mass,
+\begin{align} \label{eq:s_mass-based}
+s = \int^{\infty}_{z} \rho g dz.
+\end{align}  Under this definition,
+\begin{align}
+\pdiff{s}{z} = - \rho g.
+\end{align}
+
+%The mass-based coordinate gives rise to a prognostic equation for hydrostatic surface pressure through vertical integration of (\ref{eq:PrognosticPseudoDensity}),
+%\begin{align} \label{eq:SurfacePressureEquation}
+%{\color{red}\pdiff{p_s}{t} = - \int g \pdiff{\rho}{t} \left( \pdiff{z}{s} \right) ds = - \int \nabla_s \cdot (\rho_s \vb{u}_h) \left( \pdiff{z}{s} \right) ds,}
+%\end{align} where the integrals are taken over the column.
+
+\subsubsection{GEM zeta coordinate} \label{sec:GEM_zeta}
+
+The vertical coordinate in the GEM model, denoted $\zeta$, is a hybrid terrain-following coordinate of a log-hydrostatic-pressure type.  Taking $s$ (denoted $\pi$ in GEM documentation) as given in (\ref{eq:s_mass-based}), then $\zeta$ is given by the relation
+\begin{align}\label{eq:gem_zeta}
+\log s = A(\zeta) + B(\zeta) \left[ \log s(z_s)  - \zeta_s \right],
+\end{align}
+\noindent with
+\begin{align}
+A(\zeta) = \zeta, \quad \mbox{and} \quad B(\zeta) =\left( \frac {\zeta-\zeta_{top}} {\zeta_s -\zeta_{top}} \right)^r.
+\end{align}
+Here  $\zeta_s = \log(10^5)$, $\zeta_{top} = \log(s_{top})$,
+$s_{top}$ is the coordinate value at the uppermost interface, and $r$ is a variable exponent providing added freedom for adjusting the thickness of model layers over high terrain.
+
+\subsubsection{Floating Lagrangian coordinates (ACME--A and FV$^3$)} \label{sec:FloatingLagrangian}
+
+In the floating Lagrangian formulation \citep{starr1945quasi, lin2004vertically} the vertical coordinate is chosen to represent an artificial tracer with monotonically increasing or decreasing mixing ratio $s$ in the vertical.  The actual mixing ratio at initiation is arbitrary, and can be constructed to be height-like (i.e., $s = z$), or mass-like, i.e.
+\begin{align}
+s = \int^{\infty}_{z} \rho_0 g dz,
+\end{align} in which case a 3D reference density field $\rho_0$ can be imposed.  Of primary importance is the fact that the vertical coordinate satisfy
+\begin{align}
+\dot{s} = \frac{ds}{dt} = 0,
+\end{align} which greatly simplifies the associated prognostic velocity and continuity equations.  Floating Lagrangian coordinates are often paired with a vertical remapping operation that corrects for strong grid distortions that may occur after sufficiently long model integrations.
+
+\subsubsection{Cut-cells in OLAM} \label{sec:CutCells}
+
+A pure z coordinate with horizontal grid levels is used in OLAM \citep{walko2008ocean2} in order to completely avoid topographic imprinting on the model grid levels (Figure \ref{fig:OLAM_CutCell}). This implies that grid levels intersect the topographic surface, leading to some grid cells being partially above and partly below the surface. The face areas of these so-called cut cells are reduced accordingly, which in turn regulates cell-to-cell flux transport in accordance with the kinematic constraint imposed by the topography. Cut cell volumes are also reduced, and volumes and surface areas of all cells appear explicitly in the finite-volume formulation of the mass and momentum conservation equations.  One or more methods are used to avoid the so-called small cell problem where volume to area ratios of cut cells are much less than for full cells and therefore can lead to instability. The smallest cells are eliminated by adjusting topography slightly, which is usually justified by noting that local topographic sampling is approximate. In larger cut cells, volumes can be increased (without changing surface areas) which stabilizes the cell at the expense of slowing its response to advected transients. When either of the above adjustments is unacceptable for a particular application, a flux-balance method based partly on \cite{berger2012simplified} is used to stabilize small cut cells.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=2in]{OLAM_CutCellA.png} \quad \includegraphics[width=2in]{OLAM_CutCellB.png}
+\end{center}
+\caption{(Left) A terrain-following coordinate passing over rough topography.  (Right) A cut-cell coordinate used for representing the same topography.} \label{fig:OLAM_CutCell}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Prognostic equations and treatment of moisture} \label{sec:PrognosticEquations}
+
+The Navi\'er-Stokes equations that govern atmospheric motion can take on many forms, depending on the choice of prognostic variables and coordinate system.  A derivation of many forms of these equations can be found in Appendix \ref{sec:EquationSets}.  The particular prognostic equations used by the model can impact the presence of computational modes, the accuracy of the model in representing the physical modes of the atmosphere \citep{thuburn2005vertical}, and the ability of the model to conserve important invariants such as energy \citep{Dubos2014Equations}.  The remainder of this section gives some specific examples of prognostic equations used by the DCMIP models, including any special treatment of terms related to moist physics.
+
+\subsection{ACME--A}
+
+ACME-A hosts an experimental compressible shallow-atmosphere model in hybrid terrain-following pressure vertical coordinates $\eta$, similar to the model of \cite{laprise1992euler}. The 2D vector invariant form of the prognostic horizontal velocity equations (\ref{eq:PrognosticUhEquationK2Sb}) is employed, in conjunction with prognostic potential temperature (\ref{eq:PrognosticPseudoDensityTheta}), pseudodensity (\ref{eq:PrognosticPseudoDensity}), and geopotential (\ref{eq:PrognosticShallowGeopotential}).  The vertical velocity equation is formulated analogous to that of GEM,
+\begin{align}
+\frac{d w}{dt} &= - g_c \left( 1 - \pdiff{p}{s} \right).
+\end{align}
+
+\subsection{CSU} \label{sec:CSUEquations}
+
+The CSU model uses the vorticity-divergence form of the equations of motion, as described in section \ref{sec:VorticityDivergenceForm}, discretized on the geodesic mesh with absolute vorticity and velocity divergence scalars stored at cell-centers.  The unified approximation of the equations of motion \citep{arakawa2009unification} is employed to avoid vertically propagating sound waves.
+
+\subsection{DYNAMICO} \label{sec:DYNAMICOEquations}
+
+The prognostic equations employed by DYNAMICO are based on a Hamiltonian formulation \citep{Dubos2014Equations}. The specific prognostic variables employed are pseudo-density $\rho_s$, mass-weighted tracers (potential temperature, water species), geopotential $\Phi$, horizontal covariant components of momentum and mass-weighted vertical momentum $W = \rho_s g^{-2} d\Phi/dt = \rho_s g^{-1} w$. Prognostic equations are in flux-form for mass (\ref{eq:PrognosticPseudoDensity}) and $W$ (\ref{eq:PrognosticVelocityFluxForm}), in advective form for $\Phi$ (\ref{eq:PrognosticShallowGeopotential}), and in vector-invariant form for covariant horizontal momentum (\ref{eq:CovariantUpdateEquation}).
+
+\subsection{FV$^3$} \label{sec:FV3Equations}
+
+The hydrostatic FV$^3$ model uses a mass-based floating Lagrangian coordinate along with the shallow-atmosphere approximation \citep{lin2004vertically}.  Prognostic equations include horizontal velocity in 2D vector-invariant form (\ref{eq:PrognosticUhEquationK2}), pseudo-density (\ref{eq:PrognosticPseudoDensity}), and virtual potential temperature (\ref{eq:PrognosticPseudoDensityTheta}).  The non-hydrostatic model further incorporates prognostic geopotential (\ref{eq:PrognosticShallowGeopotential}) and vertical momentum (\ref{eq:PrognosticWEquationK2}).
+
+\subsection{FVM} \label{sec:FVMEquations}
+
+The FVM formulation is based on conservation laws for dry mass \eqref{fvm:mass}, momentum \eqref{fvm:momentum}, 
+and dry entropy \eqref{fvm:thermodynamic} in Eulerian flux-form,
+which are similar to \eqref{eq:ContinuityEquation} for $\rho_d$, \eqref{eq:PrognosticVelocityFluxForm}, and 
+\eqref{eq:PotentialTemperatureFluxForm} for $\theta$, respectively. Moreover, underlying the conservation laws 
+in FVM is a perturbational form with respect to a balanced ambient state and a generalized curvilinear 
+coordinate formulation in a geospherical framework. Following \cite{smolarkiewiczetalJCP2017}, the
+FVM governing equations can concisely be written as
+\begin{subequations} \label{fvm:compressible}
+\begin{align}
+ & \pdiff{\mathcal{G}\rho_d}{t} + \overline{\nabla} \cdot \left(\mathbf{v} \mathcal{G} \rho_d\right) = 0~,
+\label{fvm:mass}  \\
+& \pdiff{\mathcal{G} \rho_d \mathbf{u}}{t} + \overline{\nabla} \cdot \left(\mathbf{v} \mathcal{G} \rho_d \mathbf{u} \right) = 
+\mathcal{G}\rho_d\left( - \theta_{\rho} \mathbf{\widetilde{G}} \overline{\nabla} \phi' 
+%- \mathbf{k} \frac{g}{\theta_{a}} \left(\theta'+\theta_a \left(\frac{q'_v}{\varepsilon} - q'_v - q_c - q_r \right) \right)
+%- \mathbf{k}\,g \left(\frac{\theta'}{\theta_a}+\frac{q'_v}{\varepsilon} - q'_v - q_c - q_r \right)
+- \mathbf{k}\,g \left(\frac{\theta'}{\theta_a}+\varepsilon_b\,q'_v - q_c - q_r \right)
+- 2\mathbf{\Omega} \times \left( \mathbf{u} - \frac{\theta_{\rho}}{\theta_{\rho\,a}} \mathbf{u}_{a} \right) 
++ \mathcal{M}' \right]~,
+%+ \mathbf{M} \right)~,
+\label{fvm:momentum} \\
+%- \frac{L}{c_p \pi} & \Big( \frac{\Delta q_{vs}}{\Delta t} & + E_r  \Big)
+& \pdiff{\mathcal{G}\rho_d \theta'}{t} + \overline{\nabla} \cdot \left(\mathbf{v}\mathcal{G}\rho_d\,\theta' \right) = 
+- \mathcal{G}\rho_d\,\mathbf{\widetilde{G}}^{T}\mathbf{u} \cdot \overline{\nabla} \theta_{a} ~,
+%- \frac{L}{c_{pd}\,\pi} \left( \frac{\Delta q_{vs}}{\Delta t}  + E_r  \right) %\left(C_d + E_p\right) 
+%+  \mathcal{H} \right)~,
+\label{fvm:thermodynamic} \\
+& \phi' = c_{pd} \left[\left( \frac{R_{d}}{p_{0}} \rho_d\,\theta\,(1+q_v/\varepsilon) \right)^{R_{d}/c_{vd}} - \pi_{a} \right]~.
+\label{fvm:gaslaw}
+\end{align}
+\end{subequations}
+Dependent variables in \eqref{fvm:compressible} are dry density $\rho_d$, 3D
+physical velocity vector $\mathbf{u}$, potential temperature perturbation $\theta'$, and a modified
+Exner pressure perturbation $\phi'$, 
+with the thermodynamic variables related by the gas law 
+\eqref{fvm:gaslaw}. Primes indicate perturbations with respect to the prescribed ambient state denoted by
+subscript `a', see \cite{prusa2008eulag} and \cite{smolarkiewiczJCP2014} for discussions.
+The symbol $g$ in \eqref{fvm:momentum} denotes the gravitational acceleration 
+and $\varepsilon_b = 1/\varepsilon-1$. As far as geometric aspects 
+are concerned, the nabla operator $\overline{\nabla}$ represents
+the 3D vector of partial derivatives with respect to the curvilinear coordinates, along with the Jacobian $\mathcal{G}$, 
+a matrix of metric coefficients $\mathbf{\widetilde{G}}$, its transpose $\widetilde{\mathbf{G}}^{T}$, and 
+the contravariant velocity $\mathbf{v} = \mathbf{\widetilde{G}}^{T}\mathbf{u}$ where a contribution from
+optional time-dependency of the curvilinear coordinates is neglected for simplicity \citep{kuehnleinJCP2017}.
+The symbol $\mathcal{M}' = \mathcal{M}'(\mathbf{u}, \mathbf{u}_a, \theta_{\rho}/\theta_{\rho\,a})$ in \eqref{fvm:momentum} 
+subsumes the metric forces in the spherical domain \citep{smolarkiewiczetalJCP2017}.
+
+\subsection{GEM} \label{sec:GEM_equations}
+
+%GEM is a semi-Lagrangian model with a hybrid coordinate of a log-hydrostatic-pressure type, here denoted $\zeta$, described in section \ref{sec:GEM_zeta}.
+In GEM the non-hydrostatic equations are written explicitly as deviations from hydrostatic balance represented by
+\begin{align}
+\mu = \pdiff{p}{s} - 1,
+\end{align}
+\noindent where $s$ (denoted $\pi$ in GEM documentation) is given by (\ref{eq:s_mass-based}).  In this case the equations of GEM model \citep{Girard2014} are concisely given by
+\begin{align}
+\frac{d \vb{u}_h }{dt} + f {\bf k} \times {\bf{u}_{h}} + R_d T_v\nabla_\zeta \,  \log\, p+ \left( 1 + \mu \right) \nabla_\zeta {\Phi} &= 0, \\
+\frac{d w}{dt}- g_c \mu &= 0, \label{eq:GEMVerticalVelocity} \\
+\frac{d}{dt} \log \left( \pdiff{s}{\zeta}\right) + \nabla_{ \zeta }\cdot {\bf u}_{{h}}+\frac{\partial \dot{ \zeta }}{\partial \zeta } &= 0, \\
+\frac{d \log T_v}{dt} - \frac{R_d}{c_p} \frac {d \log p} {dt} &= 0, \\
+\frac{\partial \Phi}{\partial s} + \frac{R_dT_v}{p} &= 0, \\
+\frac{d \Phi}{dt}-  g_c w & = 0.
+\end{align}  Here $\nabla_\zeta$ denotes the horizontal gradient along $\zeta$ surfaces.  With respect to the treatment of moisture in GEM, the cloud water and all non-gases are embedded in the total air density $\rho$,
+affecting the virtual temperature defined in (\ref{eq:VirtualTemperatureExact}). Also, specific mass is used in GEM (not mixing ratio).    
+
+
+%\noindent with horizontal velocity ${\bf V}_h$, 
+%generalized vertical velocity $\dot{ \zeta }=\frac{d\zeta}{dt}$, 
+%vertical velocity $w$,
+%geopotential $\phi$, 
+%virtual temperature $T_v$, 
+%pressure $p$ and
+%hydrostatic pressure $\pi$. The variable 
+%$\mu$ is a measure of departure from hydrostatic balance, 
+%$s$ is related to the surface pressure $\pi_s$ and $B$ is a metric term. The last two variables are defined in (\ref{eq:gem_zeta}).
+
+
+\subsection{ICON} \label{sec:ICONEquations}
+
+ICON solves a non-hydrostatic equation set based on \cite{gassmann2008} 
+using terrain-following z-coordinates. The governing equations describe the mixture 
+of a two-component system of dry air and water, where water is allowed to occur in 
+all three phases, including precipitating constituents. Following \cite{wacker2006}, 
+the barycentric (bc) velocity $\vb{u}_{bc}=\sum_{k} \rho_{k} \vb{u}_{k}/\sum_{k}\rho_{k}$ -- 
+that is the mass-weighted sum of all constituent-specific velocites (including sedimenting ones) --
+is used as a prognostic variable. In contrast to \cite{gassmann2008}, 
+a vector invariant form is only used for the horizontal velocity equation 
+(\ref{eq:HorizontalVelocityOrthogonal}), whereas the vertical velocity equation is solved in advective form. 
+The pressure gradient force is formulated according to (\ref{eq:PressureGradientForceAlt}).
+
+%Note that in contrast to (\ref{eq:VirtualTemperatureExact}) the water loading term is included in the definition of $T_{v}$ and $\theta_{v}$.
+
+Additional prognostic variables include total air density (\ref{eq:EulerianContinuityEquation}), virtual potential temperature (\ref{eq:PrognosticPseudoDensityTheta}), 
+and mass fractions $q_{k}=\rho_{k}/\rho$ of all constituents (except for dry air) for which the 
+prognostic equation reads
+\begin{align}
+\frac{\partial \rho q_{k}}{\partial t} + \nabla\cdot\left(\rho q_{k} \vb{u}_{bc}\right) = 
+-\nabla\cdot \vb{J}_{k}  + \sigma_{k}\,,
+\end{align}
+with $\sigma_{k}$ describing sources/sinks due to phase changes, and  
+$\vb{J}_{k}=\rho q_{k}\left(\vb{u}_{k} - \vb{u}_{bc}\right)$ denoting diffusion fluxes, 
+which account for the motion of constituents relative to the frame of reference set by $\vb{u}_{bc}$.
+
+The specific heat capacities and ideal gas constant are approximated to be equal to their dry values 
+$R^{\ast}\approx R_{d}$, $c_{p}^{\ast}\approx c_{pd}$, $c_{v}^{\ast}\approx c_{vd}$. The model also 
+uses a prognostic equation for Exner pressure to simplify the treatment of vertical sound wave propagation, given by 
+\begin{align}
+\frac{\partial \pi}{\partial t} + \frac{R_{d}}{c_{vd}}\frac{\pi}{\rho \theta_{v}} \nabla\cdot\left(\vb{u}_{bc}\rho\theta_{v}\right) = \hat{Q}\,,
+\end{align}
+where $\hat{Q}$ is an appropriately formulated diabatic heat term. The horizontal uses a Arakawa C-grid formulation on the 
+triangular grid to prognose horizontal velocities normal to triangle edges $v_{n}$, making use of reconstructed 
+tangential velocity components $v_{t}$.
+
+In the current implementation, the following simplifcations are made with regards to the treatment of moisture: 
+The atmospheric mass loss/gain due to precipitation/evaporation is neglected in the total mass continuity 
+equation (\ref{eq:EulerianContinuityEquation}), by setting the vertical component of $\vb{u}_{bc}$ to zero at the lower boundary:  
+$w_{bc}|_{sfc} = 0$. In addition, only the vertical diffusion fluxes $\vb{J}_{k}$ of sedimenting 
+constituents and the surface evaporation flux $\vb{J}_{v}|_{sfc}$ are taken into account. The counter-flux 
+of non-sedimenting constituents is discarded. Since in the given framework the continuity equation (\ref{eq:EulerianContinuityEquation}) 
+is only valid if the constraint $\sum_{k} \vb{J}_{k}=0$ holds, it is (implicitly) assumed that a fictitious 
+counter-flux of dry air to compensate for the considered vertical diffusion fluxes. As a consequence, 
+ICON currently conserves the global integral of total air mass rather than dry air mass.
+
+\subsection{MPAS} \label{sec:MPASEquations}
+
+The evolution equations used by MPAS are fully described in \cite{skamarock2012multiscale}, based on the formulation of \cite{dutton1986ceaseless}.  The MPAS model uses the momentum form of the update equations, as described in section \ref{sec:MomentumForm}, with dry mass utilized for the density variable $\tilde{\rho}_s$.  MPAS further evolves dry mass using a continuity equation of the form (\ref{eq:EulerianContinuityEquation}) and moist potential temperature following (\ref{eq:PotentialTemperatureFluxForm}).
+
+\subsection{NICAM} \label{sec:NICAMEquations}
+
+NICAM prognoses horizontal and vertical momentum analogous to the approach described in section \ref{sec:MomentumForm}.  It further evolves the density perturbation from the background reference state using (\ref{eq:EulerianContinuityEquation}) and sensible heat part of internal energy.  A detailed explanation of the evolution equations can be found in \cite{satoh2008nonhydrostatic}.
+
+\subsection{OLAM} \label{sec:OLAMEquations}
+
+OLAM solves the deep-atmosphere, fully-compressible equations in mass- and momentum-conserving finite-volume form using equations (\ref{eq:EulerianContinuityEquation}), (\ref{eq:PrognosticVelocityFluxForm}), and 
+(\ref{eq:PotentialTemperatureFluxForm}). Prognostic variables are the 3 components of momentum, ice-liquid potential temperature $\theta_{il}$ \citep{walko2000efficient}, total density $\rho$, specific density of total water, and specific bulk density and/or bulk number concentration of various scalar quantities including liquid and ice hydrometeors, aerosols, and trace gases. For DCMIP, the latter are limited to cloud and rain specific bulk densities. Water vapor density is diagnosed by subtracting bulk densities of all liquid and ice hydrometeors from the total water density, dry air density is diagnosed by subtracting total water density from total density, and pressure is diagnosed based on the equation of state and values of dry air density, water vapor density, and potential temperature $\theta$. The latter is in turn diagnosed from $\theta_{il}$ and from the latent heat required to convert any hydrometeors present to the vapor phase. Velocity components are diagnosed by dividing momentum components by total density.
+
+Momentum is C-staggered in the horizontal and vertical (Lorenz vertical staggering is used), meaning that prognosed components live on the grid cell faces and are each normal to the respective face and the pressure gradient force is evaluated and applied at those locations. However, evaluation of advective and turbulent momentum transport (as well as the Coriolis force) involves a diagnostic reconstruction of the total momentum vector at the centers of scalar grid cells \citep{perot2000conservation}, and cell-to-cell flux of momentum is computed from that reconstruction using the same A-grid control volumes as for scalars. This arrangement is particularly convenient for the cut-cell formulation at the topographic surface where reduced cell face areas and volumes regulate momentum and scalar fluxes in an identical manner.
+
+\subsection{TEMPEST} \label{sec:TempestEquations}
+
+Tempest is a shallow-atmosphere Eulerian model with terrain-following $z$-coordinates with prognostic density (\ref{eq:PrognosticPseudoDensity}), virtual potential temperature (\ref{eq:PrognosticPseudoDensityTheta}), and vector-invariant form for covariant horizontal velocity (\ref{eq:CovariantUpdateEquation}) and vertical momentum (\ref{eq:VerticalVelocityOrthogonal}).  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Diffusion, stabilization, filters and fixers} \label{sec:DiffusionStabilization}
+
+Most dynamical cores implement specialized techniques for diffusion or stabilization (see Table \ref{tab:ModelsTemporalDiffusion}).  Diffusion is a numerical technique that removes spurious numerical noise from the simulation, where the numerical noise typically arises because of inaccuracies in the treatment of waves with wavelengths near the grid scale.  Diffusion also includes mechanisms for damping vertically propagating internal gravity waves, such as model-top Rayleigh layers, which are fairly ubiquitous across models and hence not discussed in detail here.  Stabilization is a numerical technique that prevents energy growth and allows the model to be run over long periods.  Diffusion or stabilization options include physically-motivated turbulence parameterizations, added viscosity or hyperviscosity terms with tunable coefficients, off-centering, or wave-mode filters.  Since the discretization can also lead to an unphysical loss of mass or energy, mass or energy fixers are also employed to replace lost mass or energy to the system.  A comprehensive overview of schemes for diffusion and stabilization schemes can be found in \cite{jablonowski2011pros}.  In this section we discuss some of the diffusion and stabilization strategies employed by the DCMIP suite of dynamical cores.
+
+\subsection{ACME--A / TEMPEST}
+
+In both ACME--A and Tempest, scalar hyperviscosity is employed for $\rho$, $\theta$ and tracer variables via repeated application of a scalar Laplacian \citep{dennis2012cam, ullrich2014global}.  Vector hyperviscosity is also applied by decomposing the horizontal vector Laplacian into divergence damping and vorticity damping terms via the vector identity
+\begin{align}
+\nabla^2 \vb{u}_h = \nabla \nabla \cdot \vb{u}_h + \nabla \times \nabla \times \vb{u}_h.
+\end{align}  Both viscosity operations are applied after the completion of all Runge-Kutta sub-cycles.  Several limiter options are available for tracer transport including a sign-preserving limiter and a monotone optimization base limiter described in \cite{guba2014optimization}.
+
+\subsection{CSU}
+
+The CSU model utilizes an explicit diffusion scheme that consists of fourth-order hyperdiffusion ($\nabla^4$) applied to the vorticity, divergence, and potential temperature.  The model does not include any explicit diffusion in the vertical column.  However, for the idealized DCMIP test cases explicit diffusion was disabled.
+
+\subsection{DYNAMICO}
+
+In DYNAMICO, (hyper-)diffusive filters are used to eliminate spurious noise due to the energy-conservative centered discretization. Filters are applied every $N_{\footnotesize \mbox{\textit{diff}}}$ Runge-Kutta time steps in a forward-Euler manner, with $N_{\footnotesize \mbox{\textit{diff}}}$ as large as allowed by stability. The scalar Laplacian is computed as the divergence of the gradient and the vector Laplacian is decomposed into its divergent (grad div) and rotational (curl curl) parts. The strength of filtering is controlled by dissipation time scales $\tau$:  Given $\tau$ the hyperviscous coefficient that multiplies operator $D^p$ is  $\delta^{2p} \tau^-1$ where $\delta^-2$ is the largest eigenvalue of operator $D$. For DCMIP, DYNAMICO uses $p=2$ (fourth-order hyperviscosity) for all filters.
+
+\subsection{FV$^3$}
+
+Explicit dissipation in FV$^3$ is applied separately to the divergence and to the horizontal fluxes in the governing equations. The D-grid discretization applies no direct implicit dissipation to the divergence, so divergence damping is an intrinsic part of the solver algorithm since otherwise there are no processes by which energy contained in the divergent modes is removed at the grid scale.  FV$^3$ has options for fourth-, sixth-, or eighth-order divergence damping; a second-order option is also available for use in idealized convergence tests, which can be applied in addition to the higher-order diffusion. The monotonicity constraint used in computing the fluxes in the  momentum, thermodynamic, and mass continuity equations is sufficient to damp and stabilize the non-divergent component of the flow.  The model also supports an option to apply hyperdiffusion to the fluxes in each of these equations, with the exception of the tracer transport, which always uses monotonic transport with no explicit diffusion. The hyperdiffusion is of the same order as but much smaller than the divergence damping. Both divergence damping and hyperdiffusion are applied along the Lagrangian surfaces and are re-computed every acoustic timestep.
+
+FV$^3$ is constructed with a flexible-lid (constant-pressure) upper boundary that is effective at damping internal gravity wave modes; however, FV$^3$ also applies second-order diffusion to all fields, except the tracers, to create a sponge layer, typically comprising the top two layers of the domain, to damp other signals reaching the top of the domain. An energy-conserving Rayleigh damping, applied consistently to all three components of the winds, is also available, which is strongest in the top layer of the domain and becomes weaker with distance until reaching a runtime-specified cut-off pressure. 
+
+FV$^3$ has an option to restore lost energy by the adiabatic dynamics, in whole or a fraction thereof (decided by a namelist option at runtime), by globally adding a Exner-function weighted potential temperature increment. This is only done before the physics is called and is not used in idealized simulations. 
+
+\subsection{FVM}
+
+Within the dynamical core, FVM does not apply any explicit dissipation/diffusion.  For the DCMIP test cases, the implicit 
+regularization of the monotonic MPDATA provides sufficient dissipation/diffusion needed to remove excess 
+energy from the finest scales and maintain model stability.  An absorbing layer is also available for damping vertically 
+propagating waves near the model top.
+
+\subsection{GEM}
+
+An explicit hyperviscosity in GEM is handled via applications of the Laplacian operator
+for both wind components and tracers.
+A vertical sponge layer, which uses a Laplacian operator,
+is employed on wind components and $T_v$ with a vertical modulation on the topmost levels.
+For stabilization purpose, the temporal discretization of GEM also uses an off-centering parameter.
+The quasi-monotone semi-Lagrangian (QMSL) method \citep{Bermejo1992QMSL}
+is used operationally to ensure tracer monotonicity
+for specific humidity and different hydrometeors.
+Other options are now available
+in GEM including a mass conserving monotonic scheme \citep{Sorenson2013} and
+a global mass fixer \citep{Bermejo2002MASS}. Those approaches have been evaluated using
+chemical constituents such as ozone \citep{deGrandpre2016OZONE}.
+
+\subsection{ICON}
+
+The ICON model employs damping and diffusion operators for numerical stabilization and dynamic closure. The details of this scheme appear in sections 2.4 and 2.5 of \cite{zangl2015icon}, and are summarized here.  For damping, in the corrector step a fourth-order divergence damping term $F_{d}(\mathbf{v})$ is applied in order to allow calling the (relatively) computationally  expensive diffusion operator (see below) at the physics time steps without incurring numerical stability problems under extreme conditions,
+\begin{align}
+F_{d}(\mathbf{v}) = - f_d \overline{a_c}^2 \nabla \tilde{\nabla} \cdot \left\{\nabla \left[\tilde{\nabla} \cdot v + 
+\frac{\Delta }{\Delta z} \left(w-\overline{\overline{w_{cc}}^c}^i \right)\right]\right\} \,.
+\end{align}
+$f_d$ typically attains values between $\frac{1}{1000 \Delta t}$ and $\frac{1}{250 \Delta t}$, and $\overline{a_c}$ is the global mean cell area.
+
+ICON also includes Rayleigh damping on $w$ following \cite{klemp2008}, which serves to prevent unphysical reflections of gravity waves at the model top. The Rayleigh damping is restricted to a fixed number of levels below the model top, and the damping coefficient is given by a hyperbolic tangent.
+
+The horizontal diffusion consists of a flow dependent second-order Smagorinsky diffusion of velocity ($F_{D2}(v_n)$) and potential temperature  ($F_{D2}(\theta)$) combined with a fourth-order background diffusion of velocity $F_{D4}(v_n)$, defined via
+\begin{align} \label{smagn2}
+F_{D2}(v_n) &= 4 K_h \tilde{\nabla}^2(v_n), & F_{D2}(\theta) &= a_c \tilde{\nabla} \cdot \left(K_h \frac{\Delta \theta}{\Delta n} \right) \,, & F_{D4}(v_n) &= - k_4 a_e^2 \tilde{\nabla}^2 (\tilde{\nabla}^2(v_n)) \,,
+\end{align} where $a_c$ and $a_e$ denotes the area associated with the cell and edge under consideration, respectively.
+An empirically determined offset of $0.75 k_4 a_e$ is subtracted from $K_h$ in order to avoid excessive diffusion under weakly disturbed conditions.
+
+A fourth-order computational diffusion is also available for vertical wind speed $w$. This filter term is needed at resolutions of O(1 km) or finer because the advection of vertical wind speed has no implicit damping of small-scale structures.  This term appears as
+\begin{align}
+F_{D}(w) = - k_w a_c^2 \nabla^2 (\nabla^2(w)).
+\end{align}
+
+\subsection{MPAS}
+
+The MPAS model applies fourth-order hyperdiffusion and Smagorinsky diffusion \citep{smagorinsky1963general}, as described in \cite{skamarock2012multiscale}.  When applied to the momentum, the Laplacian is evaluated as
+\begin{align}
+\nabla^2 u_i = \pdiff{}{x_i} \nabla_s \cdot \vb{v} - \pdiff{\eta}{x_j},
+\end{align} where $u_i$ is the edge-normal velocity defined on cell edge $i$, $\eta$ is the vertical component of the relative vorticity, computed on vertices, and $\nabla_s \cdot \vb{v}$ is the horizontal divergence on $s$ surfaces, computed on edges.  The evaluation of divergence and vorticity in this expression is described in \cite{ringler2010unified}.  The fourth-order hyperdiffusion operator is then computed by twice applying the above Laplacian operator to the momentum.
+
+Smagorinsky diffusion, which is often applied in atmospheric models to parameterize turbulent processes, uses a second-order Laplacian and a physically-motivated eddy viscosity $K_h$, defined in terms of Cartesian velocities $(u,v)$,
+\begin{align}
+K_h = c_s^2 \ell^2 \sqrt{(u_x - v_y)^2 + (u_y + v_x)^2},
+\end{align} where $c_s$ is a constant parameter and $\ell$ is the grid scale.  The diffusion operator then takes the form $\nabla \cdot (K_h \nabla \psi)$ for a scalar field $\psi$.
+
+%{\color{red}The evaluation of the eddy viscosity Kh is accomplished by projecting the velocities onto a tangent plane, integrating the squared terms involving the velocities in (17) over the cell, and applying Stokes theorem to transform the cell integrals to discrete line integrals around the cell edge. The evaluation is inexpensive because the prognostic normal and diagnostic tangential velocities exist, and the time-independent coefficients for the line integrals are precomputed and stored before the time integration begins.}
+
+\subsection{NICAM}
+
+NICAM implements three types of diffusion: 3D divergence damping, fourth-order horizontal hyperdiffusion, and sixth-order vertical hyperdiffusion as described in \cite{tomita2004new}.  Specifically, the divergence damping term \citep{skamarock1992stability} aims to suppress instabilities that arise due to the time splitting scheme, and is applied to both horizontal and vertical velocities.  The hyperdiffusion operators are applied to all prognostic variables.  For tracer advection, upwinding is used to remove spurious oscillations, as described in \cite{miura2007upwind,niwa2011three}.
+
+\subsection{OLAM}
+
+OLAM requires two types of artificial damping. In the upper layers of the model, vertical velocity and small-scale horizontal divergence are damped in order to attenuate gravity waves and thereby mitigate their reflection off the rigid top boundary of the domain. The damping layer is commonly applied in the uppermost 10 km of the domain, where the model top is 35 or 40 km above sea level. The damping rate is zero at the bottom of the damping layer and increases upward, usually linearly.  Throughout the model domain, vertical vorticity is filtered horizontally at the smallest resolvable scale in order to control a spurious computational mode. This vertical vorticity mode is inherent in C-staggered momentum formulations on hexagonal meshes because horizontal velocities are more numerous than twice the number of scalar (mass) values and are thus under-constrained \citep{weller2012computational, weller2012controlling}. The vorticity filter is constructed so as to have zero impact on divergence at any scale.  Upwinding in the Lax-Wendroff formulation of the advection operator provides sufficient damping that no other type of filtering is required.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Temporal discretizations} \label{sec:TemporalDiscretizations}
+
+Temporal discretizations are important for capturing the discrete dynamical evolution of the global atmosphere.  In the past two decades, a variety of new temporal discretizations have been developed, leaving behind the days when the leapfrog scheme was ubiquitous across models.  This diversity is in part because of the demands of non-hydrostatic models: unlike their hydrostatic counterparts, non-hydrostatic atmospheric models must include a mechanism for dealing with vertically propagating sound waves.  These waves are meteorologically insignificant, but with a vertical grid spacing of 100 meters, a purely explicit temporal discretization of the unmodified fluid equations would require a time step size on the order of one second or less.  Consequently, sound waves are either filtered explicitly through the use of an alternative equation set, or artificially slowed through the use of implicit temporal discretizations.  Some commonly employed alternative equation sets include the anelastic \citep{ogura1962scale}, quasi-hydrostatic \citep{orlanski1981quasi}, pseudo-incompressible \citep{durran1989improving}, or unified approximation \citep{arakawa2009unification}.  These filtered equation sets generally require that a global elliptic solve be performed as prognostic variables are updated.  In this section we discuss the timestepping schemes that have been employed across the DCMIP suite of models.
+
+\subsection{Mixed implicit-explicit, forward-backward, semi-implicit and additive Runge-Kutta schemes}
+
+Implicit-explicit schemes are a broad category of time integration schemes that divide the terms of the prognostic equations into a set of explicitly integrated terms and implicitly integrated terms.  At the very least, terms associated with vertically propagating sound waves are included among the implicit terms.  For the remaining terms, there is some freedom in choosing how to integrate terms associated with vertical advection and horizontally propagating sound waves.  Semi-implicit schemes are one such class of schemes that typically incorporate horizontally propagating sound waves into the implicit solve, and so rely on a global Helmholtz-type solve.  Additive Runge-Kutta schemes are another mechanism to ensure high-order temporal accuracy, and many such schemes have been described throughout the literature (see, for example, \cite{weller2013runge, ullrich2012operator}).  Several examples of these schemes can be found among the DCMIP models:  
+
+ACME-A and Tempest both use the ARS(2,3,2) scheme described in \cite{ascher1997implicit}, with all horizontal and vertical advection terms treated explicitly and the remaining vertical terms, associated with sound wave propagation, treated implicitly.  A number of different ARK schemes have been compared and contrasted in this framework, with significant implications for model performance and stability \citep{gardner2017implicit}.
+
+CSU uses a semi-implicit time integration scheme with third-order Adams-Bashforth scheme for explicit integration of the continuity equation, potential temperature equation, and terms related to advection.  Since potential temperature is updated prior to the computation of the pressure-gradient force, this term can be thought of as implicit in time.  The horizontal wind field is then predicted through integration of the vorticity and divergence of the horizontal wind and a multigrid method applied to solve a pair of two-dimensional Poisson equations for the stream function and velocity potential, which are then differentiated to obtain the velocity field.  Horizontal diffusion is then applied forward in time.
+
+FV$^3$ and its predecessors are integrated using a forward-backwards integration for the Lagrangian dynamics. With the exception of the pressure-gradient force, all of the terms in the momentum, energy, and mass equations are expressable as fluxes, and so can be integrated using the explicit forward-in-time algorithm described by \citet{LR1997QJR}. The horizontal component of the pressure-gradient force is evaluated backwards-in-time using the algorithm of \citet{L1997QJR}; the non-hydrostatic component of the vertical pressure gradient force is evaluated using a semi-implicit solver. This forward-backward timestep is referred to as the ``acoustic'' timestep, although the full solver is advanced on each of these acoustic timesteps. Physics tendencies are applied impulsively at prescribed intervals, consistent with the forward-in-time discretization; the physics timestep is typically much longer than the acoustic timestep. 
+
+DYNAMICO uses an additive Runge-Kutta time scheme with two Butcher tableaus, one explicit and one implicit. A Hamiltonian splitting decides which terms of the equations of motion are treated explicitly or implicitly (Dubos and Dubey, in preparation). As a result the implicit terms couple the vertical acceleration due to the pressure gradient and the adiabatic pressure change due to vertical displacements of fluid parcels. The resulting implicit problem reduces to independent, scalar, purely vertical, nonlinear problems which are solved to machine precision in two Newton iterations involving one tridiagonal solve each. The overall time scheme has a HEVI (horizontally explicit, vertically implicit) structure. Currently the second-order 3-stage scheme ARK(2,3,2) is used \citep{giraldo2013implicit}.
+
+ICON consists of a two-time-level predictor corrector scheme, which is explicit for all terms except for those describing the vertical propagation of sound waves. No time splitting is used with respect to sound waves, because the ratio between the speed of sound and the maximum wind speed in the mesosphere, which is in part covered by the vertical domain, can be close to one. Instead time splitting is employed to dynamics on the one hand and horizontal diffusion, tracer transport, fast physics on the other hand. Typically a full time step consists of 4 or 5 dynamical sub-steps in which a constant forcing originating from the slow physics is applied. Mass-consistent transport is achieved by passing time-averaged air-mass fluxes from the dynamical sub-steps to the transport scheme.The details of the predictor corrector scheme, including measures to increase the numerical efficiency and to optimize the accuracy, are described in section 2.4 of \cite{zangl2015icon}. 
+
+MPAS and NICAM use a split-explicit formulation \citep{klemp2007conservative} consisting of an outer Runge-Kutta loop (typically RK3) and inner acoustic loop.  At the beginning of each Runge-Kutta sub-cycle, tendencies are computed for each of the prognostic variables and stored for the duration of the sub-cycle.  Several iterations of an acoustic loop are then performed with a time-step much smaller than require for the Runge-Kutta sub-cycle.  Within the acoustic loop, an implicit solve for vertically-integrated sound waves is performed to avoid timestep constraints that may arise from vertically-propagating sound waves.
+
+OLAM uses a unique temporal discretization that combines elements of the Adams-Bashforth (AB2) scheme and a Lax- Wendroff formulation for advected quantities. However, instead of extrapolating all prognostic tendencies forward to the half-future time level as in AB2, the horizontal momentum components alone (not their tendencies) are extrapolated in time at the cell boundaries where they reside. The extrapolated momentum provides the time-centered cell-to-cell total mass flux across the grid cell faces that is responsible for advective transport. Advection of all quantities, including all 3 velocity components that are diagnostically reconstructed at scalar cell centers, and advancement in time from the current to the future time level is based on the time- and space-centered Lax-Wendroff formulation.   This scheme is horizontally explicit, but a trapezoidal- implicit formulation is used in the vertical for stable integration of vertically-propagating sound waves. A by-product of the implicit formulation is an implicit time-centered vertical momentum that joins the time-extrapolated horizontal momentum to form a complete set of mass fluxes for advection. The vertical momentum equation is solved first so that the time-centered vertical momentum is available for computing transport of horizontal momentum and all scalar quantities. A time-split scheme is most often used where momentum and potential temperature are updated more frequently than other scalar fields in order to accommodate horizontally propagating sound waves.
+
+%This scheme is horizontally explicit, but a trapezoidal-implicit formulation is used in the vertical for stable integration of vertically-propagating sound waves. A by-product of the implicit formulation is an implicit time-centered vertical momentum that joins the time-extrapolated horizontal momentum to form a complete set of mass fluxes for advection. Scalar advection is performed afterward and uses the same total mass fluxes as momentum advection. A time-split scheme is most often used where momentum and potential temperature are updated more frequently than other scalar fields in order to accommodate horizontally propagating sound waves.
+
+\subsection{The FVM Semi-Implicit method} \label{sec:FVMSemiImplicit}
+
+A characteristic feature of the FVM (Section~\ref{sec:FVM}) time-stepping scheme is the 3D implicit treatment 
+of the fast buoyant and acoustic modes, and the slow rotational modes. Therefore, the model time step is 
+identical for all processes and typically selected with regard to the stability of the advective transport scheme---i.e.~%
+the time step is continuously adapted according to a given maximum advective Courant number 
+permitted by the MPDATA scheme.
+A comprehensive discussion of the integration scheme can be found in \cite{smolarkiewiczJCP2014,smolarkiewiczetalJCP2016}
+and \cite{kuehnleinJCP2017} for dry dynamics, 
+whereas in \cite{kurowskiJAS2014} and \cite{smolarkiewiczetalJCP2017} for extension to moist-precipitating dynamics.  
+Here, we provide a short outline of the solution procedure for the compressible Euler 
+equations \eqref{fvm:compressible}. It employs the two-time-level second-order-accurate template algorithm given as
+\begin{equation}
+\psi_{\mbf{i}}^{n+1}= \mathcal{A}_{\mbf{i}}(\widetilde{\psi}^{n},\mathbf{V}^{n+1/2}, G^{n}, G^{n+1})
++0.5\,\Delta t\,R^{\psi}|_{\mbf{i}}^{\scs n+1}~,
+\hspace{1em} \widetilde{\psi}^{n}\,\equiv\,\psi^n+0.5\,\Delta t\,R^{\psi}|^{\scs n}~.
+\label{fvm:solscalar}
+\end{equation}
+where $\psi$ represents the solution variable, $R^{\psi}$ is the respective rhs,
+$\mathcal{A}$ symbolises the advective transport operator given by the non-oscillatory finite-volume 
+MPDATA  scheme \citep{smolarkiewiczszmelter2005,kuehnleinJCP2017}, and the spatial mesh vector 
+index $\mathbf{i} \equiv (k,i)$ denotes the position on the hybrid horizontally-unstructured 
+vertically-structured computational mesh.
+
+The solution procedure of the system \eqref{fvm:compressible} can then be divided into three steps. First, the homogenous
+mass continuity equation \eqref{fvm:mass} is integrated with $\psi \equiv \rho_d$, $\mathbf{V} \equiv \mathbf{v}\mathcal{G} $, $G \equiv \mathcal{G}$,
+and $R^{\rho_d} \equiv 0$ in \eqref{fvm:solscalar}. Second, given already updated moisture variables 
+\citep{smolarkiewiczetalJCP2017}, the thermodynamic \eqref{fvm:thermodynamic} and momentum \eqref{fvm:momentum} equations enter
+\eqref{fvm:solscalar} with $\psi = u, v, w, \theta'$, $\mathbf{V} \equiv \mathbf{v}\mathcal{G}\rho_d$, $G \equiv \mathcal{G}\rho_d$, and the rhs $R^{\psi}$ 
+which is generally depending on all these prognostic variables. The high degree of implicitness in the representation of the rhs forcings
+is achieved by inverting the overall discrete system \eqref{fvm:solscalar} to obtain closed-form expressions for the
+velocity updates---this procedure is facilitated by the co-located arrangement of all variables on the computational mesh.
+Retained on the rhs of the derived closed-form velocity expressions is the pressure gradient term.
+The subsequent third step in the solution procedure is to formulate an implicit boundary value problem for the pressure variable $\phi'$ using 
+an advective form of the equation of state \eqref{fvm:gaslaw}. An $\mathcal{O}(\Delta t^2)$ integration of this 
+equation with a Euler backward scheme, in the spirit of \eqref{fvm:solscalar}, leads a Helmholtz equation
+\citep{smolarkiewiczJCP2014}.
+The associated 3D elliptic boundary value problem is solved iteratively using a preconditioned Generalised Conjugate 
+Residual approach, see \cite{smolarkiewiczAG2011} for a recent overview and comprehensive list of references.
+Nonlinear terms in $R^{\psi}|^{\scs n+1}$ and the 
+solution-dependent coefficients of the Helmholtz equation are lagged behind and executed in an outer iteration.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection {A semi-Lagrangian implicit time discretization in the GEM model} \label{sec:GEM_temporal}
+
+GEM differs from the approaches above by using a semi-Lagrangian advection.
+Any model equations, prognostic or diagnostic, are written in the form
+\begin{align}
+\frac {dF}{dt}+G=0,
+\label{eq:gem_temporal_O}
+\end{align}
+\noindent where $d/dt$ is the Lagrangian derivative, $F$ containing the terms subject to this operator, $G$ the remaining terms.
+The semi-Lagrangian approach consists in the following space-time discretization of (\ref{eq:gem_temporal_O})
+\begin{align}
+\frac{F^A-F^{D}} {\Delta t}+ \left( \frac{1}{2} + \epsilon \right)G^A + \left( \frac{1}{2} - \epsilon\right )G^D = 0,
+\label{eq:gem_temporal_D}
+\end{align}
+where $A$ stands for the arrival position at model grid point $(\vb{r}_h, \zeta, t)$
+and $D$ for the departure position $(\vb{r}_h-\Delta\vb{r}_h, \zeta-\Delta \zeta, t-\Delta t)$
+due to the displacements $\Delta\vb{r}_h, \Delta \zeta$
+having occurred during the timestep $\Delta t$.
+$G$ is averaged between these two positions with a possible slight off-centering $\epsilon$.
+The displacements are themselves calculated solving, again using the Lagrangian method, the equations:
+\begin{align}
+\frac {d\vb{r}_h}{dt} - \vb{u}_h = 0 ; \frac {d\zeta}{dt} - \dot{\zeta} = 0,
+\label{eq:gem_temporal_d_O}
+\end{align}
+discretized in the same way (trapezoidal method) though without off-centering:
+\begin{align}
+\frac{\Delta \vb{r}_h}{\Delta t} - \frac{ {\vb{u}_h}^A + {\vb{u}_h}^D }{2} = 0;
+\frac{\Delta \zeta}{\Delta t} - \frac{\dot{\zeta}^A + \dot{\zeta}^D}{2} = 0.
+\label{eq:gem_temporal_d_D}
+\end{align}
+
+\noindent The process is of course a {\it{multi-step iterative}}
+one
+since both positions and velocities at departure positions (past time $t-\Delta t$)
+are unknown as well as, of course, the velocities at arrival positions (time $t$).
+Once a first estimate of the departure positions is obtained,
+the model equations are solved to obtain a first estimate of the velocities at time $t$.
+The model equations must be solved simultaneously and this is only possible for the linear part $L$
+which becomes a {\it {matrix inversion problem}}.
+Hence a suitable linearization is considered. The unknown (arrival) linear $L$ and non-linear $N$
+parts are then separated from the known (first departure estimate) remaining $R$ part.
+Thus, first separating space-times, (\ref{eq:gem_temporal_D}) is rewritten as follows
+\begin{align}
+\frac{F^A} {\tau} + G^A =  \frac{F^{D}} {\tau}- \beta G ^{D} \equiv R^{D},
+\label{eq:gem_temporal_AD}
+\end{align}
+where $\tau = \left ( 1/2 + \epsilon\right)\Delta t$ and $\beta=\left ( 1/2 - \epsilon\right)/\left ( 1/2 + \epsilon\right)$.
+Second separating linear from non-linear parts, we get:
+\begin{align}
+L^A + N^A = R^D,
+\label{eq:gem_temporal_LN}
+\end{align}
+\noindent
+with
+\begin{align}
+L^A=\left[\frac{F^A}{\tau} + G^A \right]_{linear}, \quad and \quad N^A \equiv \frac{F^A}{\tau} + G^A  - \left[\frac{F^A}{\tau} + G^A \right]_{linear}.
+\end{align}
+Note that both $F$ and $G$ may require linearization. $L^A$ may then be obtained if $N^A$ is first guessed:
+Once $L^A$ is found, an estimate of $N^A$ is obtained and $L^A$ is recalculated.
+This is called the {\it{non-linear iteration process}}
+(one iteration is usually sufficient).
+The overall process is then repeated once starting from a new estimate of the departure positions.
+
+There are two intensive calculation sections in this process:
+the so-called semi-Lagrangian calculations
+(twice estimating departure positions, twice interpolating right-hand sides $R$ on departure positions),
+and solution of the linear system (four times).
+Each time, the linear system is reduced to a Helmholtz problem for one composite variable.
+For this problem, a direct solver is involved, using the Schwarz-type domain decomposition method on a Yin-Yang grid
+\citep{Qaddouri2008schwarz}.
+The composite variable solution is then used to update the prognostic variables (back substitution).
+At the end of the time-step, the static halo region of both panels of the Yin-Yang grid is updated \citep{Qaddouri2011operational}.
+All required interpolations throughout the semi-Lagrangian process and between Yin and Yang grids are cubic interpolations.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\conclusions[Summary and conclusions] \label{sec:Conclusions}  %% \conclusions[modified heading if necessary]
+
+As discussed earlier, this paper represents the first in a series of papers documenting the results from the 2016 Dynamical Core Model Intercomparison Project workshop and summer school.  In this paper we have provided a description of the differences and similarities between participating models, including the choice of computational grid, horizontal staggering, vertical staggering, vertical coordinates, prognostic equations, choice of diffusion, stabilization, filters and fixers, and temporal discretization.  The literature on dynamical core development is vast, with origins that go back over half a century.  Consequently, the models discussed in this paper only represent a sample of the many dynamical cores that have been developed for general circulation modeling.  Some of the models that have not been discussed include \cite{fox1997finite, prusa2008eulag, nair2009computational, baba2010dynamical, donner2011dynamical, ullrich2012mcore, gassmann2013global, wood2014inherently} and \cite{doyle2014next}.
+
+The vast diversity within the modern dynamical core ecosystem suggests that there is no consensus on a single approach that is intrinsically superior to other options.  Choices made in the dynamical core confer advantages that include parallel scalability \citep{dennis2012cam}, conservation of invariants \citep{thuburn2008some}, or representation of the kinetic energy spectrum \citep{skamarock2004evaluating}.  The repercussions that emerge from these choices can then be explored in the context of idealized test cases, such as the ones that have been proposed as part of DCMIP.  The remaining papers in this series investigate how the models described in this paper are able to simulate three idealized test cases, which each incorporate simplified model physics:  a moist baroclinic wave, an idealized tropical cyclone, and a splitting supercell storm on a small planet.  Where appropriate, metrics have been included that may be indicative of model performance.  These tests can also be used for future dynamical core development to identify where a new dynamical core diverges from a suite of modern models.
+
+\subsection*{Code availability}
+
+Information on the availability of source code for the models featured in this paper is tabulated below.
+
+\begin{center}
+\begin{tabular}{cp{5in}}
+\hline Short Name & Code availability \\ \hline 
+ACME--A & ACME, including ACME--A, is under active development funded by the U.S. Department of Energy.  ACME version 1.0 is scheduled to be publicly released under an open source license in 2018, but is not available at present.$^\dagger$ \\
+CSU & CSU model source code is available under the BSD 3-clause license.  The release used for DCMIP2016 can be found via Zenodo (\mbox{\url{http://dx.doi.org/10.5281/zenodo.580099}}). \\
+DYNAMICO & DYNAMICO is open source and available online from IPSL Forge (\mbox{\url{http://forge.ipsl.jussieu.fr/dynamico}}) or directly by request to Thomas Dubos (\mbox{dubos@lmd.polytechnique.fr}).  The release used for DCMIP2016 can be found via Zenodo (\mbox{\url{http://dx.doi.org/10.5281/zenodo.583718}}). \\
+FV$^3$ & FV$^3$ model source code is available through the GFDL Virtual Lab (\url{https://vlab.ncep.noaa.gov/web/fv3gfs}).  Access requires users to create a Virtual Lab account. \\
+FVM & Model codes developed at ECMWF, including the IFS and FVM, are intellectual 
+property of ECMWF and its member states.  Although the FVM code is not publicly available at present, it is expected that FVM will be available in the near future under the OpenIFS license (\url{http://www.ecmwf.int/en/research/projects/openifs}).  The repo tag for the version of FVM that applies for DCMIP is ``v0.1''.$^\dagger$ \\
+GEM & Due to licensing requirements, GEM model code is only available by request to Abdessamad Qaddouri (Abdessamad.Qaddouri@canada.ca) or Vivian Lee (Vivian.Lee2@canada.ca). \\
+ICON & ICON is freely available to the scientific community for non-commercial research under an institutional license issued by project partners DWD+MPI-M.  Because of the restrictions of this license, access to the code is only available by request to G\"unther Z\"{a}ngl (\mbox{Guenther.zaengl@dwd.de}) or Marco Giorgetta (\mbox{marco.giorgetta@mpimet.mpg.de}). \\
+\hline \multicolumn{2}{p{6in}}{$\dagger$ \footnotesize In compliance with the GMD editorial requirements, this code has been made available to the topical editor in charge of the manuscript.}
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{cp{5in}}
+\hline Short Name & Code availability (cont'd) \\ \hline 
+MPAS & MPAS is an open-source model available under the BSD 3-clause license via GitHub (\url{https://github.com/MPAS-Dev/MPAS-Release}).  The release used for DCMIP2016 can be found via Zenodo (\mbox{\url{http://dx.doi.org/10.5281/zenodo.583316}}) \\
+NICAM & NICAM source code is available under the BSD 2-clause license via Zenodo (\mbox{\url{http://dx.doi.org/10.5281/zenodo.580128}}).  Further information on collaborating with the NICAM team can be found at \mbox{\url{http://nicam.jp/hiki/?Research+Collaborations}}. \\
+OLAM & OLAM is open source and available online via SourceForge (\url{https://sourceforge.net/projects/olam-model/}).  The release used for DCMIP2016 can be found via Zenodo (\mbox{\url{http://doi.org/10.5281/zenodo.582308}}). \\
+TEMPEST & Tempest source code is available under the Lesser GNU Public License on GitHub (\mbox{\url{https://github.com/paullric/tempestmodel}}).  The release used for DCMIP2016 can be found via Zenodo (\mbox{\url{http://dx.doi.org/10.5281/zenodo.579649}}). \\
+\hline 
+\end{tabular}
+\end{center}
+
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+\section{Moist Non-hydrostatic Equation Sets} \label{sec:EquationSets}
+
+%This section provides an overview of the shared notation adopted by DCMIP for describing the equations and discretizations that have been adopted by the dynamical cores involved in this project.  Table \ref{tab:symbols} lists the symbols used in this paper.  %Great circle distance is used throughout the project and is computed via
+%\begin{equation}
+%R_c(\lambda_1, \varphi_1; \lambda_2, \varphi_2) = a \arccos \left( \sin \varphi_1 \sin \varphi_2 + \cos \varphi_1 \cos \varphi_2 \cos (\lambda_1 - \lambda_2) \right).
+%\end{equation}
+
+In this appendix we provide a detailed derivation of the fluid equations utilized by non-hydrostatic models.  The physical constants which are used throughout this document is given in Table \ref{tab:PhysicalConstants}.  The material derivative is used for  quantities in the Lagrangian frame (following individual air parcels), and is given by
+\begin{align}
+\diff{}{t} = \pdiff{}{t} + \vb{u} \cdot \nabla,
+\end{align} where $\vb{u}$ denotes the 3D vector velocity.  Note that tracer variables $q_i$, including specific humidity $q$, in the absence of sources and sinks satisfy the simple Lagrangian relationship
+\begin{align} \label{eq:TracerTransport}
+\diff{q_i}{t} = 0.
+\end{align}  
+
+\begin{table}[h]
+\caption{A list of physical constants used in this document.} \label{tab:PhysicalConstants}
+%\ \\
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lll}
+\hline Constant & Description & Value \\
+\hline $a_{\tiny \mbox{ref}}$ & Radius of the Earth & $6.37122 \times 10^{6}\ \mbox{m}$ \\
+$\Omega_{\tiny \mbox{ref}}$ & Rotational speed of the Earth & $7.292\ \times 10^{-5}\ \mbox{s}^{-1}$ \\
+%$a$ & Scaled radius of the Earth & $a_{\tiny \mbox{ref}} / X$ \\
+%$\Omega$ & Scaled rotational speed of the Earth & $\Omega_{\tiny \mbox{ref}} \cdot X$ \\
+$g_c$ & Gravitational acceleration & $9.80616\ \mbox{m}\ \mbox{s}^{-2}$ \\
+$p_0$ & Reference pressure & $1000\ \mbox{hPa}$ \\
+$c_{pd}$ & Specific heat capacity of dry air at constant pressure & $1004.5\ \mbox{J}\ \mbox{kg}^{-1}\ \mbox{K}^{-1}$ \\
+$c_{pv}$ & Specific heat capacity of water vapor at constant pressure & $1930.0\ \mbox{J}\ \mbox{kg}^{-1}\ \mbox{K}^{-1}$ \\
+$c_{vd}$ & Specific heat capacity of dry air at constant volume & $717.5\ \mbox{J}\ \mbox{kg}^{-1}\ \mbox{K}^{-1}$ \\
+$c_{vv}$ & Specific heat capacity of water vapor at constant volume & $1460.0\ \mbox{J}\ \mbox{kg}^{-1}\ \mbox{K}^{-1}$ \\
+$R_d$ & Gas constant for dry air & $287.0\ \mbox{J}\ \mbox{kg}^{-1}\ \mbox{K}^{-1}$ \\
+$R_v$ & Gas constant for water vapor & $461.5$ J kg$^{-1}$ K$^{-1}$ \\
+%$\kappa$ & Ratio of $R_d$ to $c_p$ & $2/7$ \\
+$\varepsilon$ & Ratio of $R_d$ to $R_v$ & $0.622$ \\
+$M_v$ & Constant for virtual temperature conversion & $0.608$ \\
+$\rho_{water}$ & Reference density of water & 1000 kg m$^{-3}$ \\
+\hline 
+\end{tabular*}
+\end{table}
+
+\subsection{Diagnostic relationships}
+
+The atmospheric fluid is assumed to be an ideal gas.  For moist air, the ideal gas constant $R^\ast$, specific heat capacity at constant pressure $c_p^\ast$ and specific heat capacity at constant volume $c_v^\ast$ are given by
+\begin{align}
+R^\ast =& R_d + (R_v - R_d) q, & c_p^\ast =& c_{pd} + (c_{pv} - c_{pd}) q, & c_v^\ast =& c_{vd} + (c_{vv} - c_{vd}) q.
+\end{align}  Note that in many models, $R^\ast$, $c_p^\ast$ and $c_v^\ast$ are approximated by $R_d$, $c_{pd}$ and $c_{vd}$, respectively.  Dry air, water vapor and moist air quantities all satisfy the linear relationship $R = c_p - c_v$.  For a two-fluid system (dry air plus water vapor), two independent variables plus the specific humidity $q$ are needed to describe the thermodynamic state of the system.  Key thermodynamic variables include dry air density $\rho_d$, moist density $\rho$, pressure $p$, vapor pressure $e$, temperature $T$, virtual temperature $T_v$, Exner pressure $\pi$, potential temperature $\theta$, and virtual potential temperature $\theta_v$.  Common ratios $\kappa = R^\ast / c_p^\ast$, $\varepsilon = R_d / R_v$, and $\gamma = c_p^\ast / c_v^\ast$ are adopted here.  Note that as additional water species are added (cloud water, rain water, etc.) additional independent variables are needed to capture the thermodynamic effects of these species, and the ``virtual'' quantities modified accordingly, for instance through the adoption of density potential temperature $\theta_\rho$.
+
+Relationships between key thermodynamic variables arise from the ideal gas law, along with definitions of Exner pressure, potential temperature and virtual potential temperature
+\begin{align} \label{eq:DiagnosticRelationships1}
+p =& \rho R_d T_v, & \pi =& \left( \frac{p}{p_0} \right)^{\kappa}, & \theta =& T \left( \frac{p_0}{p} \right)^{\kappa}, & \theta_v =& T_v \left( \frac{p_0}{p} \right)^{\kappa},
+\end{align}  which further give rise to
+\begin{align}
+p =& \left( \frac{\rho R_d \theta_v}{p_0^\kappa} \right)^{\gamma}, & \pi =& \left( \frac{\rho R_d \theta_v}{p_0} \right)^{R^\ast / c_v^\ast}, & \theta =& \frac{T}{\pi}, & \theta_v =& \frac{T_v}{\pi}.
+\end{align}
+
+Note that virtual temperature is typically written as
+\begin{align}
+T_v =& T \left(1 + \frac{(1-\varepsilon)}{\varepsilon} q \right),
+\end{align} which arises from the relationship
+\begin{align} \label{eq:VirtualTemperatureExact}
+T_v = \frac{T}{1 - \frac{e}{p} (1 - \varepsilon)},
+\end{align} upon applying $e/p = q / \varepsilon$.
+
+\subsection{Prognostic equations for thermodynamic variables}
+
+Note that, as a consequence of (\ref{eq:TracerTransport}), the following simplifications can be applied:
+\begin{align}
+\frac{1}{T_v} \diff{T_v}{t} =& \frac{1}{T} \diff{T}{t}, & \diff{R^\ast}{t} =& 0, & \diff{c_p^\ast}{t} =& 0, & \diff{c_v^\ast}{t} =& 0.
+\end{align}
+
+Mass conservation is typically represented through the continuity equation, which can be written in the Lagrangian frame as
+\begin{align} \label{eq:ContinuityEquation}
+\diff{\rho}{t} =& - \rho \nabla \cdot \vb{u},
+\end{align} or equivalently in the Eulerian frame,
+\begin{align} \label{eq:EulerianContinuityEquation}
+\pdiff{\rho}{t} =& - \nabla \cdot (\rho \vb{u}).
+\end{align}
+
+Further prognostic relationships can be derived from the thermodynamic equation, including the diabatic heating rate $J$,
+\begin{align}
+\frac{1}{T} \diff{T}{t} - \frac{\kappa}{p} \diff{p}{t} =& \frac{J}{T c_p^\ast},
+\end{align} which can be alternatively written as
+\begin{align} \label{eq:PotentialTemperaturePrognostic}
+\diff{\theta}{t} = \frac{J \theta}{T c_p^\ast}, \quad \mbox{or} \quad \diff{\theta_v}{t} = \frac{J \theta_v}{T c_p^\ast}.
+\end{align}  These equations can then be combined with (\ref{eq:ContinuityEquation}) to obtain
+\begin{align} \label{eq:PotentialTemperatureFluxForm}
+\pdiff{}{t} (\rho \theta_v) + \nabla \cdot (\rho \theta_v \vb{u}) = \frac{J \rho \theta_v}{T c_p^\ast},
+\end{align} or similarly for $\theta$.  In conjunction with the material derivative of the ideal gas law,  
+\begin{align}
+\frac{1}{p} \diff{p}{t} = \frac{1}{\rho} \diff{\rho}{t} + \frac{1}{T_v} \diff{T_v}{t},
+\end{align} the thermodynamic equation can be written in the form
+\begin{align}
+\frac{c_v^\ast}{R^\ast T_v} \diff{T_v}{t} - \frac{1}{\rho} \diff{\rho}{t} = \frac{J}{T R^\ast}.
+\end{align}  Then substituting (\ref{eq:ContinuityEquation}) gives a prognostic equation for virtual temperature,
+\begin{align} \label{eq:VirtualTemperaturePrognosticEq}
+\frac{c_v^\ast}{R^\ast} \diff{T_v}{t} + T_v \nabla \cdot \vb{u} = \frac{J T_v}{T R^\ast}.
+\end{align}  The prognostic equation for temperature is identical except with $T$ substituted for $T_v$.  An analogous equations for pressure can be obtained through a similar procedure,
+\begin{align} \label{eq:PressurePrognosticEq}
+\frac{c_v^\ast}{c_p^\ast} \diff{p}{t} + p \nabla \cdot \vb{u} = \frac{J p}{T c_p^\ast}.
+\end{align}  And similarly for Exner pressure,
+\begin{align}
+\frac{c_v^\ast}{R^\ast} \diff{\pi}{t} + \pi \nabla \cdot \vb{u} = \frac{J \pi}{T c_p^\ast}.
+\end{align}
+
+
+\subsection{Momentum Equations}
+
+In coordinate-invariant form the prognostic velocity equations may be written in either the Lagrangian or Eulerian frame as
+\begin{align} \label{eq:PrognosticVelocity1}
+\diff{\vb{u}}{t} = \pdiff{\vb{u}}{t} + \vb{u} \cdot \nabla \vb{u} = - \frac{1}{\rho} \nabla p - 2 \vg{\Omega} \times \vb{u} - \nabla \Phi,
+\end{align} where $\vg{\Omega}$ denotes the planetary vorticity vector and $\Phi$ is the geopotential function.  The three terms on the right-hand-side of this expression correspond to pressure gradient, Coriolis, and gravitational force, respectively.  In Eulerian form one must be careful with the treatment of the momentum advection term $\vb{u} \cdot \nabla \vb{u}$, since in an arbitrary coordinate frame this term will give rise to Christoffel symbols associated with derivatives of the vector basis.  Note that it is common to rewrite the pressure gradient force using the relationship
+\begin{align} \label{eq:PressureGradientForceAlt}
+- \frac{1}{\rho} \nabla p = - c_p^\ast \theta \left[ \nabla \pi - \pi \ln \left( \frac{p}{p_0} \right) \nabla \kappa \right],
+\end{align} which follows from (\ref{eq:DiagnosticRelationships1}).  Note that often in non-hydrostatic models, $\kappa$ is assumed constant and the $\nabla \kappa$ term neglected. A second form of (\ref{eq:PrognosticVelocity1}) emerges on substituting the vector calculus identity
+\begin{align}
+\vb{u} \cdot \nabla \vb{u} =& \nabla K + \vg{\zeta} \times \vb{u},
+\end{align} where $K = \frac{1}{2} (\vb{u} \cdot \vb{u})$ is the 3D specific kinetic energy and $\vg{\zeta} = \nabla \times \vb{u}$ is the 3D relative vorticity vector.  This gives rise to the 3D vector-invariant form,
+\begin{align} \label{eq:PrognosticVelocity2}
+\pdiff{\vb{u}}{t} = - \frac{1}{\rho} \nabla p - \nabla (K + \Phi) - (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u}. 
+\end{align}  Because no gradients of vectors appear in this equation, it avoids derivatives of the coordinate basis  that would arise from the momentum transport term $\vb{u} \cdot \nabla \vb{u}$ in (\ref{eq:PrognosticVelocity1}).  In conjunction with (\ref{eq:ContinuityEquation}), (\ref{eq:PrognosticVelocity1}) also gives rise to the flux-form momentum equations,
+\begin{align} \label{eq:PrognosticVelocityFluxForm}
+\pdiff{}{t} (\rho \vb{u}) = - \nabla \cdot (\vb{u} \otimes \vb{u} + \mathcal{I} p) - 2 \vg{\Omega} \times (\rho \vb{u}) - \rho \nabla \Phi,
+\end{align} where $\vb{u} \otimes \vb{u}$ denotes the outer product and $\mathcal{I}$ is the identity matrix.
+
+%Finally, a prognostic equation for geopotential follows directly from the material derivative,
+%\begin{align} \label{eq:Geopotential}
+%\diff{\Phi}{t} = \vb{u} \cdot \nabla \Phi.
+%\end{align}
+
+The equations above still provide some flexibility with regards to the choice of $\Phi$ and $\vg{\Omega}$.  For \textit{deep atmosphere} models, one typically chooses
+\begin{align} \label{eq:DeepAtmosphereGeopotential}
+\Phi = g_c a^2 \left[\frac{1}{a} - \frac{1}{a+z}\right], \quad \mbox{and} \quad \vg{\Omega} = \Omega ( \vb{k} \sin \varphi + \vb{j} \cos \varphi),
+\end{align} where $g_c$ is gravitational acceleration at the surface, $a$ is the radius of the planet, $\Omega$ is the rotation rate (in s$^{-1}$), $\varphi$ is the latitude, $\vb{j}$ is the unit vector oriented in the meridional direction, and $\vb{k}$ is the unit vector oriented in the vertical direction.  For models that don't utilize a height-based vertical coordinate, the geopotential is generally treated as a prognostic variable, with an evolution equation that emerges from the definition $w = dz/dt$,
+\begin{align}
+\diff{\Phi}{t} = \frac{a^2 g_c w}{(a + z)^2}.
+\end{align}  For \textit{shallow atmosphere} models, the geopotential takes the simpler form
+\begin{align} \label{eq:ShallowAtmosphereGeopotential}
+\Phi = g_c z, \quad \mbox{and} \quad \vg{\Omega} = \Omega \sin \varphi \vb{k},
+\end{align} where $z$ is the altitude above the surface.  In this case we write $2 \vg{\Omega} = f \vb{k}$, where $f = 2 \Omega \sin \varphi$ is the Coriolis parameter.  The evolution equation for the shallow atmosphere geopotential is then
+\begin{align} \label{eq:PrognosticShallowGeopotential}
+\diff{\Phi}{t} = g_c w.
+\end{align}
+
+\subsection{Orthogonal Formulation}
+
+Under the orthogonal formulation, projection of a vector field $\vb{b}$ onto its horizontal components is defined via
+\begin{align}
+[\vb{b}]_z = \vb{b} - (\vb{b} \cdot \vb{k}) \vb{k}.
+\end{align}  When applied to the velocity vector this gives rise to the decomposition
+\begin{align}
+\vb{u} = \vb{u}_h + w \vb{k},
+\end{align} where $\vb{k} = \nabla z$ is the unit vector in the vertical direction and $\vb{u}_h = [\vb{u}]_z$ ($\vb{u}_h$ is aligned with surfaces of constant $z$).  In the orthogonal formulation, the material derivative expands as
+\begin{align} \label{eq:MaterialDerivative}
+\diff{}{t} = \pdiff{}{t} + \vb{u}_h \cdot \nabla + w \vb{k} \cdot \nabla.
+\end{align}  For the special case of the material derivative applied to scalars, this equation can also be written as
+\begin{align} \label{eq:MaterialDerivativeScalar}
+\diff{}{t} = \pdiff{}{t} + \vb{u}_h \cdot \nabla_z + w \pdiff{}{z}.
+\end{align} where $\nabla_z b = [\nabla b]_z$ denotes the gradient along constant $z$ surfaces.  From here, the vector-invariant form velocity equation obtained by taking (\ref{eq:PrognosticVelocity2}) $\cdot \vb{k}$ expands as
+\begin{align} \label{eq:VerticalVelocityOrthogonal}
+\pdiff{w}{t} =& - \frac{1}{\rho} \pdiff{p}{z} - \pdiff{}{z} (K + \Phi) - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right] \cdot \vb{k},
+\end{align} which, from $\vb{u}_h = \vb{u} - w \vb{k}$, then gives rise to
+\begin{align} \label{eq:HorizontalVelocityOrthogonal}
+\pdiff{\vb{u}_h}{t} =& - \frac{1}{\rho} \nabla_z p - \nabla_z (K + \Phi) - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right]_z.\end{align}
+
+%{\color{red}[Using $K = K_2 + w^2/2$ does this give rise to a simpler version of the $K_2$ evolution equations?]}
+
+Due to its association with hydrostatic models, it is common to use the 2D kinetic energy, $K_2 = \frac{1}{2} (\vb{u}_h \cdot \vb{u}_h)$.  Decomposing the momentum transport term into horizontal and vertical components gives
+\begin{align}
+\vb{u} \cdot \nabla \vb{u} =& \vb{u}_h \cdot \nabla \vb{u}_h + (\nabla \times \vb{u}_h) \times (w \vb{k}) + (\vb{u} \cdot \nabla w) \vb{k}.
+\end{align}  The first term in this expression admits the relationships
+\begin{align}
+\left[ \vb{u}_h \cdot \nabla \vb{u}_h \right]_z =& \nabla_z K_2 + \zeta_h \vb{k} \times \vb{u}_h, \label{eq:UhDotNablaUhRelationship1} \\
+(\vb{u}_h \cdot \nabla \vb{u}_h) \cdot \vb{k} =& - \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) = - K_2 (\nabla \cdot \vb{k}) - \tfrac{1}{2} \left[ \vb{u}_h \cdot (\nabla \times \vb{u}_t)  + (\nabla \times \vb{u}_h) \cdot \vb{u}_t \right] \label{eq:UhDotNablaUhRelationship2}
+\end{align} where $\zeta_h = (\nabla \times \vb{u}) \cdot \vb{k} = (\nabla \times \vb{u}_h) \cdot \vb{k}$ is the relative vorticity scalar and $\vb{u}_t = \vb{k} \times \vb{u}_h$.  Note that this equation does incorporate metric terms associated with horizontal advection of $\vb{k}$ which must be accounted for.
+
+Thus the vertical velocity equation, obtained by taking (\ref{eq:PrognosticVelocity1})$\cdot \vb{k}$, is
+\begin{align} \label{eq:PrognosticWEquationK2}
+\pdiff{w}{t} =& \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) - w \pdiff{w}{z} - \vb{u}_h \cdot \nabla_z w - \pdiff{\Phi}{z} - \frac{1}{\rho} \pdiff{p}{z} - (2 \vg{\Omega} \times \vb{u}_h) \cdot \vb{k}.
+\end{align}  Then subtracting (\ref{eq:PrognosticWEquationK2})$\cdot \vb{k}$ from (\ref{eq:PrognosticVelocity1}) gives
+\begin{align} \label{eq:PrognosticUhEquationK2}
+\pdiff{\vb{u}_h}{t} =& - w (\vb{u}_h \cdot \nabla \vb{k}) - w \pdiff{\vb{u}_h}{z} - \nabla_z (K_2 + \Phi) - \frac{1}{\rho} \nabla_z p - \zeta_h \vb{k} \times \vb{u}_h - [2 \vg{\Omega} \times \vb{u}]_z.
+\end{align}  Note that under the shallow atmosphere approximation, the metric term $\vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k})$ in (\ref{eq:PrognosticWEquationK2}) is set equal to zero in accordance with \cite{phillips1966equations}.
+
+\subsection{Arbitrary vertical coordinates}
+
+The dynamical equations are now formulated in terms of the vertical coordinate $s(t,\vb{x},z)$ with $\partial s / \partial z \neq 0$ everywhere, i.e. following \cite{kasahara1974various} (hereafter K74).  Since $\vb{x}$ and $t$ are shared between the two coordinate systems, the chain rule can be applied to obtain expressions
+\begin{align} \label{eq:ChainRule}
+\pdiff{}{z} =& \pdiff{s}{z} \pdiff{}{s}, & \nabla_s =& \nabla_z + (\nabla_s z) (\vb{k} \cdot \nabla), & \left( \pdiff{}{t} \right)_s =& \pdiff{}{t} + \left( \pdiff{z}{t} \right)_s (\vb{k} \cdot \nabla),
+\end{align} which correspond to derivatives in the vertical, in the horizontal and in time.  This final expression is used to describe the rate of change of a quantity on $s$ surfaces.  These operators then yield the useful identities
+\begin{align} \label{eq:NablaZSIdentity}
+\pdiff{s}{z} =& \left( \pdiff{z}{s} \right)^{-1}, & \nabla_z s =& - \left( \pdiff{s}{z} \right) \nabla_s z, & \pdiff{s}{t} =& - \pdiff{s}{z} \left( \pdiff{z}{t} \right)_s.
+\end{align}  From here (\ref{eq:ChainRule}) also gives rise to
+\begin{align} \label{eq:HorizontalChainRule}
+\nabla_z = \nabla_s - \pdiff{s}{z} (\nabla_s z) \pdiff{}{s},
+\end{align} which can be used directly to rewrite (\ref{eq:HorizontalVelocityOrthogonal}) or (\ref{eq:PrognosticUhEquationK2}) in terms of derivatives over $s$.  Note that the operators $\nabla_z$ and $\nabla_s$ are usually introduced in the context of 2D flows, however the construction described here has the advantage of working seamlessly in a 3D context, while admitting the properties $\vb{k} \cdot \nabla_z A = 0$ and $\vb{k} \cdot \nabla_s A = 0$ for any scalar field $A$.
+
+From (\ref{eq:ChainRule}), it can be shown that the 2D divergence on $s$ surfaces (given by K74 eq. (3.17)) is
+\begin{align} \label{eq:DivergenceS}
+\nabla_s \cdot \vb{u}_h = \nabla_z \cdot \vb{u}_h + \left( \pdiff{s}{z} \right) (\nabla_s z) \cdot \left( \pdiff{\vb{u}_h}{s} \right),
+\end{align} and that the 2D curl is given by
+\begin{align} \label{eq:CurlS}
+\nabla_s \times \vb{u}_h = \nabla_z \times \vb{u}_h + \left( \pdiff{s}{z} \right) (\nabla_s z) \times \left( \pdiff{\vb{u}_h}{s} \right),
+\end{align} where $\nabla_z \times \vb{u}_h = \vb{k} (\vb{k} \cdot (\nabla \times \vb{u}_h))$.  Notably, these expressions are valid for both shallow- and deep-atmosphere formulations.
+
+The generalized velocity $\dot{s}$ following a fluid parcel is defined by
+\begin{align} \label{eq:DefinitionDotS}
+\dot{s} \equiv \diff{s}{t} = \pdiff{s}{t} + \vb{u} \cdot \nabla s = \vb{u}_h \cdot \nabla_z s + \left[ w - \left( \pdiff{z}{t} \right)_s \right] \pdiff{s}{z}.
+\end{align}  Then using (\ref{eq:ChainRule}) and (\ref{eq:DefinitionDotS}) to rewrite (\ref{eq:MaterialDerivativeScalar}) gives an expression for the material derivative for scalars on $s$ surfaces,
+\begin{align}
+\diff{A}{t} =& \left( \pdiff{A}{t} \right)_s - \pdiff{s}{z} \left( \pdiff{z}{t} \right)_s \pdiff{A}{s} + \vb{u}_h \cdot \left[ \nabla_s A + (\nabla_z s) \pdiff{A}{s} \right] + w \pdiff{s}{z} \pdiff{A}{s} \\
+=& \left( \pdiff{A}{t} \right)_s  + \vb{u}_h \cdot \nabla_s A + \dot{s} \pdiff{A}{s}  \label{eq:MaterialDerivativeS}
+\end{align}  A similar expression arises for vectors, although in this case $\vb{u}_h \cdot \nabla \vb{a} \neq \vb{u}_h \cdot \nabla_z \vb{a}$ implies we cannot use the operator $\nabla_s$ in the form (\ref{eq:ChainRule}), and instead obtain
+\begin{align} \label{eq:MaterialDerivativeVectorS}
+\diff{\vb{a}}{t} =& \left( \pdiff{\vb{a}}{t} \right)_s + \left[ \vb{u}_h \cdot \nabla \vb{a} + (\vb{u}_h \cdot \nabla_s z) (\vb{k} \cdot \nabla \vb{a}) \right] + \dot{s} \pdiff{\vb{a}}{s}.
+\end{align}
+
+%{\color{red}[Is this needed?]} Note that
+%\begin{align}
+%\nabla A = \nabla_z A + \vb{k} \pdiff{A}{z} = \nabla_s A - \pdiff{s}{z} (\nabla_s z) \pdiff{A}{s} + \vb{k} \pdiff{s}{z} \pdiff{A}{s} = \nabla_s A + ( \vb{k} - \nabla_s z) \pdiff{s}{z} \pdiff{A}{s}
+%\end{align}
+
+\subsection{Conservation Laws in Arbitrary Vertical Coordinates}
+
+Using (\ref{eq:DivergenceS}), we observe that the 3D divergence on the sphere takes the form
+\begin{align} \label{eq:ThreeDDivergence}
+\nabla \cdot \vb{u} = \nabla_z \cdot \vb{u}_h + \frac{1}{\alpha} \pdiff{}{z} (\alpha w),
+\end{align} where $\alpha = 1$ for shallow-atmosphere models and $\alpha = r^2 = (a + z)^2$ for deep-atmosphere models.  Using $w = dz/dt$, this last term also takes the form
+\begin{align} \label{eq:GeneralVerticalTermX}
+\frac{1}{\alpha} \pdiff{}{z} (\alpha w) = \pdiff{w}{z} + \frac{w}{\alpha} \pdiff{\alpha}{z} = \pdiff{w}{z} + \frac{1}{\alpha} \diff{\alpha}{t}.
+\end{align}
+
+Using (\ref{eq:NablaZSIdentity}) to rewrite (\ref{eq:DefinitionDotS}) gives rise to
+\begin{align}
+w = \left( \pdiff{z}{t} \right)_s + \vb{u}_h \cdot \nabla_s z + \dot{s} \left( \pdiff{s}{z} \right)^{-1},
+\end{align} which is then differentiated to yield K74 eq. (3.16),
+\begin{align} \label{eq:WDerivativeS}
+\pdiff{w}{z} = \left( \pdiff{s}{z} \right) \left[ \diff{}{t} \left( \pdiff{s}{z} \right)^{-1} + \left( \pdiff{\vb{u}_h}{s} \right) \cdot (\nabla_s z) \right] + \pdiff{\dot{s}}{s} = 0.
+\end{align}  Substituting this expression into the continuity equation (\ref{eq:ContinuityEquation}), and using (\ref{eq:ThreeDDivergence}), (\ref{eq:GeneralVerticalTermX}), and (\ref{eq:WDerivativeS}) then leads to
+\begin{align}
+\diff{}{t} \left[ \alpha \left( \pdiff{s}{z} \right)^{-1} \rho \right] + \alpha \left( \pdiff{s}{z} \right)^{-1} \rho \left[ \nabla_z \cdot \vb{u}_h + \left( \pdiff{s}{z} \right) \left( \pdiff{\vb{u}_h}{s} \right) \cdot (\nabla_s z) \right] + \alpha \left( \pdiff{s}{z} \right)^{-1} \rho \pdiff{\dot{s}}{s} = 0.
+\end{align}  Defining the \textit{pseudodensity} as 
+\begin{align}
+\rho_s = \alpha \left( \pdiff{s}{z} \right)^{-1} \rho,
+\end{align} and using (\ref{eq:MaterialDerivativeS}) in the form
+\begin{align}
+\diff{\rho_s}{t} = \left( \pdiff{\rho_s}{t} \right)_s + \vb{u}_h \cdot \nabla_s \rho_s + \dot{s} \pdiff{\rho_s}{s},
+\end{align} along with (\ref{eq:DivergenceS}) leads to
+\begin{align} \label{eq:PrognosticPseudoDensity}
+\left( \pdiff{\rho_s}{t} \right)_s + \nabla_s \cdot (\rho_s \vb{u}_h) + \pdiff{}{s} (\rho_s \dot{s}) = 0.
+\end{align}
+
+Hence for any quantity that is conserved following a fluid parcel (\textit{i.e.}, $dq/dt = 0$),
+\begin{align}
+\left( \pdiff{\rho_s q}{t} \right)_s + \nabla_s \cdot (\rho_s q \vb{u}_h) + \pdiff{}{s} (\rho_s q \dot{s}) = 0.
+\end{align}  In particular, the prognostic equation for virtual potential temperature (or equivalently for potential temperature) reads
+\begin{align} \label{eq:PrognosticPseudoDensityTheta}
+\left( \pdiff{\rho_s \theta_v}{t} \right)_s + \nabla_s \cdot (\rho_s \theta_v \vb{u}_h) + \pdiff{}{s} (\rho_s \theta_v \dot{s}) = \frac{J \rho_s \theta_v}{c_p^\ast}.
+\end{align}
+
+\subsection{2D Vector Invariant Form}
+
+The prognostic equations utilizing horizontal kinetic energy $K_2$ in place of $K$ are derived by applying (\ref{eq:ChainRule}) to (\ref{eq:PrognosticWEquationK2}), yielding
+\begin{align} \label{eq:PrognosticWEquationK2Sa}
+\left( \pdiff{w}{t} \right)_s =& \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) - \vb{u}_h \cdot \nabla w + \left( \pdiff{s}{z} \right) \left\{ \left[ \left( \pdiff{z}{t} \right)_s - w \right] \pdiff{w}{s} - \pdiff{\Phi}{s} - \frac{1}{\rho} \pdiff{p}{s} \right\} - (2 \vg{\Omega} \times \vb{u}_h) \cdot \vb{k}.
+\end{align}  Similarly, from (\ref{eq:PrognosticUhEquationK2}),
+\begin{align} \label{eq:PrognosticUhEquationK2Sa}
+\left( \pdiff{\vb{u}_h}{t} \right)_s =& - w (\vb{u}_h \cdot \nabla \vb{k}) + \left[ \left( \pdiff{z}{t} \right)_s - w \right] \left( \pdiff{s}{z} \right) \pdiff{\vb{u}_h}{s} - \zeta_h \vb{k} \times \vb{u}_h - \nabla_z (K_2 + \Phi) - \frac{1}{\rho} \nabla_z p - [2 \vg{\Omega} \times \vb{u}]_z.
+\end{align}  Observe that both of these equations simplify when $w = (\partial z / \partial t)_s$, \textit{i.e.} model levels are advected with the vertical wind.
+
+An alternative form of these equation can similarly be obtained in terms of $\dot{s}$.  Substituting (\ref{eq:DefinitionDotS}) into (\ref{eq:PrognosticWEquationK2Sa}) then gives
+\begin{align} \label{eq:PrognosticWEquationK2Sb}
+\left( \pdiff{w}{t} \right)_s =& \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) - \vb{u}_h \cdot \nabla_s w - \dot{s} \pdiff{w}{s} + \left( \pdiff{s}{z} \right) \left[ - \pdiff{\Phi}{s} - \frac{1}{\rho} \pdiff{p}{s} \right] - (2 \vg{\Omega} \times \vb{u}_h) \cdot \vb{k}.
+\end{align}  Similarly, substituting (\ref{eq:DefinitionDotS}) into (\ref{eq:PrognosticUhEquationK2Sa}) and using the identity
+\begin{align}
+(\vb{u}_h \cdot \nabla_s z) \left( \pdiff{s}{z} \right) \pdiff{\vb{u}_h}{s} = (\nabla_s \times \vb{u}_h) \times \vb{u}_h - \zeta_h \vb{k} \times \vb{u}_h + (\nabla_s z) \pdiff{K_2}{z}
+\end{align}
+ then gives
+\begin{align} \label{eq:PrognosticUhEquationK2Sb}
+\left( \pdiff{\vb{u}_h}{t} \right)_s =& - w (\vb{u}_h \cdot \nabla \vb{k}) - \nabla_s K_2 - \zeta_s \vb{k} \times \vb{u}_h - \dot{s} \pdiff{\vb{u}_h}{s} - \nabla_z \Phi - \frac{1}{\rho} \nabla_z p - [2 \vg{\Omega} \times \vb{u}]_z,
+\end{align} where
+\begin{align}
+\nabla_s \times \vb{u}_h = \vb{k} \zeta_s, \quad \mbox{and} \quad \zeta_s = \vb{k} \cdot (\nabla_s \times \vb{u}_h).
+\end{align}  In this case the vertical advection terms are removed when $\dot{s} = 0$, \textit{i.e.} the vertical coordinate is advected with the 3D wind $\vb{u}$.
+
+Note that under the shallow-atmosphere approximation, the first metric terms (those that include $(\vb{u}_h \cdot \nabla \vb{k})$) in (\ref{eq:PrognosticWEquationK2Sa})-(\ref{eq:PrognosticUhEquationK2Sb}) are typically dropped.
+
+\subsection{3D Vector Invariant Form}
+
+From (\ref{eq:PrognosticVelocity2}) and (\ref{eq:ChainRule}) the evolution equation for the 3D velocity vector takes the form
+%\begin{align}
+%\pdiff{\vb{u}}{t} = - \frac{1}{\rho} \nabla p - \nabla (K + \Phi) - (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u}
+%\end{align} we have
+\begin{align}
+\left( \pdiff{\vb{u}}{t} \right)_s = \left( \pdiff{z}{t} \right)_s (\vb{k} \cdot \nabla \vb{u}) - \nabla (K + \Phi) - \frac{1}{\rho} \nabla p - (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u}
+\end{align}  Then taking the dot product of this expression with $\vb{k}$ gives
+\begin{align} \label{eq:PrognosticWEquation}
+\left(\pdiff{w}{t} \right)_s =& \left( \pdiff{s}{z} \right) \left[ \left( \pdiff{z}{t} \right)_s \pdiff{w}{s} - \pdiff{}{s} (K + \Phi) - \frac{1}{\rho} \pdiff{p}{s} \right] - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right] \cdot \vb{k}
+\end{align} where we have used $\vb{k} \cdot (\vb{k} \cdot \nabla \vb{u}) = \vb{k} \cdot \nabla w$.
+ Similarly, the prognostic equation for horizontal velocity from (\ref{eq:HorizontalVelocityOrthogonal}) is reformulated as
+\begin{align} \label{eq:PrognosticUhEquationKS}
+\left( \pdiff{\vb{u}_h}{t} \right)_s =& \left( \pdiff{z}{t} \right)_s \left( \pdiff{s}{z} \right) \pdiff{\vb{u}_h}{s} - \nabla_z (K + \Phi) - \frac{1}{\rho} \nabla_z p - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right]_z.
+\end{align}  Note that the vorticity term in this expression can be simplified further using
+\begin{align}
+[(\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u}]_z = - (\zeta_h + \vb{k} \cdot 2 \vg{\Omega}) (\vb{u}_h \times \vb{k}) - w \vb{k} \times (\vg{\zeta} + 2 \vg{\Omega}),
+\end{align} and
+\begin{align}
+- \vb{k} \times \vg{\zeta} =& \vb{k} \cdot \nabla \vb{u} - \nabla (\vb{k} \cdot \vb{u}) + \vb{u} \cdot \nabla \vb{k} = \pdiff{\vb{u}_h}{z} - \nabla_z w + \vb{u}_h \cdot \nabla \vb{k}.
+\end{align}
+%so that (\ref{eq:PrognosticUhEquationKS}) takes the form
+%\begin{align}
+%\left( \pdiff{\vb{u}_h}{t} \right)_s =& \left( \pdiff{z}{t} \right)_s \left( \pdiff{s}{z} \right) \pdiff{\vb{u}_h}{s} - \nabla_z (K + \Phi) - \frac{1}{\rho} \nabla_z p - \left[ 2 \vg{\Omega} \times \vb{u} \right]_z - \zeta_h (\vb{u}_h \times \vb{k}) + w \left[ \pdiff{\vb{u}_h}{z} - \nabla_z w + \vb{u}_h \cdot \nabla \vb{k} \right]
+%\end{align}
+
+%\subsection{Momentum Form}
+
+%The equations of motion can similarly be formulated in terms of momentum, which we denote by
+%\begin{align}
+%\vb{U} = \rho \vb{u}, \qquad \vb{U}_h = \rho \vb{u}_h, \qquad \mbox{and} \qquad W = \rho w,
+%\end{align} for total, horizontal, and vertical velocities, respectively.  Following (\ref{eq:DefinitionDotS}), these definitions gives rise to the generalized vertical momentum,
+%\begin{align}
+%\dot{S} = W - \vb{U}_h \cdot \nabla_s z
+%\end{align}  Then multiplying (\ref{eq:PrognosticUhEquationK2Sb}) through by $\rho$ and using (\ref{eq:ContinuityEquation}) gives
+%\begin{align}
+%\pdiff{\vb{U}_h}{t} =& - W (\vb{u}_h \cdot \nabla \vb{k}) - \rho \nabla_s K_2 - \zeta_s \vb{k} \times \vb{U}_h - \pdiff{}{s} \left( \dot{S} \vb{u}_h \right) - \rho \nabla_z \Phi - \nabla_z p - [2 \vg{\Omega} \times \rho \vb{u}]_z
+%\end{align}
+%\begin{align}
+%\pdiff{\vb{U}_h}{t} =& - \nabla_z p - \eta \vb{k} \times \vb{U}_h - (\nabla_s \cdot \vb{U}_h) \vb{u}_h - \pdiff{}{z} \left( \dot{S} \vb{u}_h \right) - \rho \nabla_s K_2
+%\end{align}
+
+%\begin{align}
+%\pdiff{W}{t} =&\left( \pdiff{s}{z} \right) \left[ - \rho \pdiff{\Phi}{s} - \pdiff{p}{s} \right] - (\nabla \cdot \vb{U} w) - (2 \vg{\Omega} \times \vb{U}_h) \cdot \vb{k}
+%\end{align}
+
+\subsection{Covariant Component Formulation}
+
+In conjunction with (\ref{eq:HorizontalChainRule}), the horizontal momentum equation (in 2D vector invariant form as  (\ref{eq:PrognosticUhEquationK2Sa}) or (\ref{eq:PrognosticUhEquationK2Sb}), or in 3D vector invariant form as (\ref{eq:PrognosticUhEquationKS})) with an arbitrary vertical coordinate gives rise to a two-term pressure gradient.  This can be avoided by prognosing the covariant components of the velocity in place of the physical velocity components.  We define a horizontal covariance operator by
+\begin{align}
+[\vb{b}]_s \equiv [\vb{b}]_z + (\nabla_s z) (\vb{k} \cdot \vb{b}).
+\end{align} Applying this operator to the horizontal velocity gives
+\begin{align}
+\vb{v}_h \equiv [\vb{u}]_s = \vb{u}_h + (\nabla_s z) w.
+\end{align}  For a time-dependent $s$ coordinate, we obtain the identity
+\begin{align}
+\left[ \pdiff{}{t} (\nabla_s z) \right]_s =& \nabla_s \left( \pdiff{z}{t} \right)_s,
+\end{align} and so can write
+\begin{align} \label{eq:CovariantExpansion}
+\left( \pdiff{\vb{v}_h}{t} \right)_s =& \left( \pdiff{\vb{u}_h}{t} \right)_s + (\nabla_s z) \left( \pdiff{w}{t} \right)_s + w \nabla_s \left( \pdiff{z}{t} \right)_s.
+\end{align}  Then using (\ref{eq:CovariantExpansion}), (\ref{eq:PrognosticWEquation}) and (\ref{eq:PrognosticUhEquationKS}) and identity
+\begin{align}
+& \left( \pdiff{z}{t} \right)_s \left( \pdiff{s}{z} \right) \left[ \pdiff{\vb{u}_h}{s} + (\nabla_s z) \pdiff{w}{s} \right] + w \nabla_s \left( \pdiff{z}{t} \right)_s \nonumber \\
+& \qquad \qquad  = \left( \pdiff{s}{z} \right) \left( \pdiff{z}{t} \right)_s \left\{ \pdiff{\vb{v}_h}{s} - \nabla_s \left[ \left( \pdiff{s}{z} \right)^{-1} w \right] \right\} + \nabla_s \left[ \left( \pdiff{z}{t} \right)_s w \right]
+\end{align} gives
+\begin{align}
+\left( \pdiff{\vb{v}_h}{t} \right)_s =& - \nabla_s \left[ K - w \left( \pdiff{z}{t} \right)_s + \Phi \right] - \frac{1}{\rho} \nabla_s p - \left[ (\vg{\zeta} + 2 \vg{\Omega}) \times \vb{u} \right]_s \\
+& \qquad + \left( \pdiff{s}{z} \right) \left( \pdiff{z}{t} \right)_s \left\{ \pdiff{\vb{v}_h}{s} - \nabla_s \left[ \left( \pdiff{s}{z} \right)^{-1} w \right] \right\}.
+\end{align}  Finally, we can expand the vorticity term and hence obtain
+\begin{align} \label{eq:CovariantUpdateEquation}
+\left( \pdiff{\vb{v}_h}{t} \right)_s =& - \nabla_s \left[ K - w \left( \pdiff{z}{t} \right)_s + \Phi \right] - \frac{1}{\rho} \nabla_s p - \left[ 2 \vg{\Omega} \times \vb{u} \right]_s \nonumber \\
+& \qquad + \left[ \vb{k} \cdot \nabla_s \times \vb{v}_h \right] (\vb{u}_h \times \vb{k}) - \dot{s} \left\{ \pdiff{\vb{v}_h}{s} - \nabla_s \left[ \left( \pdiff{s}{z} \right)^{-1} w \right] \right\} - \left( \pdiff{z}{t} \right)_s \vb{u}_h \cdot \nabla \vb{k}.
+\end{align}
+
+\subsection{Vorticity-Divergence Form} \label{sec:VorticityDivergenceForm}
+
+The vorticity-divergence form of the dynamical equations in an arbitrary vertical coordinate predicts the absolute vorticity ($\zeta_h^\ast$) and velocity divergence ($D$) given by
+\begin{align} \label{eq:AbsoluteVorticityS}
+\zeta_h^\ast = (\nabla_s \times \vb{u}_h + 2 \vg{\Omega}) \cdot \vb{k},
+\end{align} and
+\begin{align} \label{eq:DivergenceSx}
+D \equiv \nabla_s \cdot \vb{u}_h,
+\end{align} respectively, instead of the horizontal velocity.  The horizontal velocity can be obtained from the streamfunction $\psi$ and the velocity potential $\chi$ following
+\begin{align} \label{eq:VelocityStreamfunctionPotentialRelationship}
+\vb{u}_h = \vb{k} \times \nabla_s \psi + \nabla_s \chi.
+\end{align}  By using (\ref{eq:VelocityStreamfunctionPotentialRelationship}) in (\ref{eq:AbsoluteVorticityS}) and (\ref{eq:DivergenceSx}), we obtain the elliptic equations that diagnose the streamfunction and velocity potential from the predicted velocity and divergence as
+\begin{align} \label{eq:LaplacianStreamfunctionPotential}
+\nabla_s^2 = \zeta_h^\ast - 2 \vg{\Omega} \cdot \vb{k}, \quad \mbox{and} \quad \nabla_s^2 \chi = D,
+\end{align} respectively.
+
+By taking the material derivative (\ref{eq:MaterialDerivativeS}) of (\ref{eq:AbsoluteVorticityS}) and using the horizontal momentum equation (\ref{eq:PrognosticUhEquationK2}), (\ref{eq:VelocityStreamfunctionPotentialRelationship}) and (\ref{eq:LaplacianStreamfunctionPotential}), the absolute vorticity prediction equation emerges,
+\begin{align}
+\left( \pdiff{\zeta_h^\ast}{t} \right)_s - J_s(\zeta_h^\ast, \psi) + \nabla_s \cdot (\zeta_h^\ast \nabla_s \chi) + \nabla_s \cdot \left( \dot{s} \pdiff{}{s} \nabla_s \psi \right) + \vb{k} \cdot \nabla_s \times \left( \dot{s} \pdiff{}{s} \nabla_s \chi \right) + J_s(\rho^{-1}, p) = 0,
+\end{align} where $J_s(a,b) = \vb{k} \cdot \nabla_s \times (a \nabla_s b)$ is the Jacobian operator.  It can also be shown that $\dot{s}$ relates to the vertical velocity $w$ through
+\begin{align}
+\dot{s} = \left( \pdiff{s}{z} \right) (w - w_c),
+\end{align} where
+\begin{align}
+w_c \equiv \left( \pdiff{z}{t} \right)_s + \left( \vb{k} \times \nabla_s \psi + \nabla_s \chi \right) \cdot (\nabla_s z).
+\end{align}
+
+By taking the material derivative of (\ref{eq:DivergenceSx}) and using (\ref{eq:PrognosticUhEquationK2}), (\ref{eq:VelocityStreamfunctionPotentialRelationship}) and (\ref{eq:LaplacianStreamfunctionPotential}), we can obtain the divergence prediction equation
+\begin{align}
+\left( \pdiff{D}{t} \right)_s - J_s(\zeta_h^\ast, \chi) - \nabla_s \cdot (\zeta_h^\ast \nabla_s \psi) + \nabla_s \cdot \left( \dot{s} \pdiff{}{s} \nabla_s \chi \right) + \left( \vb{k} \times \pdiff{}{s} \nabla_s \psi \right) \cdot \nabla_s \dot{s} & \\
++ \nabla_s \cdot (\nabla_s K_2 + g \nabla_s z) + \nabla_s \cdot \left( \frac{1}{\rho} \nabla_s p \right) &= 0,
+\end{align}  where $K_2$ can be reformulated in terms of streamfunction and velocity potential as
+\begin{align}
+K_2 = \frac{1}{2} \left[ \nabla_s \cdot (\psi \nabla_s \psi) - \psi \nabla_s^2 \psi + \nabla_s \cdot (\chi \nabla_s \chi) - \chi \nabla_s^2 \chi \right] + J_s(\psi, \chi).
+\end{align}
+
+\subsection{Momentum Form} \label{sec:MomentumForm}
+
+The momentum form of the prognostic equations emerges by combining the prognostic velocity equations with a continuity equation.  Essentially any of the continuity equations can be chosen, as long as the mass field represented by the equation is everywhere non-zero.  However, the most common options are moist pseudo-density \citep{ullrich2012mcore} or dry pseudo-density \citep{skamarock2012multiscale}.  Here we denote our density variable by $\tilde{\rho}_s$, and assume no external sources or sinks of $\tilde{\rho}$.  Multiplying (\ref{eq:PrognosticWEquationK2Sb}) through by $\tilde{\rho}_s$ and using (\ref{eq:PrognosticPseudoDensity}) gives
+\begin{align} \label{eq:PrognosticRhoWEquationK2Sb}
+\left( \pdiff{\tilde{\rho}_s w}{t} \right)_s =& \tilde{\rho}_s \vb{u}_h \cdot (\vb{u}_h \cdot \nabla \vb{k}) - \nabla_s \cdot (\tilde{\rho}_s \vb{u}_h w) - \pdiff{}{s} (\tilde{\rho}_s \dot{s} w) + \tilde{\rho}_s \left( \pdiff{s}{z} \right) \left[ - \pdiff{\Phi}{s} - \frac{1}{\rho} \pdiff{p}{s} \right] - (2 \vg{\Omega} \times \tilde{\rho}_s \vb{u}_h) \cdot \vb{k}.
+\end{align}  Similarly, from (\ref{eq:PrognosticUhEquationK2Sb}) we have
+\begin{align} \label{eq:PrognosticRhoUhEquationK2Sb}
+\left( \pdiff{\tilde{\rho}_s \vb{u}_h}{t} \right)_s =& - \tilde{\rho}_s w (\vb{u}_h \cdot \nabla \vb{k}) - \tilde{\rho}_s \nabla_s K_2 - \zeta_s \vb{k} \times \tilde{\rho}_s \vb{u}_h - \vb{u}_h \nabla_s \cdot (\tilde{\rho}_s \vb{u}_h) - \pdiff{}{s} (\tilde{\rho}_s \dot{s} \vb{u}_h) - \tilde{\rho}_s \left( \nabla_z \Phi + \frac{1}{\rho} \nabla_z p \right) - [2 \vg{\Omega} \times \tilde{\rho}_s \vb{u}]_z,
+\end{align}
+
+
+
+
+
+%\appendix
+%\section{}    %% Appendix A
+
+%\subsection{}                               %% Appendix A1, A2, etc.
+
+\authorcontribution{Text in this manuscript describing individual models was provided by the respective modeling teams.  Final composition and development of Appendix A was performed by P.A. Ullrich.}
+
+\begin{acknowledgements}
+DCMIP2016 is sponsored by the National Center for Atmospheric Research Computational Information Systems Laboratory, the Department of Energy Office of Science (award no. DE-SC0016015), the National Science Foundation (award no. 1629819), the National Aeronautics and Space Administration (award no. NNX16AK51G), the National Oceanic and Atmospheric Administration Great Lakes Environmental Research Laboratory (award no. NA12OAR4320071), the Office of Naval Research and CU Boulder Research Computing.  This work was made possible with support from our student and postdoctoral participants: Sabina Abba Omar, Scott Bachman, Amanda Back, Tobias Bauer, Vinicius Capistrano, Spencer Clark, Ross Dixon, Christopher Eldred, Robert Fajber, Jared Ferguson, Emily Foshee, Ariane Frassoni, Alexander Goldstein, Jorge Guerra, Chasity Henson, Adam Herrington, Tsung-Lin Hsieh, Dave Lee, Theodore Letcher, Weiwei Li, Laura Mazzaro, Maximo Menchaca, Jonathan Meyer, Farshid Nazari, John O'Brien, Bjarke Tobias Olsen, Hossein Parishani, Charles Pelletier, Thomas Rackow, Kabir Rasouli, Cameron Rencurrel, Koichi Sakaguchi, G\"okhan Sever, James Shaw, Konrad Simon, Abhishekh Srivastava, Nicholas Szapiro, Kazushi Takemura, Pushp Raj Tiwari, Chii-Yun Tsai, Richard Urata, Karin van der Wiel, Lei Wang, Eric Wolf, Zheng Wu, Haiyang Yu, Sungduk Yu and Jiawei Zhuang.  We would also like to thank Rich Loft, Cecilia Banner, Kathryn Peczkowicz and Rory Kelly (NCAR), Perla Dinger, Carmen Ho, and Gina Skyberg (UC Davis) and Kristi Hansen (University of Michigan) for administrative support during the workshop and summer school.  
+\end{acknowledgements}
+
+
+
+%% REFERENCES
+
+%% Since the Copernicus LaTeX package includes the BibTeX style file copernicus.bst,
+%% authors experienced with BibTeX only have to include the following two lines:
+%%
+\bibliographystyle{copernicus}
+\bibliography{DCMIP2016-Part1.bib}
+%%
+%% URLs and DOIs can be entered in your BibTeX file as:
+%%
+%% URL = {http://www.xyz.org/~jones/idx_g.htm}
+%% DOI = {10.5194/xyz}
+
+
+%% LITERATURE CITATIONS
+%%
+%% command                        & example result
+%% \citet{jones90}|               & Jones et al. (1990)
+%% \citep{jones90}|               & (Jones et al., 1990)
+%% \citep{jones90,jones93}|       & (Jones et al., 1990, 1993)
+%% \citep[p.~32]{jones90}|        & (Jones et al., 1990, p.~32)
+%% \citep[e.g.,][]{jones90}|      & (e.g., Jones et al., 1990)
+%% \citep[e.g.,][p.~32]{jones90}| & (e.g., Jones et al., 1990, p.~32)
+%% \citeauthor{jones90}|          & Jones et al.
+%% \citeyear{jones90}|            & 1990
+
+
+
+%% FIGURES
+
+%% ONE-COLUMN FIGURES
+
+%%f
+%\begin{figure}[t]
+%\includegraphics[width=8.3cm]{FILE NAME}
+%\caption{TEXT}
+%\end{figure}
+%
+%%% TWO-COLUMN FIGURES
+%
+%%f
+%\begin{figure*}[t]
+%\includegraphics[width=12cm]{FILE NAME}
+%\caption{TEXT}
+%\end{figure*}
+%
+%
+%%% TABLES
+%%%
+%%% The different columns must be seperated with a & command and should
+%%% end with \\ to identify the column brake.
+%
+%%% ONE-COLUMN TABLE
+%
+%%t
+%\begin{table}[t]
+%\caption{TEXT}
+%\begin{tabular}{column = lcr}
+%\tophline
+%
+%\middlehline
+%
+%\bottomhline
+%\end{tabular}
+%\belowtable{} % Table Footnotes
+%\end{table}
+%
+%%% TWO-COLUMN TABLE
+%
+%%t
+%\begin{table*}[t]
+%\caption{TEXT}
+%\begin{tabular}{column = lcr}
+%\tophline
+%
+%\middlehline
+%
+%\bottomhline
+%\end{tabular}
+%\belowtable{} % Table Footnotes
+%\end{table*}
+%
+%
+%%% NUMBERING OF FIGURES AND TABLES
+%%%
+%%% If figures and tables must be numbered 1a, 1b, etc. the following command
+%%% should be inserted before the begin{} command.
+%
+%\addtocounter{figure}{-1}\renewcommand{\thefigure}{\arabic{figure}a}
+%
+%
+%%% MATHEMATICAL EXPRESSIONS
+%
+%%% All papers typeset by Copernicus Publications follow the math typesetting regulations
+%%% given by the IUPAC Green Book (IUPAC: Quantities, Units and Symbols in Physical Chemistry,
+%%% 2nd Edn., Blackwell Science, available at: http://old.iupac.org/publications/books/gbook/green_book_2ed.pdf, 1993).
+%%%
+%%% Physical quantities/variables are typeset in italic font (t for time, T for Temperature)
+%%% Indices which are not defined are typeset in italic font (x, y, z, a, b, c)
+%%% Items/objects which are defined are typeset in roman font (Car A, Car B)
+%%% Descriptions/specifications which are defined by itself are typeset in roman font (abs, rel, ref, tot, net, ice)
+%%% Abbreviations from 2 letters are typeset in roman font (RH, LAI)
+%%% Vectors are identified in bold italic font using \vec{x}
+%%% Matrices are identified in bold roman font
+%%% Multiplication signs are typeset using the LaTeX commands \times (for vector products, grids, and exponential notations) or \cdot
+%%% The character * should not be applied as mutliplication sign
+%
+%
+%%% EQUATIONS
+%
+%%% Single-row equation
+%
+%\begin{equation}
+%
+%\end{equation}
+%
+%%% Multiline equation
+%
+%\begin{align}
+%& 3 + 5 = 8\\
+%& 3 + 5 = 8\\
+%& 3 + 5 = 8
+%\end{align}
+%
+%
+%%% MATRICES
+%
+%\begin{matrix}
+%x & y & z\\
+%x & y & z\\
+%x & y & z\\
+%\end{matrix}
+%
+%
+%%% ALGORITHM
+%
+%\begin{algorithm}
+%\caption{…}
+%\label{a1}
+%\begin{algorithmic}
+%…
+%\end{algorithmic}
+%\end{algorithm}
+%
+%
+%%% CHEMICAL FORMULAS AND REACTIONS
+%
+%%% For formulas embedded in the text, please use \chem{}
+%
+%%% The reaction environment creates labels including the letter R, i.e. (R1), (R2), etc.
+%
+%\begin{reaction}
+%%% \rightarrow should be used for normal (one-way) chemical reactions
+%%% \rightleftharpoons should be used for equilibria
+%%% \leftrightarrow should be used for resonance structures
+%\end{reaction}
+%
+%
+%%% PHYSICAL UNITS
+%%%
+%%% Please use \unit{} and apply the exponential notation
+
+
+\end{document}

@@ -1,0 +1,91 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{color}
+\usepackage{comment}
+
+\oddsidemargin 0cm
+\evensidemargin 0cm
+
+\textwidth 16.5cm
+\topmargin -2.0cm
+\parindent 0cm
+\textheight 24cm
+\parskip 0.5cm
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+%\fancyhead[L]{AOSS Reference Sheet}
+%\fancyhead[CH]{test}
+\fancyfoot[C]{Page \thepage}
+
+\newcommand{\vb}{\mathbf}
+\newcommand{\vg}{\boldsymbol}
+\newcommand{\mat}{\mathsf}
+\newcommand{\diff}[2]{\frac{d #1}{d #2}}
+\newcommand{\diffsq}[2]{\frac{d^2 #1}{{d #2}^2}}
+\newcommand{\pdiff}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pdiffsq}[2]{\frac{\partial^2 #1}{{\partial #2}^2}}
+\newcommand{\topic}{\textbf}
+\newcommand{\arccot}{\mathrm{arccot}}
+\newcommand{\arcsinh}{\mathrm{arcsinh}}
+\newcommand{\arccosh}{\mathrm{arccosh}}
+\newcommand{\arctanh}{\mathrm{arctanh}}
+
+\begin{document}
+
+%\textbf{{I reopened the online peer review a few weeks ago as I had not yet gained access to
+%all of the three not-publicly-accessible codes (ACME, GEM and FVM), and I was also
+%hoping for input from the third reviewer who had agreed to look at the manuscript. I
+%have now been given access to all three codes. This required some effort on the part
+%of the authors, for which I am grateful. This manuscript is not in the model description
+%paper type, and is much closer to being a review article, and I do not see reason to
+%be critical over anything related to the code - I will just say that I enjoyed seeing how
+%the different developers have approached the design of their modelling infrastructure.}}
+
+\textbf{{Before submitting a revision, I would appreciate it if the lead author of the paper would
+test the veracity of the links to (or other ways of accessing) the other models included
+in the code accessibility table. In my experience there are often small issues that need
+to be resolved to make sure the information is accurate and that the code is really
+accessible to all.}}
+
+As requested, we have ensured the veracity of the links to the model codes.
+
+%\textbf{{I have received some comments from a third reviewer, who did not like the paper at
+%all, but declined to give a full review. I will pass on a paraphrased version of their
+%comments as, particularly in relation to the organisation of the paper, I do see where
+%they are coming from. Please consider their complaints seriously, respond to each
+%point, and revise the structure of the paper to make it more logically organised and
+%readable. It is possible that this reviewer did not take the time to consider the nature
+%of a GMD paper. I am encouraged in this thinking by the fact that one of the other
+%reviewers is a former GMD editor, and they gave a very encouraging review. In that
+%context I am still considering this to be a minor revision despite this negative review.}}
+
+\textbf{{Paraphrased comments from anonymous 3rd reviewer.
+The reviewer commented to the effect that. . .
+The purpose of the paper is not clear.
+There is nothing of interest or importance to the modelling community in the paper.
+The paper is too long, has too many equations and all of it is already published in the
+literature.}}
+
+We disagree strongly with the reviewer regarding the utility of the manuscript.  The manuscript itself should be viewed in the light of reviewing existing material from the wealth of (often unavailable) non-hydrostatic modeling technical reports and peer-reviewed publications, rather than introducing substantially new concepts.  The structure of this paper provides us with a mechanism to compare the different design decisions that have been made in these models, and potentially as a resource for future students of non-hydrostatic modeling systems to learn about the types of decisions that need to be made.  In the view of the authors, the content of our manuscript is simply not easily accessible in the existing literature.
+
+Regarding the length of the paper, we certainly acknowledge that this material could be the basis for a textbook on the subject, but believe that an open-access and peer-reviewed compilation provides broader access to this content than a textbook.
+
+\textbf{{The material is presented in a highly confusing manner, ``for instance, Section 2 is subdivided
+by model (with 11 sections, 1 per model), but Section 3 only has 8 subsections
+(why not 11?), and Section 4 only 2 subsections, the second of which only has 4 subsubsection
+(yet, when you look at Table 4, last column, I only see 3 different methods,
+so I have no idea where there are 4 sub-subsections for 3 methods); then Section 5 is
+again subsectioned by model (why this back and forth), but instead of 11 I only see 8 subsections: why are 3 models missing?''}}
+
+\textbf{{[editor's note: GMD papers are allowed to be long and may contain many equations,
+but because of this, an easy to navigate logical and readable structure is even more
+important than it is for regular science papers.]}}
+
+The issues with the structure have also been highlighted by the second reviewer.  In response to his specific criticisms, the revised manuscript now fills in all gaps within sections that are structured around the different options available to each model.  We note that each section is meant to highlight one of the potential decisions that need to be made in building a non-hydrostatic model.  If the potential options for that decision were limited, it made more sense to the authors to break up the section by the choices available.  If essentially all modeling groups pursued a different strategy, then it made more sense to break up each section by the model.  We hope the revisions have been sufficient to address this concern.
+
+\end{document}
